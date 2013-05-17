@@ -3,8 +3,7 @@
 [Hoplon](https://github.com/tailrecursion/hoplon) is a set of tools
 and libraries for making web application front ends.
 
-This repository contains example projects that demonstrate the use of
-Hoplon to create web applications.
+This repository contains example Hoplon projects.
 
 ## License
 
