@@ -7,11 +7,6 @@
   :plugins      [[tailrecursion/hoplon "0.1.0-SNAPSHOT"]]
   :dependencies [[tailrecursion/hoplon "0.1.0-SNAPSHOT"]]
   :eval-in      :leiningen
-  :hoplon       {:html-src    "src/html"
-                 :cljs-src    "src/cljs"
-                 :html-out    "resources/public"
-                 :base-dir    nil
-                 :pre-script  "./script/pre-compile"
-                 :post-script "./script/post-compile"
+  :hoplon       {:html-out    "resources/public"
                  :cljsc-opts  {:pretty-print   true
                                :optimizations  :whitespace}})
