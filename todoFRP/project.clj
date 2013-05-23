@@ -7,4 +7,4 @@
   :dependencies [[tailrecursion/hoplon "0.1.0-SNAPSHOT"]]
   :hoplon       {:html-out    "resources/public"
                  :cljsc-opts  {:pretty-print   true
-                               :optimizations  :whitespace}})
+                               :optimizations  :advanced}})
