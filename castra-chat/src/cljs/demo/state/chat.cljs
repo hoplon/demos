@@ -57,7 +57,7 @@
        (cell= (str (:text msg)))])))
 
 (cell= (let [s (get-in error [:data :state] ::nope)]
-         (if-not (= ::nope s) (reset! ~state s))))
+         (if-not (= ::nope s) (reset! ~(cell state) s))))
 
 (defn init []
   (get-state) 
