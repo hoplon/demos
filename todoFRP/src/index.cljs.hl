@@ -8,25 +8,25 @@
 
 (ns hoplon-demo-todofrp
   (:require-macros
-   [tailrecursion.hoplon               :refer [with-frp]]
-   [tailrecursion.javelin              :refer [cell= with-let]])
+    [tailrecursion.hoplon               :refer [with-frp]]
+    [tailrecursion.javelin              :refer [cell= with-let]])
   (:require
-   [tailrecursion.javelin              :refer [cell]]
-   [tailrecursion.hoplon         :as d :refer [thing-looper value!]]
-   [tailrecursion.hoplon.util          :refer [pluralize]]
-   [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
+    [tailrecursion.javelin              :refer [cell]]
+    [tailrecursion.hoplon         :as d :refer [thing-looper value!]]
+    [tailrecursion.hoplon.util          :refer [pluralize]]
+    [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
 ;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (declare route state active? deleted? completed?)
- 
+
 (defn interval [f msec]
   (.setInterval js/window f msec))
 
 (defn route-cell [msec default]
   (let [hash  #(.-hash (.-location js/window))] 
     (with-let [ret (cell (hash))] 
-      (interval #(let [h (hash)] (reset! ret (if (empty? h) default h))) msec))))
+              (interval #(let [h (hash)] (reset! ret (if (empty? h) default h))) msec))))
 
 (defn- update-state! [todos]
   (let [grouped (group-by deleted? todos)]
@@ -63,7 +63,7 @@
 
 (defn set-editing! [i v]
   (update-state! (-> (mapv #(assoc % :editing false) @state)
-                     (assoc-in [i :editing] v))))
+                   (assoc-in [i :editing] v))))
 
 (defn set-completed! [i v]
   (update-state! (assoc-in @state [i :completed] v)))
@@ -95,21 +95,21 @@
             (form
               {:on-submit [#(do (new-item! @editing-new) (reset! editing-new ""))]}
               (input
-                {:type "text",
-                 :id "new-todo",
-                 :placeholder "What needs to be done?",
-                 :autofocus "autofocus",
-                 :do-value [editing-new]
+                {:type        "text"
+                 :id          "new-todo"
+                 :placeholder "What needs to be done?"
+                 :autofocus   "autofocus"
+                 :do-value    [editing-new]
                  :on-keypress [#(reset! editing-new ~:new-todo)]
                  :on-focusout [#(reset! editing-new "")]})))
           (section
-            {:id "main",
+            {:id "main"
              :do-class [:hidden (and (empty? active) (empty? completed))]}
             (input
-              {:type "checkbox",
-               :id "toggle-all",
-               :do-attr [:checked (empty? active)]
-               :on-click [#(set-all-completed! (value! (.-target %)))]})
+              {:type      "checkbox"
+               :id        "toggle-all"
+               :do-attr   [:checked (empty? active)]
+               :on-click  [#(set-all-completed! (value! (.-target %)))]})
             (label {:for "toggle-all"} "Mark all as complete")
             (ul
               {:id "todo-list"
@@ -119,43 +119,43 @@
                             :hidden (not is-visible)
                             :editing is-editing]}
                 (div
-                  {:class "view",
+                  {:class       "view"
                    :on-dblclick [#(set-editing! idx true)]}
                   (input
-                    {:type "checkbox",
-                     :class "toggle",
-                     :do-attr [:checked is-completed]
-                     :on-click [#(set-completed! idx (value! (.-target %)))]})
+                    {:type      "checkbox"
+                     :class     "toggle"
+                     :do-attr   [:checked is-completed]
+                     :on-click  [#(set-completed! idx (value! (.-target %)))]})
                   (label "~{text}")
                   (button
-                    {:type "submit",
-                     :class "destroy",
-                     :on-click [#(set-text! idx "")]}))
+                    {:type      "submit"
+                     :class     "destroy"
+                     :on-click  [#(set-text! idx "")]}))
                 (form
                   {:on-submit [#(set-editing! idx false)]}
                   (input
-                    {:type "text",
-                     :class "edit",
-                     :do-value [text]
-                     :do-focus [is-editing]
+                    {:type        "text"
+                     :class       "edit"
+                     :do-value    [text]
+                     :do-focus    [is-editing]
                      :on-focusout [#(set-editing! idx false)]
-                     :on-keypress [#(set-text! idx (value! (.-target %)))]})))))
+                     :on-change   [#(set-text! idx (value! (.-target %)))]})))))
           (footer
-            {:id "footer",
-             :do-class [:hidden (and (empty? active) (empty? completed))]}
+            {:id        "footer"
+             :do-class  [:hidden (and (empty? active) (empty? completed))]}
             (span
               {:id "todo-count"}
               (strong "~(count active) ")
               (span "~{plural-item} left"))
             (ul
               {:id "filters"}
-              (li (a {:href "#/" :do-class [:selected (= "#/" route)]} "All"))
-              (li (a {:href "#/active" :do-class [:selected (= "#/active" route)]} "Active"))
+              (li (a {:href "#/"          :do-class [:selected (= "#/"          route)]} "All"))
+              (li (a {:href "#/active"    :do-class [:selected (= "#/active"    route)]} "Active"))
               (li (a {:href "#/completed" :do-class [:selected (= "#/completed" route)]} "Completed")))
             (button
-              {:type "submit",
-               :id "clear-completed",
-               :on-click [#(clear-completed!)]}
+              {:type      "submit"
+               :id        "clear-completed"
+               :on-click  [#(clear-completed!)]}
               "Clear completed (~(count completed))")))
         (footer
           {:id "info"}
