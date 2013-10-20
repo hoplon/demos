@@ -9,14 +9,10 @@ An implementation of [TodoMVC](http://todomvc.com) using
 
 ## Doit
 
-Install [Leiningen2](https://github.com/technomancy/leiningen)
+Install [boot](https://github.com/tailrecursion/boot). Then in a terminal:
 
-Install dependencies:
-
-    lein deps
-
-You can start watcher-based ClojureScript compilation:
-
-    lein hoplon auto
+```
+$ boot watch hoplon
+```
 
 HTML and JavaScript files will be created in the `resources/public` directory.
