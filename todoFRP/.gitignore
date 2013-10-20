@@ -16,4 +16,5 @@ pom.xml
 .hoplon-work-dir
 .hoplon-lock
 .DS_Store
+.boot
 /test/test.js
