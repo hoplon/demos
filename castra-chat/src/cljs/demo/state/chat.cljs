@@ -1,12 +1,15 @@
 (ns demo.state.chat
   (:require-macros
-    [tailrecursion.javelin :refer [defc defc= cell=]])
+    [tailrecursion.javelin :refer [refer-all defc defc= cell=]])
   (:require
+    tailrecursion.hoplon
+    tailrecursion.javelin
     [clojure.set           :as cs]
     [clojure.string        :as s]
-    [tailrecursion.javelin :as j :refer [cell]]
-    [tailrecursion.castra  :as c :refer [mkremote]]
-    [tailrecursion.hoplon  :as h :refer [thing-looper]]))
+    [tailrecursion.castra  :as c :refer [mkremote]]))
+
+(refer-all tailrecursion.hoplon)
+(refer-all tailrecursion.javelin)
 
 (set! cljs.core/*print-fn* #(.log js/console %))
 

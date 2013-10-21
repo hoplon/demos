@@ -4,8 +4,8 @@
  :license       {:name "Eclipse Public License"
                  :url "http://www.eclipse.org/legal/epl-v10.html"}
  :dependencies  [[org.clojure/clojurescript "0.0-1934"]
-                 [tailrecursion/boot.task   "0.1.0"]
-                 [tailrecursion/hoplon      "1.1.2"]]
+                 [tailrecursion/boot.task   "0.1.1"]
+                 [tailrecursion/hoplon      "1.1.4"]]
  :require-tasks #{[tailrecursion.boot.task :refer :all]
                   [tailrecursion.hoplon.boot :refer :all]}
  :src-paths     #{"src"}

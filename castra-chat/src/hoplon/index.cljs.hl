@@ -1,12 +1,15 @@
 (ns demo.html.index
   (:require-macros
     [tailrecursion.hoplon  :refer [with-frp]]
-    [tailrecursion.javelin :refer [cell= mx]])
+    [tailrecursion.javelin :refer [refer-all cell= mx]])
   (:require
     [demo.state.chat       :as c]
     [clojure.string        :as s]
-    [tailrecursion.javelin :as j :refer [cell]]
-    [tailrecursion.hoplon  :as h :refer [on! do!]]))
+    [tailrecursion.javelin :as j]
+    [tailrecursion.hoplon  :as h]))
+
+(refer-all tailrecursion.hoplon)
+(refer-all tailrecursion.javelin)
 
 (set! cljs.core/*print-fn* #(.log js/console %))
 

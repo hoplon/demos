@@ -9,12 +9,15 @@
 (ns hoplon-demo-todofrp
   (:require-macros
     [tailrecursion.hoplon               :refer [with-frp]]
-    [tailrecursion.javelin              :refer [cell= with-let]])
+    [tailrecursion.javelin              :refer [refer-all cell= with-let]])
   (:require
-    [tailrecursion.javelin              :refer [cell]]
-    [tailrecursion.hoplon         :as d :refer [thing-looper value!]]
+    tailrecursion.hoplon
+    tailrecursion.javelin
     [tailrecursion.hoplon.util          :refer [pluralize]]
     [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
+
+(refer-all tailrecursion.hoplon)
+(refer-all tailrecursion.javelin)
 
 ;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
