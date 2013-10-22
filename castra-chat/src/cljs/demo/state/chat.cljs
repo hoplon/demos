@@ -1,15 +1,20 @@
+;; Copyright (c) Alan Dipert and Micha Niskin. All rights reserved.
+;; The use and distribution terms for this software are covered by the
+;; Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php)
+;; which can be found in the file epl-v10.html at the root of this distribution.
+;; By using this software in any fashion, you are agreeing to be bound by
+;; the terms of this license.
+;; You must not remove this notice, or any other, from this software.
+
 (ns demo.state.chat
   (:require-macros
-    [tailrecursion.javelin :refer [refer-all defc defc= cell=]])
+    [tailrecursion.javelin :refer [defc defc= cell=]])
   (:require
-    tailrecursion.hoplon
-    tailrecursion.javelin
     [clojure.set           :as cs]
     [clojure.string        :as s]
-    [tailrecursion.castra  :as c :refer [mkremote]]))
-
-(refer-all tailrecursion.hoplon)
-(refer-all tailrecursion.javelin)
+    [tailrecursion.javelin :as j :refer [cell]]
+    [tailrecursion.castra  :as c :refer [mkremote]]
+    [tailrecursion.hoplon  :as h :refer [thing-looper]]))
 
 (set! cljs.core/*print-fn* #(.log js/console %))
 

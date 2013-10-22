@@ -6,18 +6,10 @@
 ;; the terms of this license.
 ;; You must not remove this notice, or any other, from this software.
 
-(ns hoplon-demo-todofrp
-  (:require-macros
-    [tailrecursion.hoplon               :refer [with-frp]]
-    [tailrecursion.javelin              :refer [refer-all cell= with-let]])
+(page index.html
   (:require
-    tailrecursion.hoplon
-    tailrecursion.javelin
-    [tailrecursion.hoplon.util          :refer [pluralize]]
-    [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
-
-(refer-all tailrecursion.hoplon)
-(refer-all tailrecursion.javelin)
+    [tailrecursion.hoplon.util          :as hu :refer [pluralize]]
+    [tailrecursion.hoplon.storage-atom  :as sa :refer [local-storage]]))
 
 ;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
