@@ -80,7 +80,7 @@
             (label {:for "toggle-all"} "Mark all as complete")
             (ul
               {:id   "todo-list"
-               :loop [loop-todos i edit? done? text show? complete# edit#]}
+               :loop [loop-todos i edit? done? text show? done# edit#]}
               (li
                 {:do-class  [:completed done? :editing edit?]
                  :do-toggle [show?]}
@@ -88,11 +88,11 @@
                   {:class       "view"
                    :on-dblclick [#(editing! i true)]}
                   (input
-                    {:id        complete#
+                    {:id        done#
                      :type      "checkbox"
                      :class     "toggle"
                      :do-attr   [:checked done?]
-                     :on-click  [#(done! i ~complete#)]})
+                     :on-click  [#(done! i ~done#)]})
                   (label "~{text}")
                   (button
                     {:type      "submit"
