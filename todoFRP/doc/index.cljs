@@ -53,11 +53,13 @@
 ;; page ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ((html :lang "en") 
+
    (head
      (title "Hoplon • TodoMVC")
      (meta :charset "utf-8")
      (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
      (link :rel "stylesheet" :href "../assets/base.css"))
+
    (body
      (with-frp
        (div
