@@ -7,10 +7,10 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (page index.html
-      (:refer-clojure :exclude [nth])
-      (:require
-        [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
-        [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
+  (:refer-clojure :exclude [nth])
+  (:require
+    [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
+    [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
 ;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
