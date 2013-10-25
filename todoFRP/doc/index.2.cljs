@@ -77,8 +77,7 @@
                          :autofocus   "autofocus"
                          :on-focusout [#(do! ~@:new-todo :value "")])))
 
-            ((section :id        "main"
-                      :do-toggle [(not (and (empty? active) (empty? completed)))]) 
+            ((section :id "main" :do-toggle [(not (and (empty? active) (empty? completed)))]) 
 
                (input :id        "toggle-all"
                       :type      "checkbox"
