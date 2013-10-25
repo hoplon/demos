@@ -13,7 +13,7 @@
                  :url "http://www.eclipse.org/legal/epl-v10.html"}
  :dependencies  [[org.clojure/clojurescript "0.0-1934"]
                  [tailrecursion/boot.task   "0.1.2"]
-                 [tailrecursion/hoplon      "3.0.1"]]
+                 [tailrecursion/hoplon      "3.0.2"]]
  :require-tasks #{[tailrecursion.boot.task :refer :all]
                   [tailrecursion.hoplon.boot :refer :all]}
  :src-paths     #{"src"}
