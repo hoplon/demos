@@ -18,21 +18,25 @@
 
 (def server (atom nil))
 
-(defn app [& [port]] 
+(defn app [port public-path]
   (->
     (castra 'demo.api.chat)
     (wrap-session {:store (cookie-store {:key "a 16-byte secret"})})
-    (wrap-file "resources/public")
+    (wrap-file public-path)
     (wrap-file-info)
-    (run-jetty {:join? false :port (or port 3000)})))
+    (run-jetty {:join? false :port port})))
 
 (defn start-server
   "Start castra demo server (port 33333)."
-  [& [port]]
-  (swap! server #(or % (app port))))
+  [port public-path]
+  (swap! server #(or % (app port public-path))))
 
-(defn run-task [boot]
-  (start-server 33333)
+(defn run-task [{:keys [port public-path]
+                 :or {port 33333
+                      public-path "resources/public"}
+                 :as boot}]
+  (.mkdirs (java.io.File. public-path))
+  (start-server port public-path)
   (fn [continue]
     (fn [event]
       (continue event))))

@@ -16,6 +16,8 @@
                 [org.clojure/tools.namespace  "0.2.4"]]
  :require-tasks [[tailrecursion.hoplon.boot   :refer :all]
                  [tailrecursion.boot.task     :refer :all]]
+ :public-path "resources/public"
+ :port 33333
  :src-paths #{"src/hoplon" "src/castra" "src/cljs"}
  :src-static #{"src/static"}
  :tasks {:run {:doc "Start castra dev server (port 33333)."
