@@ -7,22 +7,14 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (page index.html
-  (:refer-clojure :exclude [nth])
-  (:require
-    [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
-    [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
+      (:refer-clojure :exclude [nth])
+      (:require
+        [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
+        [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
 ;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (declare route state editing)
-
-(mx2
-  (with-frp
-    (section 
-      {:id "main"
-       :do-toggle [(not (and (empty? active) (empty? completed)))]
-       :on-click [#(doit! (id@ :foop))]
-       })))
 
 (defn rm-vec [v i]
   (let [z (- (dec (count v)) i)]
@@ -70,6 +62,7 @@
   (body
     (with-frp
       (div
+
         ((section :id "todoapp")
            ((header :id "header")
               (h1 "todos")
@@ -79,50 +72,58 @@
                         :placeholder "What needs to be done?"
                         :autofocus   "autofocus"
                         :on-focusout [#(do! ~@:new-todo :value "")])))
-          ((section :id        "main"
-                    :do-toggle [(not (and (empty? active) (empty? completed)))])
-             (input :id        "toggle-all"
-                    :type      "checkbox"
-                    :do-attr   [:checked (empty? active)]
-                    :on-click  [#(all-done! ~:toggle-all)])
-             ((label :for "toggle-all") "Mark all as complete")
-             ((ul :id   "todo-list"
-                  :loop [loop-todos i edit? done? text show? done# edit#])
-                ((li :style     "display:none;"
-                     :do-class  [:completed done? :editing edit?] 
-                     :do-toggle [show?]) 
-                   ((div :class       "view"
-                         :on-dblclick [#(editing! i true)]) 
-                      (input :id        done# 
-                             :type      "checkbox"
-                             :class     "toggle"
-                             :do-attr   [:checked done?] 
-                             :on-click  [#(done! i ~done#)])
-                      (label "~{text}")
-                      (button :type      "submit"
-                              :class     "destroy"
-                              :on-click  [#(destroy! i)]))
-                   ((form :on-submit [#(editing! i false)]) 
-                      (input :id          edit#
-                             :type        "text"
-                             :class       "edit"
-                             :do-value    [text]
-                             :do-focus    [edit?]
-                             :on-focusout [#(when @edit? (editing! i false))]
-                             :on-change   [#(when @edit? (text! i ~edit#))])))))
+
+           ((section :id        "main"
+                     :do-toggle [(not (and (empty? active) (empty? completed)))])
+              (input :id        "toggle-all"
+                     :type      "checkbox"
+                     :do-attr   [:checked (empty? active)]
+                     :on-click  [#(all-done! ~:toggle-all)])
+              ((label :for "toggle-all") "Mark all as complete")
+
+              ((ul :id   "todo-list"
+                   :loop [loop-todos i edit? done? text show? done# edit#])
+                 ((li :style     "display:none;"
+                      :do-class  [:completed done? :editing edit?] 
+                      :do-toggle [show?]) 
+
+                    ((div :class       "view"
+                          :on-dblclick [#(editing! i true)]) 
+                       (input :id        done# 
+                              :type      "checkbox"
+                              :class     "toggle"
+                              :do-attr   [:checked done?] 
+                              :on-click  [#(done! i ~done#)])
+                       (label "~{text}")
+                       (button :type      "submit"
+                               :class     "destroy"
+                               :on-click  [#(destroy! i)]))
+
+                    ((form :on-submit [#(editing! i false)]) 
+                       (input :id          edit#
+                              :type        "text"
+                              :class       "edit"
+                              :do-value    [text]
+                              :do-focus    [edit?]
+                              :on-focusout [#(when @edit? (editing! i false))]
+                              :on-change   [#(when @edit? (text! i ~edit#))])))))
+
            ((footer :id        "footer"
                     :do-toggle [(not (and (empty? active) (empty? completed)))]) 
               ((span :id "todo-count") 
                  (strong "~(count active) ")
                  (span "~{plural-item} left"))
+
               ((ul :id "filters") 
                  (li ((a :href "#/"          :do-class [:selected (= "#/"          route)]) "All"))
                  (li ((a :href "#/active"    :do-class [:selected (= "#/active"    route)]) "Active"))
                  (li ((a :href "#/completed" :do-class [:selected (= "#/completed" route)]) "Completed")))
+
               ((button :type      "submit"
                        :id        "clear-completed"
                        :on-click  [#(clear-done!)]) 
                  "Clear completed (~(count completed))")))
+
         ((footer :id "info") 
            (p "Double-click to edit a todo")
            (p "Part of " ((a :href "http://github.com/tailrecursion/hoplon-demos/") "hoplon-demos")))))))
