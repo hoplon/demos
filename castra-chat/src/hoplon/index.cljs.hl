@@ -11,8 +11,6 @@
     [demo.state.chat       :as c]
     [clojure.string        :as s]))
 
-(set! cljs.core/*print-fn* #(.log js/console %))
-
 (def register?        (cell nil))
 (def reg-link-text    (cell= (if register? "log in" "register")))
 (def toggle-register! #(swap! register? not))
