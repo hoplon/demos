@@ -52,78 +52,77 @@
 
 ;; page ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(html
-  {:lang "en"}
-  (head
-    (meta {:charset "utf-8"})
-    (meta {:http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1"})
-    (title "Hoplon • TodoMVC")
-    (link {:rel "stylesheet" :href "../assets/base.css"}))
-  (body
-    (with-frp
-      (div
+((html :lang "en") 
+   (head
+     (title "Hoplon • TodoMVC")
+     (meta :charset "utf-8")
+     (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
+     (link :rel "stylesheet" :href "../assets/base.css"))
+   (body
+     (with-frp
+       (div
 
-        ((section :id "todoapp")
-           ((header :id "header")
-              (h1 "todos")
-              ((form :on-submit [#(do (new! ~:new-todo) (do! ~@:new-todo :value ""))]) 
-                 (input :id          "new-todo"
-                        :type        "text"
-                        :placeholder "What needs to be done?"
-                        :autofocus   "autofocus"
-                        :on-focusout [#(do! ~@:new-todo :value "")])))
+         ((section :id "todoapp")
+            ((header :id "header")
+               (h1 "todos")
+               ((form :on-submit [#(do (new! ~:new-todo) (do! ~@:new-todo :value ""))]) 
+                  (input :id          "new-todo"
+                         :type        "text"
+                         :placeholder "What needs to be done?"
+                         :autofocus   "autofocus"
+                         :on-focusout [#(do! ~@:new-todo :value "")])))
 
-           ((section :id        "main"
-                     :do-toggle [(not (and (empty? active) (empty? completed)))])
-              (input :id        "toggle-all"
-                     :type      "checkbox"
-                     :do-attr   [:checked (empty? active)]
-                     :on-click  [#(all-done! ~:toggle-all)])
-              ((label :for "toggle-all") "Mark all as complete")
+            ((section :id        "main"
+                      :do-toggle [(not (and (empty? active) (empty? completed)))])
+               (input :id        "toggle-all"
+                      :type      "checkbox"
+                      :do-attr   [:checked (empty? active)]
+                      :on-click  [#(all-done! ~:toggle-all)])
+               ((label :for "toggle-all") "Mark all as complete")
 
-              ((ul :id   "todo-list"
-                   :loop [loop-todos i edit? done? text show? done# edit#])
-                 ((li :style     "display:none;"
-                      :do-class  [:completed done? :editing edit?] 
-                      :do-toggle [show?]) 
+               ((ul :id   "todo-list"
+                    :loop [loop-todos i edit? done? text show? done# edit#])
+                  ((li :style     "display:none;"
+                       :do-class  [:completed done? :editing edit?] 
+                       :do-toggle [show?]) 
 
-                    ((div :class       "view"
-                          :on-dblclick [#(editing! i true)]) 
-                       (input :id        done# 
-                              :type      "checkbox"
-                              :class     "toggle"
-                              :do-attr   [:checked done?] 
-                              :on-click  [#(done! i ~done#)])
-                       (label "~{text}")
-                       (button :type      "submit"
-                               :class     "destroy"
-                               :on-click  [#(destroy! i)]))
+                     ((div :class       "view"
+                           :on-dblclick [#(editing! i true)]) 
+                        (input :id        done# 
+                               :type      "checkbox"
+                               :class     "toggle"
+                               :do-attr   [:checked done?] 
+                               :on-click  [#(done! i ~done#)])
+                        (label "~{text}")
+                        (button :type      "submit"
+                                :class     "destroy"
+                                :on-click  [#(destroy! i)]))
 
-                    ((form :on-submit [#(editing! i false)]) 
-                       (input :id          edit#
-                              :type        "text"
-                              :class       "edit"
-                              :do-value    [text]
-                              :do-focus    [edit?]
-                              :on-focusout [#(when @edit? (editing! i false))]
-                              :on-change   [#(when @edit? (text! i ~edit#))])))))
+                     ((form :on-submit [#(editing! i false)]) 
+                        (input :id          edit#
+                               :type        "text"
+                               :class       "edit"
+                               :do-value    [text]
+                               :do-focus    [edit?]
+                               :on-focusout [#(when @edit? (editing! i false))]
+                               :on-change   [#(when @edit? (text! i ~edit#))])))))
 
-           ((footer :id        "footer"
-                    :do-toggle [(not (and (empty? active) (empty? completed)))]) 
-              ((span :id "todo-count") 
-                 (strong "~(count active) ")
-                 (span "~{plural-item} left"))
+            ((footer :id        "footer"
+                     :do-toggle [(not (and (empty? active) (empty? completed)))]) 
+               ((span :id "todo-count") 
+                  (strong "~(count active) ")
+                  (span "~{plural-item} left"))
 
-              ((ul :id "filters") 
-                 (li ((a :href "#/"          :do-class [:selected (= "#/"          route)]) "All"))
-                 (li ((a :href "#/active"    :do-class [:selected (= "#/active"    route)]) "Active"))
-                 (li ((a :href "#/completed" :do-class [:selected (= "#/completed" route)]) "Completed")))
+               ((ul :id "filters") 
+                  (li ((a :href "#/"          :do-class [:selected (= "#/"          route)]) "All"))
+                  (li ((a :href "#/active"    :do-class [:selected (= "#/active"    route)]) "Active"))
+                  (li ((a :href "#/completed" :do-class [:selected (= "#/completed" route)]) "Completed")))
 
-              ((button :type      "submit"
-                       :id        "clear-completed"
-                       :on-click  [#(clear-done!)]) 
-                 "Clear completed (~(count completed))")))
+               ((button :type      "submit"
+                        :id        "clear-completed"
+                        :on-click  [#(clear-done!)]) 
+                  "Clear completed (~(count completed))")))
 
-        ((footer :id "info") 
-           (p "Double-click to edit a todo")
-           (p "Part of " ((a :href "http://github.com/tailrecursion/hoplon-demos/") "hoplon-demos")))))))
+         ((footer :id "info") 
+            (p "Double-click to edit a todo")
+            (p "Part of " ((a :href "http://github.com/tailrecursion/hoplon-demos/") "hoplon-demos")))))))
