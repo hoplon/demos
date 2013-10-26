@@ -33,7 +33,7 @@
 
 ;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def state        (local-storage (cell []) ::store))
+(def state        (-> (cell []) (local-storage ::store)))
 (def editing      (cell nil))
 (def route        (route-cell 100 "#/"))
 (def completed    (cell= (filter :completed state)))
