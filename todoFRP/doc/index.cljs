@@ -16,7 +16,7 @@
 
 (declare route state editing)
 
-(defn rm-vec [v i]
+(defn dissocv [v i]
   (let [z (- (dec (count v)) i)]
     (cond (neg?   z) v
           (zero?  z) (pop v)
@@ -34,15 +34,16 @@
 ;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def state        (-> (cell []) (local-storage ::store)))
+(def loaded?      (cell false))
 (def editing      (cell nil))
 (def route        (route-cell 100 "#/"))
 (def completed    (cell= (filter :completed state)))
 (def active       (cell= (remove :completed state)))
 (def plural-item  (cell= (pluralize "item" (count active))))
-(def loop-todos   (thing-looper state 50 reactive-info :reverse? true))
+(def loop-todos   (thing-looper state 50 reactive-info :done? loaded? :reverse? true))
 
 (def todo         (fn [t]   {:completed false :text t}))
-(def destroy!     (fn [i]   (swap! state rm-vec i)))
+(def destroy!     (fn [i]   (swap! state dissocv i)))
 (def done!        (fn [i v] (swap! state assoc-in [i :completed] v)))
 (def clear-done!  (fn [& _] (swap! state #(vec (remove :completed %)))))
 (def new!         (fn [t]   (when (not (empty? t)) (swap! state conj (todo t)))))
@@ -52,15 +53,15 @@
 
 ;; page ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(html
-  :lang "en"
-  (head
-    (title "Hoplon • TodoMVC")
-    (meta :charset "utf-8")
-    (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
-    (link :rel "stylesheet" :href "../assets/base.css"))
-  (body
-    (with-frp
+(with-frp
+  (html
+    :lang "en"
+    (head
+      (html-meta :charset "utf-8")
+      (html-meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
+      (link :rel "stylesheet" :href "../assets/base.css")
+      (title "Hoplon • TodoMVC (~(count active))"))
+    (body
       (div
         (section
           :id "todoapp"
@@ -72,8 +73,8 @@
               (input
                 :id "new-todo"
                 :type "text"
-                :placeholder "What needs to be done?"
                 :autofocus "autofocus"
+                :do-attr [:placeholder (if loaded? "What needs to be done?" "Loading...")]
                 :on-focusout [#(do! ~@:new-todo :value "")])))
           (section
             :id "main"
@@ -137,4 +138,4 @@
         (footer
           :id "info" 
           (p "Double-click to edit a todo")
-          (p "Part of " (a :href "http://github.com/tailrecursion/hoplon-demos/" "hoplon-demos")))))))
+          (p "Part of " (a :href "http://github.com/tailrecursion/hoplon-demos/" "hoplon-demos"))))))) 
