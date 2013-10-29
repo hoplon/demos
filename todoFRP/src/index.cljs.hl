@@ -61,7 +61,7 @@
     (meta :charset "utf-8")
     (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "../assets/base.css")
-    (title (text= "Hoplon • TodoMVC (~(count active))")))
+    (title (text "Hoplon • TodoMVC (~(count active))")))
   (body
     (div
       (section
@@ -91,9 +91,8 @@
           (ul
             :id "todo-list"
             (loop-things
-              :binding [[i edit? done? text show? done# edit#] loop-todos] 
+              :binding [[i edit? done? todo-text show? done# edit#] loop-todos] 
               (li
-                :style "display:none;"
                 :do-class (cell= {:completed done? :editing edit?}) 
                 :do-toggle show?
                 (div 
@@ -107,7 +106,7 @@
                     :on-click #(done! i (val-id done#)))
                   (label
                     :do-css (cell= {:color (if done? "red" "green")}) 
-                    (text= "~{text}"))
+                    (text "~{todo-text}"))
                   (button
                     :type "submit"
                     :class "destroy"
@@ -118,7 +117,7 @@
                     :id edit#
                     :type "text"
                     :class "edit"
-                    :do-value text
+                    :do-value todo-text
                     :do-focus edit?
                     :on-focusout #(when @edit? (editing! i false))
                     :on-change #(when @edit? (text! i (val-id edit#)))))))))
@@ -127,8 +126,8 @@
           :do-toggle (cell= (not (and (empty? active) (empty? completed))))
           (span 
             :id "todo-count"
-            (strong (text= "~(count active) "))
-            (span (text= "~{plural-item} left")))
+            (strong (text "~(count active) "))
+            (span (text "~{plural-item} left")))
           (ul
             :id "filters"
             (li (a :href "#/"          :do-class (cell= {:selected (= "#/" route)})          "All"))
@@ -138,7 +137,7 @@
             :type      "submit"
             :id        "clear-completed"
             :on-click  #(clear-done!)
-            (text= "Clear completed (~(count completed))"))))
+            (text "Clear completed (~(count completed))"))))
       (footer
         :id "info" 
         (p "Double-click to edit a todo")
