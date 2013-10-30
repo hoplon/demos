@@ -28,12 +28,11 @@
 
 (defn decorate [todo route editing i]
   (let [{done? :completed text :text} todo]
-    (assoc todo
-           :editing (= editing i)
-           :visible (and (not (empty? text))
-                         (or (= "#/" route)
-                             (and (= "#/active" route) (not done?))
-                             (and (= "#/completed" route) done?))))))
+    (-> todo (assoc :editing (= editing i)
+                    :visible (and (not (empty? text))
+                                  (or (= "#/" route)
+                                      (and (= "#/active" route) (not done?))
+                                      (and (= "#/completed" route) done?)))))))
 
 ;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
