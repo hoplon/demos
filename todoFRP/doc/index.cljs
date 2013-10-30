@@ -27,10 +27,10 @@
 
 (defn visible? [todo route]
   (let [{done? :completed text :text} todo]
-  (and (not (empty? text))
-       (or (= "#/" route)
-           (and (= "#/active" route) (not done?))
-           (and (= "#/completed" route) done?)))))
+    (and (not (empty? text))
+         (or (= "#/" route)
+             (and (= "#/active" route) (not done?))
+             (and (= "#/completed" route) done?)))))
 
 ;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
