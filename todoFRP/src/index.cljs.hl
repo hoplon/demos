@@ -26,12 +26,14 @@
           (zero?  z) (pop v)
           (pos?   z) (into (subvec v 0 i) (subvec v (inc i))))))
 
-(defn vis? [todo route]
+(defn decorate [todo route editing i]
   (let [{done? :completed text :text} todo]
-    (and (not (empty? text))
-         (or (= "#/" route)
-             (and (= "#/active" route) (not done?))
-             (and (= "#/completed" route) done?)))))
+    (assoc todo
+           :editing (= editing i)
+           :visible (and (not (empty? text))
+                         (or (= "#/" route)
+                             (and (= "#/active" route) (not done?))
+                             (and (= "#/completed" route) done?))))))
 
 ;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -42,7 +44,7 @@
 (def completed    (cell= (filter :completed state)))
 (def active       (cell= (remove :completed state)))
 (def plural-item  (cell= (pluralize "item" (count active))))
-(def todos        (cell= (mapvi #(vector %1 (assoc %2 :editing (= editing %1) :visible (vis? %2 route))) state)))
+(def todos        (cell= (mapvi #(vector %1 (decorate %2 route editing %1)) state)))
 
 (def todo         (fn [t]   {:completed false :text t}))
 (def destroy!     (fn [i]   (swap! state dissocv i)))
