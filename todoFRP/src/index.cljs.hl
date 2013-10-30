@@ -9,7 +9,6 @@
 (page index.html
   (:refer-clojure :exclude [nth meta])
   (:require
-    [tailrecursion.cljson               :refer [clj->cljson cljson->clj]]
     [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
     [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
