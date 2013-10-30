@@ -91,6 +91,7 @@
             :id "todo-list"
             (loop-tpl
               :size 20
+              :done loaded?
               :reverse true
               :bind-ids [done# edit#]
               :bindings [[i {edit? :editing done? :completed todo-text :text show? :visible}] todos] 
