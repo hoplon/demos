@@ -43,7 +43,7 @@
 (def completed    (cell= (filter :completed state)))
 (def active       (cell= (remove :completed state)))
 (def plural-item  (cell= (pluralize "item" (count active))))
-(def todos        (cell= (mapvi #(vector %1 (decorate %2 route editing %1)) state)))
+(def todos        (cell= (mapvi #(list %1 (decorate %2 route editing %1)) state)))
 
 (def todo         (fn [t]   {:completed false :text t}))
 (def destroy!     (fn [i]   (swap! state dissocv i)))
