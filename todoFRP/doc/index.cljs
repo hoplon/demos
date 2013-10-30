@@ -22,9 +22,9 @@
 
 (defn dissocv [v i]
   (let [z (- (dec (count v)) i)]
-    (cond (neg?   z) v
-          (zero?  z) (pop v)
-          (pos?   z) (into (subvec v 0 i) (subvec v (inc i))))))
+    (cond (neg?  z) v
+          (zero? z) (pop v)
+          (pos?  z) (into (subvec v 0 i) (subvec v (inc i))))))
 
 (defn decorate [todo route editing i]
   (let [{done? :completed text :text} todo]
