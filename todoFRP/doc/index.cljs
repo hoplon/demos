@@ -9,6 +9,7 @@
 (page index.html
   (:refer-clojure :exclude [nth meta])
   (:require
+    [tailrecursion.cljson               :refer [clj->cljson cljson->clj]]
     [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
     [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
@@ -24,14 +25,12 @@
           (zero?  z) (pop v)
           (pos?   z) (into (subvec v 0 i) (subvec v (inc i))))))
 
-(defn reactive-info [todos i todo]
-  [(cell= (= editing i))
-   (cell= (:completed todo))
-   (cell= (:text      todo))
-   (cell= (and (not (empty? (:text todo)))
-               (or (= "#/" route)
-                   (and (= "#/active" route) (not (:completed todo)))
-                   (and (= "#/completed" route) (:completed todo)))))])
+(defn visible? [todo route]
+  (let [{done? :completed text :text} todo]
+  (and (not (empty? text))
+       (or (= "#/" route)
+           (and (= "#/active" route) (not done?))
+           (and (= "#/completed" route) done?)))))
 
 ;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -42,7 +41,11 @@
 (def completed    (cell= (filter :completed state)))
 (def active       (cell= (remove :completed state)))
 (def plural-item  (cell= (pluralize "item" (count active))))
-(def loop-todos   (thing-looper state 50 reactive-info :done? loaded? :reverse? true))
+(def todos        (cell= (->> state (map-indexed #(assoc %2 :editing (= editing %1) :visible (visible? %2 route))) vec)))
+
+(cell-doseq
+  [[i {:keys [text]}] state]
+  (cell= (.log js/console "[text]" i text)))
 
 (def todo         (fn [t]   {:completed false :text t}))
 (def destroy!     (fn [i]   (swap! state dissocv i)))
@@ -90,8 +93,11 @@
             "Mark all as complete")
           (ul
             :id "todo-list"
-            (loop-things
-              :binding [[i edit? done? todo-text show? done# edit#] loop-todos] 
+            (loop-tpl
+              :size 20
+              :reverse true
+              :bind-ids [done# edit#]
+              :bindings [[i {edit? :editing done? :completed todo-text :text show? :visible}] todos] 
               (li
                 :do-class (cell= {:completed done? :editing edit?}) 
                 :do-toggle show?
