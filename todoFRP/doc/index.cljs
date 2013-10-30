@@ -17,7 +17,8 @@
 
 (declare route state editing)
 
-(def meta html-meta)
+(def meta   html-meta)
+(def mapvi  (comp vec map-indexed))
 
 (defn dissocv [v i]
   (let [z (- (dec (count v)) i)]
@@ -25,7 +26,7 @@
           (zero?  z) (pop v)
           (pos?   z) (into (subvec v 0 i) (subvec v (inc i))))))
 
-(defn visible? [todo route]
+(defn vis? [todo route]
   (let [{done? :completed text :text} todo]
     (and (not (empty? text))
          (or (= "#/" route)
@@ -41,7 +42,7 @@
 (def completed    (cell= (filter :completed state)))
 (def active       (cell= (remove :completed state)))
 (def plural-item  (cell= (pluralize "item" (count active))))
-(def todos        (cell= (->> state (map-indexed #(assoc %2 :editing (= editing %1) :visible (visible? %2 route))) vec)))
+(def todos        (cell= (mapvi #(vector %1 (assoc %2 :editing (= editing %1) :visible (vis? %2 route))) state)))
 
 (def todo         (fn [t]   {:completed false :text t}))
 (def destroy!     (fn [i]   (swap! state dissocv i)))
@@ -90,7 +91,7 @@
           (ul
             :id "todo-list"
             (loop-tpl
-              :size 20
+              :size 50
               :done loaded?
               :reverse true
               :bind-ids [done# edit#]
@@ -100,30 +101,30 @@
                 :do-toggle show?
                 (div 
                   :class "view"
-                  :on-dblclick #(editing! i true)
+                  :on-dblclick #(editing! @i true)
                   (input
                     :id done# 
                     :type "checkbox"
                     :class "toggle"
                     :do-attr (cell= {:checked done?}) 
-                    :on-click #(done! i (val-id done#)))
+                    :on-click #(done! @i (val-id done#)))
                   (label
                     :do-css (cell= {:color (if done? "red" "green")}) 
                     (text "~{todo-text}"))
                   (button
                     :type "submit"
                     :class "destroy"
-                    :on-click  #(destroy! i)))
+                    :on-click  #(destroy! @i)))
                 (form
-                  :on-submit #(editing! i false)
+                  :on-submit #(editing! @i false)
                   (input
                     :id edit#
                     :type "text"
                     :class "edit"
                     :do-value todo-text
                     :do-focus edit?
-                    :on-focusout #(when @edit? (editing! i false))
-                    :on-change #(when @edit? (text! i (val-id edit#)))))))))
+                    :on-focusout #(when @edit? (editing! @i false))
+                    :on-change #(when @edit? (text! @i (val-id edit#)))))))))
         (footer 
           :id "footer"
           :do-toggle (cell= (not (and (empty? active) (empty? completed))))
