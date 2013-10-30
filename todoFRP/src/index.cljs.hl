@@ -43,10 +43,6 @@
 (def plural-item  (cell= (pluralize "item" (count active))))
 (def todos        (cell= (->> state (map-indexed #(assoc %2 :editing (= editing %1) :visible (visible? %2 route))) vec)))
 
-(cell-doseq
-  [[i {:keys [text]}] state]
-  (cell= (.log js/console "[text]" i text)))
-
 (def todo         (fn [t]   {:completed false :text t}))
 (def destroy!     (fn [i]   (swap! state dissocv i)))
 (def done!        (fn [i v] (swap! state assoc-in [i :completed] v)))
