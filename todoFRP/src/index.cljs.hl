@@ -61,7 +61,7 @@
     (meta :charset "utf-8")
     (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "../assets/base.css")
-    (title (text "Hoplon • TodoMVC (~(count active) ~{plural-item} left)")))
+    (title (text "Hoplon • TodoMVC (~(count active))")))
   (body
     (noscript
       (div
@@ -78,7 +78,7 @@
             (input
               :id "new-todo"
               :type "text"
-              :autofocus "autofocus"
+              :do-focus loaded?
               :do-attr (cell= {:placeholder (if loaded? "What needs to be done?" "Loading...")}) 
               :on-focusout #(do! (by-id :new-todo) :value ""))))
         (section
