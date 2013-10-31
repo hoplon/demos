@@ -63,6 +63,10 @@
     (link :rel "stylesheet" :href "../assets/base.css")
     (title (text "Hoplon • TodoMVC (~(count active) ~{plural-item} left)")))
   (body
+    (noscript
+      (div
+        :id "noscript"
+        (p "JavaScript is required to view this page.")))
     (div
       (section
         :id "todoapp"

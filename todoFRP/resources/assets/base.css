@@ -394,6 +394,20 @@ label[for='toggle-all'] {
 	color: inherit;
 }
 
+#noscript {
+  color: white;
+  background: red;
+  width: 100%;
+  text-align: center;
+}
+
+#noscript p {
+  margin: 0px;
+  padding: 15px;
+  font-size: large;
+  font-weight: bold;
+}
+
 /*
 	Hack to remove background from Mobile Safari.
 	Can't use it globally since it destroys checkboxes in Firefox and Opera
