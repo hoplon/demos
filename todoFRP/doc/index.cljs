@@ -61,7 +61,7 @@
     (meta :charset "utf-8")
     (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "../assets/base.css")
-    (title (text "Hoplon • TodoMVC (~(count active))")))
+    (title (text "Hoplon • TodoMVC (~(count active) ~{plural-item} left)")))
   (body
     (div
       (section
