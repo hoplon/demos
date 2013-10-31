@@ -44,14 +44,14 @@
 (def plural-item  (cell= (pluralize "item" (count active))))
 (def todos        (cell= (mapvi #(list %1 (decorate %2 route editing %1)) state)))
 
-(def todo         (fn [t]   {:completed false :text t}))
-(def destroy!     (fn [i]   (swap! state dissocv i)))
-(def done!        (fn [i v] (swap! state assoc-in [i :completed] v)))
-(def clear-done!  (fn [& _] (swap! state #(vec (remove :completed %)))))
-(def new!         (fn [t]   (when (not (empty? t)) (swap! state conj (todo t)))))
-(def all-done!    (fn [v]   (swap! state #(mapv (fn [x] (assoc x :completed v)) %))))
-(def editing!     (fn [i v] (reset! editing (if v i nil))))
-(def text!        (fn [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v))))
+(defn todo        [t]   {:completed false :text t})
+(defn destroy!    [i]   (swap! state dissocv i))
+(defn done!       [i v] (swap! state assoc-in [i :completed] v))
+(defn clear-done! [& _] (swap! state #(vec (remove :completed %))))
+(defn new!        [t]   (when (not (empty? t)) (swap! state conj (todo t))))
+(defn all-done!   [v]   (swap! state #(mapv (fn [x] (assoc x :completed v)) %)))
+(defn editing!    [i v] (reset! editing (if v i nil)))
+(defn text!       [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v)))
 
 ;; page ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
