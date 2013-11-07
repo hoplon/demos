@@ -7,7 +7,10 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (page index.html
-  (:refer-clojure :exclude [nth meta])
+  (:prepend-head
+    (meta :charset "utf-8")
+    (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1"))
+  (:refer-clojure :exclude [nth])
   (:require
     [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
     [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
@@ -16,7 +19,6 @@
 
 (declare route state editing)
 
-(def meta   html-meta)
 (def mapvi  (comp vec map-indexed))
 
 (defn dissocv [v i]
@@ -58,8 +60,6 @@
 (html
   :lang "en"
   (head
-    (meta :charset "utf-8")
-    (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "../assets/base.css")
     (title (text "Hoplon • TodoMVC (~(count active))")))
   (body
