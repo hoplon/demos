@@ -13,8 +13,7 @@
     [clojure.set           :as cs]
     [clojure.string        :as s]
     [tailrecursion.javelin :as j :refer [cell]]
-    [tailrecursion.castra  :as c :refer [mkremote]]
-    [tailrecursion.hoplon  :as h :refer [thing-looper]]))
+    [tailrecursion.castra  :as c :refer [mkremote]]))
 
 (set! cljs.core/*print-fn* #(.log js/console %))
 
@@ -35,6 +34,7 @@
 (defc= buddies      ((pad 10) (:users state)))
 (defc= convs        ((pad 10) (sort (keys (:messages state)))))
 (defc= msgs         ((pad 10) (get-in state [:messages active-chat])))
+(defc= loop-convs   (mapv (fn [x] [x, (s/join ", " (disj x user))]) convs))
 
 (def clear-error!   #(reset! error nil))
 (def switch-chat!   #(reset! active-chat @%))
@@ -48,24 +48,9 @@
 (def send-message*  (mkremote 'demo.api.chat/send-message   state error loading))
 (def send-message!  #(send-message* @user @active-chat %))
 
-(def loop-buddies
-  (thing-looper buddies (fn [buddies i buddy] [buddy])))
-
-(def loop-convs
-  (thing-looper
-    convs
-    (fn [convs i conv]
-      [conv, (cell= (s/join ", " (disj conv user)))])))
-
-(def loop-msgs
-  (thing-looper
-    msgs
-    (fn [msgs i msg]
-      [(cell= (str (:from msg)))
-       (cell= (str (:text msg)))])))
-
-(cell= (let [s (get-in error [:data :state] ::nope)]
-         (if-not (= ::nope s) (reset! ~(cell state) s))))
+(cell=
+  (let [s (get-in error [:data :state] ::nope)]
+    (if-not (= ::nope s) (reset! ~(cell state) s))))
 
 (defn init []
   (get-state) 

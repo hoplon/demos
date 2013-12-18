@@ -6,7 +6,7 @@
 ;; the terms of this license.
 ;; You must not remove this notice, or any other, from this software.
 
-(page index.html
+(page "index.html"
   (:require
     [demo.state.chat       :as c]
     [clojure.string        :as s]))
@@ -23,72 +23,78 @@
 (html
   (head
     (title "chat app")
-    (link {:rel "stylesheet" :type "text/css" :href "main.css"}))
-
+    (link :rel "stylesheet" :type "text/css" :href "main.css"))
   (body
-    (with-frp
-      (div {:id "error"
-            :on-click [c/clear-error!]
-            :do-slide-toggle [c/error]}
-           "~(:message c/error)")
+    (div
+      :id "error"
+      :on-click c/clear-error!
+      :do-slide-toggle c/error
+      (text "~(:message c/error)"))
 
-      (div {:id "loading" :do-fade-toggle [c/loading?]} "loading...")
+    (div :id "loading" :do-fade-toggle c/loading? "loading...")
 
-      (div {:id "content"}
-        (div {:id "login-pane" :do-toggle [c/show-login?]}
-          (form {:id "login" :on-submit [#(log-reg! ~:user ~:pass ~:pass2)]}
-            (div
-              (label "Username") 
-              (input {:type "text" :id "user" :autofocus "autofocus"})) 
+    (div {:id "content"}
+      (div {:id "login-pane" :do-toggle c/show-login?}
+        (form
+          :id "login"
+          :on-submit #(log-reg! (val-id "user") (val-id "pass") (val-id "pass2"))
+          (div
+            (label "Username") 
+            (input :type "text" :id "user" :autofocus "autofocus")) 
 
-            (div
-              (label "Password")
-              (input {:type "password" :id "pass"}))
+          (div
+            (label "Password")
+            (input :type "password" :id "pass"))
 
-            (div {:do-toggle [register?]}
-              (label "Confirm")
-              (input {:type "password" :id "pass2"}))
+          (div :do-toggle register?
+            (label "Confirm")
+            (input :type "password" :id "pass2"))
 
-            (button {:type "submit"} "submit")
+          (button :type "submit" "submit")
 
-            (a {:href "javascript:void(0)"
-                :on-click [toggle-register!]}
-               "~{reg-link-text}")))
-           
-        (div {:id "chat-pane" :do-toggle [c/show-chat?]}
-          (h1 "hello, ~{c/user}!")
+          (a :href "javascript:void(0)" :on-click toggle-register!
+            (text "~{reg-link-text}"))))
+      
+      (div :id "chat-pane" :do-toggle c/show-chat?
+        (h1 (text "hello, ~{c/user}!"))
 
-          (div {:id "buddies"}
-            (h4 "buddies")
+        (div :id "buddies"
+          (h4 "buddies")
 
-            (ul {:loop [c/loop-buddies i buddy]} 
-              (li {:do-toggle [(not (or (s/blank? buddy) (= c/user buddy)))]}
-                (span {:class "buddy"} "~{buddy}")
+          (ul
+            (loop-tpl :size 10 :bindings [buddy c/buddies]
+              (li :do-toggle (cell= (not (or (s/blank? buddy) (= c/user buddy))))
+                (span :class "buddy" (text "~{buddy}"))
 
-                (input {:type "checkbox"
-                        :do-value [(contains? c/active-chat buddy)]
-                        :on-click [#(c/toggle-chat! buddy)]})))
+                (input
+                  :type "checkbox"
+                  :do-value (cell= (contains? c/active-chat buddy))
+                  :on-click #(c/toggle-chat! buddy)))))
 
-            (h4 "chats")
+          (h4 "chats")
 
-            (ul {:loop [c/loop-convs i conv conv-str]} 
-              (li {:do-toggle [(not (s/blank? conv-str))]}
-                  (a {:href "javascript:void(0)"
-                      :do-class [:active (= c/active-chat conv)]
-                      :on-click [#(c/switch-chat! conv)]}
-                     "~{conv-str}"))))
+          (ul
+            (loop-tpl :size 10 :bindings [[conv conv-str] c/loop-convs]
+              (li :do-toggle (cell= (not (s/blank? conv-str)))
+                (a
+                  :href "javascript:void(0)"
+                  :do-class (cell= {:active (= c/active-chat conv)})
+                  :on-click #(c/switch-chat! conv)
+                  (text "~{conv-str}"))))))
 
-          (div {:id "chat"}
-            (div {:id "convo"}
-              (ul {:loop [c/loop-msgs i from text]} 
-                (li {:do-toggle [(not (s/blank? from))]}
-                  (span {:class "from"} "~{from}")
-                  (span ": ~{text}")))
+        (div :id "chat"
+          (div :id "convo"
+            (ul
+              (loop-tpl :size 10 :bindings [{from :from msg-text :text} c/msgs]
+                (li :do-toggle (cell= (not (s/blank? from)))
+                  (span :class "from" (text "~{from}"))
+                  (span (text ": ~{msg-text}")))))
 
-              (form {:on-submit [#(do (c/send-message! ~:chat-message)
-                                      (do! ~@:chat-message :value ""))]}
-                (label "~{c/user} >")
-                (input {:type "text"
-                        :id "chat-message"
-                        :do-toggle [(< 0 (count (disj c/active-chat c/user)))]
-                        :do-focus [c/active-chat]})))))))))
+            (form {:on-submit #(do (c/send-message! (val-id "chat-message"))
+                                   (do! (by-id "chat-message") :value ""))}
+              (label (text "~{c/user} >"))
+              (input
+                :type "text"
+                :id "chat-message"
+                :do-toggle (cell= (< 0 (count (disj c/active-chat c/user))))
+                :do-focus c/active-chat))))))))
