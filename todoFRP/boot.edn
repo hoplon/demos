@@ -11,10 +11,11 @@
  :description   "TodoFRP using hoplon."
  :license       {:name "Eclipse Public License"
                  :url "http://www.eclipse.org/legal/epl-v10.html"}
- :dependencies  [[org.clojure/clojurescript "0.0-1934"]
-                 [tailrecursion/boot.task   "0.1.3"]
-                 [tailrecursion/hoplon      "3.2.1"]]
- :require-tasks #{[tailrecursion.boot.task :refer :all]
+ :dependencies  [[tailrecursion/boot.core   "1.1.0"]
+                 [tailrecursion/boot.task   "1.0.0"]
+                 [tailrecursion/hoplon      "4.0.7"]
+                 [org.clojure/clojurescript "0.0-1934"]]
+ :require-tasks #{[tailrecursion.boot.task   :refer :all]
                   [tailrecursion.hoplon.boot :refer :all]}
  :src-paths     #{"src"}
  :public        "resources/public"

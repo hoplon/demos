@@ -7,9 +7,6 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (page index.html
-  (:prepend-head
-    (meta :charset "utf-8")
-    (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1"))
   (:refer-clojure :exclude [nth])
   (:require
     [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
@@ -57,24 +54,22 @@
 
 ;; page ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(html
-  :lang "en"
+(html :lang "en"
   (head
+    (meta :charset "utf-8")
+    (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "../assets/base.css")
-    (title (text "Hoplon • TodoMVC (~(count active))")))
+    (title "Hoplon • TodoMVC"))
   (body
     (noscript
-      (div
-        :id "noscript"
+      (div :id "noscript"
         (p "JavaScript is required to view this page.")))
     (div
-      (section
-        :id "todoapp"
-        (header
-          :id "header"
+      (section :id "todoapp"
+        (header :id "header"
           (h1 "todos")
-          (form
-            :on-submit #(do (new! (val-id :new-todo)) (do! (by-id :new-todo) :value ""))
+          (form :on-submit #(do (new! (val-id :new-todo))
+                                (do! (by-id :new-todo) :value ""))
             (input
               :id "new-todo"
               :type "text"
@@ -89,11 +84,9 @@
             :type "checkbox"
             :do-attr (cell= {:checked (empty? active)}) 
             :on-click #(all-done! (val-id :toggle-all)))
-          (label
-            :for "toggle-all"
+          (label :for "toggle-all"
             "Mark all as complete")
-          (ul
-            :id "todo-list"
+          (ul :id "todo-list"
             (loop-tpl
               :size 50
               :done loaded?
@@ -103,24 +96,20 @@
               (li
                 :do-class (cell= {:completed done? :editing edit?}) 
                 :do-toggle show?
-                (div 
-                  :class "view"
-                  :on-dblclick #(editing! @i true)
+                (div :class "view" :on-dblclick #(editing! @i true)
                   (input
                     :id done# 
                     :type "checkbox"
                     :class "toggle"
                     :do-attr (cell= {:checked done?}) 
                     :on-click #(done! @i (val-id done#)))
-                  (label
-                    :do-css (cell= {:color (if done? "red" "green")}) 
+                  (label :do-css (cell= {:color (if done? "red" "green")}) 
                     (text "~{todo-text}"))
                   (button
                     :type "submit"
                     :class "destroy"
                     :on-click  #(destroy! @i)))
-                (form
-                  :on-submit #(editing! @i false)
+                (form :on-submit #(editing! @i false)
                   (input
                     :id edit#
                     :type "text"
@@ -132,12 +121,10 @@
         (footer 
           :id "footer"
           :do-toggle (cell= (not (and (empty? active) (empty? completed))))
-          (span 
-            :id "todo-count"
+          (span :id "todo-count"
             (strong (text "~(count active) "))
             (span (text "~{plural-item} left")))
-          (ul
-            :id "filters"
+          (ul :id "filters"
             (li (a :href "#/"          :do-class (cell= {:selected (= "#/" route)})          "All"))
             (li (a :href "#/active"    :do-class (cell= {:selected (= "#/active" route)})    "Active"))
             (li (a :href "#/completed" :do-class (cell= {:selected (= "#/completed" route)}) "Completed")))
@@ -146,7 +133,6 @@
             :id        "clear-completed"
             :on-click  #(clear-done!)
             (text "Clear completed (~(count completed))"))))
-      (footer
-        :id "info" 
+      (footer :id "info" 
         (p "Double-click to edit a todo")
         (p "Part of " (a :href "http://github.com/tailrecursion/hoplon-demos/" "hoplon-demos")))))) 
