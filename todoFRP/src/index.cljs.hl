@@ -6,7 +6,7 @@
 ;; the terms of this license.
 ;; You must not remove this notice, or any other, from this software.
 
-(page index.html
+(page "index.html"
   (:refer-clojure :exclude [nth])
   (:require
     [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
@@ -59,7 +59,8 @@
     (meta :charset "utf-8")
     (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "../assets/base.css")
-    (title "Hoplon • TodoMVC"))
+    (title "Hoplon • TodoMVC")
+    )
   (body
     (noscript
       (div :id "noscript"
