@@ -44,14 +44,14 @@
 
   ;; state transition functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  (defn todo        [t]   {:completed false :text t})
-  (defn destroy!    [i]   (swap! state dissocv i))
-  (defn done!       [i v] (swap! state assoc-in [i :completed] v))
-  (defn clear-done! [& _] (swap! state #(vec (remove :completed %))))
-  (defn new!        [t]   (when (not (empty? t)) (swap! state conj (todo t))))
-  (defn all-done!   [v]   (swap! state #(mapv (fn [x] (assoc x :completed v)) %)))
-  (defn editing!    [i v] (reset! editing (if v i nil)))
-  (defn text!       [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v)))
+  (defn  todo        [t]   {:completed false :text t})
+  (defn  destroy!    [i]   (swap! state dissocv i))
+  (defn  done!       [i v] (swap! state assoc-in [i :completed] v))
+  (defn  clear-done! [& _] (swap! state #(vec (remove :completed %))))
+  (defn  new!        [t]   (when (not (empty? t)) (swap! state conj (todo t))))
+  (defn  all-done!   [v]   (swap! state #(mapv (fn [x] (assoc x :completed v)) %)))
+  (defn  editing!    [i v] (reset! editing (if v i nil)))
+  (defn  text!       [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v)))
 </script>
 
 <html lang="en">
