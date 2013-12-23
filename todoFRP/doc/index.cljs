@@ -12,7 +12,7 @@
     [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
     [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
-;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; utility functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (declare route state editing)
 
@@ -32,25 +32,33 @@
                                       (and (= "#/active" route) (not done?))
                                       (and (= "#/completed" route) done?)))))))
 
-;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; persisted state cell (AKA: stem cell) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def state        (-> (cell []) (local-storage ::store)))
-(def loaded?      (cell false))
-(def editing      (cell nil))
-(def route        (route-cell 100 "#/"))
-(def completed    (cell= (filter :completed state)))
-(def active       (cell= (remove :completed state)))
-(def plural-item  (cell= (pluralize "item" (count active))))
-(def todos        (cell= (mapvi #(list %1 (decorate %2 route editing %1)) state)))
+(def   state        (-> (cell []) (local-storage ::store)))
 
-(defn todo        [t]   {:completed false :text t})
-(defn destroy!    [i]   (swap! state dissocv i))
-(defn done!       [i v] (swap! state assoc-in [i :completed] v))
-(defn clear-done! [& _] (swap! state #(vec (remove :completed %))))
-(defn new!        [t]   (when (not (empty? t)) (swap! state conj (todo t))))
-(defn all-done!   [v]   (swap! state #(mapv (fn [x] (assoc x :completed v)) %)))
-(defn editing!    [i v] (reset! editing (if v i nil)))
-(defn text!       [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v)))
+;; local state cells ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defc  loaded?      false)
+(defc  editing      nil)
+(def   route        (route-cell 100 "#/"))
+
+;; formula cells (computed state) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defc= completed    (filter :completed state))
+(defc= active       (remove :completed state))
+(defc= plural-item  (pluralize "item" (count active)))
+(defc= todos        (mapvi #(list %1 (decorate %2 route editing %1)) state))
+
+;; state transition functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn  todo        [t]   {:completed false :text t})
+(defn  destroy!    [i]   (swap! state dissocv i))
+(defn  done!       [i v] (swap! state assoc-in [i :completed] v))
+(defn  clear-done! [& _] (swap! state #(vec (remove :completed %))))
+(defn  new!        [t]   (when (not (empty? t)) (swap! state conj (todo t))))
+(defn  all-done!   [v]   (swap! state #(mapv (fn [x] (assoc x :completed v)) %)))
+(defn  editing!    [i v] (reset! editing (if v i nil)))
+(defn  text!       [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v)))
 
 ;; page ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
