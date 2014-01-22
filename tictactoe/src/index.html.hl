@@ -15,10 +15,10 @@
     <p>This project demonstrates a Hoplon Tic Tac Toe in two ways:</p>
     <ol>
       <li>
-        <a href="basic.html">basic.cljs.hl</a>, a Hoplon file in ClojureScript syntax that compiles into a game of Tic Tac Toe</a>
+        <a href="basic.html">basic.cljs.hl</a> - a Hoplon file in ClojureScript syntax that compiles into a game of Tic Tac Toe.</a>
       </li>
       <li>
-        <a href="advanced.html">advanced.html.hl</a>, a Hoplon file in HTML syntax that uses a custom DOM element defined in a separate ClojureScript library.  Every instance of this custom DOM element can be parameterized differently when it is included in markup.</a>
+        <a href="advanced.html">advanced.html.hl</a> - a Hoplon file in HTML syntax that uses a custom DOM element defined in a separate ClojureScript library.  Every instance of this custom DOM element can be parameterized differently when it is included in markup.</a>
       </li>
     </ol>
     <p><a href="https://github.com/tailrecursion/hoplon-demos/tictactoe">Source Code</a></p>

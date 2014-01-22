@@ -2,6 +2,8 @@
 
 This project demonstrates Tic Tac Toe in Hoplon.
 
+[See this demo.](http://alandipert.github.io/hoplon-demos/tictactoe/)
+
 ## Dependencies
 
 - java 1.7+
