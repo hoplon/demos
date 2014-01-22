@@ -1,0 +1,42 @@
+(ns tailrecursion.hoplon-demos.tictactoe)
+
+(def transpose (partial apply map vector))
+(def diagonal  (partial map (comp first drop) (range)))
+(def indexed   (partial map-indexed vector))
+(def new-game  #(vec (repeat % nil)))
+
+(defelem game
+  [{:keys [size]} elem]
+  (let [rowsize   (js/parseInt size)
+        sizen     (* rowsize rowsize)
+        game      (cell  (new-game sizen))
+        rows      (cell= (partition rowsize game))
+        columns   (cell= (transpose rows))
+        diagonals (cell= [(diagonal rows) (diagonal (map reverse rows))])
+        runs      (cell= (concat rows columns diagonals))
+        winner    (cell= (->> runs
+                              (map set)
+                              (remove #(contains? % nil))
+                              (filter #(= 1 (count %)))
+                              ffirst))
+        moves     (cell= (->> (indexed game)
+                              (filter (comp nil? second))
+                              (map first)))
+        no-moves? (cell= (not (seq moves)))
+        over      (cell= (cond winner    (str winner " won!")
+                               no-moves? "Cat's game."))
+        ai!       (fn []
+                    (when-not @over
+                      (swap! game assoc (rand-nth @moves) "O")))
+        play!     (fn [i j]
+                    (let [idx (+ (* i rowsize) j)]
+                      (when (and (not @over)
+                                 (nil? (get @game idx)))
+                        (swap! game assoc idx "X"))))]
+    (div
+     (table (loop-tpl :bindings [[i row] (cell= (indexed rows))]
+       (tr (loop-tpl :bindings [[j x] (cell= (indexed row))]
+         (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+     (div :do-toggle over
+       (p (text "~{over}"))
+       (button :on-click #(reset! game (new-game sizen)) "Play Again")))))

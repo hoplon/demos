@@ -1,0 +1,27 @@
+<script type="text/hoplon">
+  (page "advanced.html"
+    (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
+</script>
+
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="screen.css">
+    <title>Hoplon • Tic Tac Toe</title>
+  </head>
+  <body>
+    <h1>The tictactoe.game HTML Element</h1>
+    <p>
+      This page demonstrates the use of a custom DOM element,
+      implemented in ClojureScript, to include two instances of
+      differently parameterized Tic Tac Toe games.
+    </p>
+    <p>The first tag on this page imports the tailrecursion.hoplon-demos.tictactoe library:</p>
+    <pre>&lt;script type=&quot;text/hoplon&quot;&gt;<br/>  (page &quot;advanced.html&quot;<br/>    (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))<br/>&lt;/script&gt;<br/></pre>
+    <h2>Small Board</h2>
+    <pre>&lt;tictactoe.game size=&quot;3&quot;/&gt;</pre>
+    <tictactoe.game size="3"/>
+    <h2>Big Board</h2>
+    <pre>&lt;tictactoe.game size=&quot;5&quot;/&gt;</pre>
+    <tictactoe.game size="5"/>
+  </body>
+</html>

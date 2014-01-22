@@ -1,0 +1,25 @@
+body {
+  font-family: sans-serif;
+  color: #333;
+}
+
+pre {
+  padding: 10px;
+  background-color: black;
+  color: chartreuse;
+}
+
+table {
+  border-collapse: collapse;
+  border: 5px solid black;
+}
+
+table td {
+  border:         5px solid black;
+  cursor:         pointer;
+  width:          1.3em;
+  height:         1.3em;
+  text-align:     center;
+  vertical-align: middle;
+  font:           bold 36px sans-serif
+}

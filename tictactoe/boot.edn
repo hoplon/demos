@@ -1,0 +1,12 @@
+{:project       tailrecursion/hoplon-tictactoe
+ :version       "0.1.0-SNAPSHOT"
+ :dependencies  [[tailrecursion/boot.core   "1.2.3"]
+                 [tailrecursion/boot.task   "1.0.2"]
+                 [tailrecursion/hoplon      "4.0.11"]
+                 [org.clojure/clojurescript "0.0-2138"]
+                 [org.clojure/core.logic "0.8.5"]]
+ :require-tasks #{[tailrecursion.boot.task    :refer :all]
+                  [tailrecursion.hoplon.boot  :refer :all]}
+ :public        "resources/public"
+ :src-static    #{"resources/assets"}
+ :src-paths     #{"src"}}

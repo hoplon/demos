@@ -1,0 +1,45 @@
+(page "basic.html")
+
+(def transpose (partial apply map vector))
+(def diagonal  (partial map (comp first drop) (range)))
+(def indexed   (partial map-indexed vector))
+(def new-game  (vec (repeat 9 nil)))
+
+(defc  game      new-game)
+(defc= rows      (partition 3 game))
+(defc= columns   (transpose rows))
+(defc= diagonals [(diagonal rows) (diagonal (map reverse rows))])
+(defc= runs      (concat rows columns diagonals))
+(defc= winner    (->> runs
+                      (map set)
+                      (remove #(contains? % nil))
+                      (filter #(= 1 (count %)))
+                      ffirst))
+(defc= moves     (->> (indexed game)
+                      (filter (comp nil? second))
+                      (map first)))
+(defc= no-moves? (not (seq moves)))
+(defc= over      (cond winner    (str winner " won!")
+                       no-moves? "Cat's game."))
+
+(defn ai! []
+  (when-not @over
+    (swap! game assoc (rand-nth @moves) "O")))
+
+(defn play! [i j]
+  (let [idx (+ (* i 3) j)]
+    (when (and (not @over)
+               (nil? (get @game idx)))
+      (swap! game assoc idx "X"))))
+
+(html
+  (head
+   (title "Hoplon • Tic Tac Toe")
+   (link :rel "stylesheet" :href "screen.css"))
+  (body
+   (table (loop-tpl :bindings [[i row] (cell= (indexed rows))]
+     (tr (loop-tpl :bindings [[j x] (cell= (indexed row))]
+       (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+   (div :do-toggle over
+     (p (text "~{over}"))
+     (button :on-click #(reset! game new-game) "Play Again"))))
