@@ -21,6 +21,6 @@
         <a href="advanced.html">advanced.html.hl</a> - a Hoplon file in HTML syntax that uses a custom DOM element defined in a separate ClojureScript library.  Every instance of this custom DOM element can be parameterized differently when it is included in markup.</a>
       </li>
     </ol>
-    <p><a href="https://github.com/tailrecursion/hoplon-demos/tictactoe">Source Code</a></p>
+    <p><a href="https://github.com/tailrecursion/hoplon-demos/tree/master/tictactoe">Source Code</a></p>
   </body>
 </html>
