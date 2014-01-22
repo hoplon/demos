@@ -23,5 +23,6 @@
     <h2>Big Board</h2>
     <pre>&lt;tictactoe.game size=&quot;5&quot;/&gt;</pre>
     <tictactoe.game size="5"/>
+    <a href="https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/advanced.html.hl">Source Code</a>
   </body>
 </html>

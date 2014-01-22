@@ -42,4 +42,6 @@
        (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
    (div :do-toggle over
      (p (text "~{over}"))
-     (button :on-click #(reset! game new-game) "Play Again"))))
+     (button :on-click #(reset! game new-game) "Play Again"))
+   (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/basic.cljs.hl"
+      "Source Code")))
