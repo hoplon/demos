@@ -9,12 +9,27 @@ pre {
   color: chartreuse;
 }
 
-table {
+table.tictac {
   border-collapse: collapse;
   border: 5px solid black;
+  margin-right: 20px;
 }
 
-table td {
+table.score {
+  border-collapse: collapse;
+  padding-left: 20px;
+}
+
+table.score th {
+  padding: 5px;
+  border-bottom: 2px solid black;
+}
+
+table.score td {
+  padding: 5px;
+}
+
+table.tictac td {
   border:         5px solid black;
   cursor:         pointer;
   width:          1.3em;

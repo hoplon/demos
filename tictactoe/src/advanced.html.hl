@@ -1,6 +1,8 @@
 <script type="text/hoplon">
   (page "advanced.html"
     (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
+  
+  (defc winners [])
 </script>
 
 <html lang="en">
@@ -10,19 +12,65 @@
   </head>
   <body>
     <h1>The tictactoe.game HTML Element</h1>
+
     <p>
       This page demonstrates the use of a custom DOM element,
       implemented in ClojureScript, to include two instances of
       differently parameterized Tic Tac Toe games.
     </p>
-    <p>The first tag on this page imports the tailrecursion.hoplon-demos.tictactoe library:</p>
-    <pre>&lt;script type=&quot;text/hoplon&quot;&gt;<br/>  (page &quot;advanced.html&quot;<br/>    (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))<br/>&lt;/script&gt;<br/></pre>
+
+    <p>
+      The first tag on this page imports the tailrecursion.hoplon-demos.tictactoe library
+      and defines a cell in which to store the historical record of winners:
+    </p>
+
+    <pre>
+      ;;{{
+      <script type="text/hoplon">
+        (page "advanced.html"
+          (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
+
+        (defc winners [])
+      </script>
+      ;;}}
+    </pre>
+
     <h2>Small Board</h2>
-    <pre>&lt;tictactoe.game size=&quot;3&quot;/&gt;</pre>
+
+    <pre>
+      ;;{{
+      <tictactoe.game size="3"/>
+      ;;}}
+    </pre>
+
     <tictactoe.game size="3"/>
+
     <h2>Big Board</h2>
-    <pre>&lt;tictactoe.game size=&quot;5&quot;/&gt;</pre>
+
+    <pre>
+      ;;{{
+      <tictactoe.game size="5"/>
+      ;;}}
+    </pre>
+
     <tictactoe.game size="5"/>
-    <a href="https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/advanced.html.hl">Source Code</a>
+
+    <h2>Wire Up A Scoreboard</h2>
+
+    <pre>
+      ;;{{
+      <tictactoe.game size="3" history="{{ winners }}"/>
+      <tictactoe.scoreboard history="{{ winners }}"/>
+      ;;}}
+    </pre>
+
+    <tictactoe.game size="3" history="{{ winners }}" style="float:left"/>
+    <tictactoe.scoreboard history="{{ winners }}"/>
+
+    <div style="clear:both"/>
+
+    <div style="padding-top: 20px;padding-bottom:50px;">
+      <a href="https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/advanced.html.hl">Source Code</a>
+    </div>
   </body>
 </html>

@@ -5,8 +5,19 @@
 (def indexed   (partial map-indexed vector))
 (def new-game  #(vec (repeat % nil)))
 
+(defelem scoreboard
+  [{:keys [history]} _]
+  (let [sorted (cell= (indexed (->> history (sort-by second) reverse)))]
+    (table :class "score"
+      (tr (th "rank") (th "player") (th "score"))
+      (loop-tpl :bindings [[rank [player score]] sorted]
+        (tr
+          (td :align "center" (text "~(inc rank)"))
+          (td :align "center" (text "~{player}"))
+          (td :align "center" (text "~{score}")))))))
+
 (defelem game
-  [{:keys [size]} elem]
+  [{:keys [size history] :or {size 3 history (cell [])} :as attr} _]
   (let [rowsize   (js/parseInt size)
         sizen     (* rowsize rowsize)
         game      (cell  (new-game sizen))
@@ -33,10 +44,16 @@
                       (when (and (not @over)
                                  (nil? (get @game idx)))
                         (swap! game assoc idx "X"))))]
-    (div
-     (table (loop-tpl :bindings [[i row] (cell= (indexed rows))]
-       (tr (loop-tpl :bindings [[j x] (cell= (indexed row))]
-         (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+    (reset! history {"X" 0 "O" 0 "cat" 0})
+    (cell=
+      (when (or winner no-moves?)
+        (swap! ~(cell history) update-in [(or winner "cat")] inc)))
+    (div (dissoc attr :size :history)
+      (table :class "tictac"
+        (loop-tpl :bindings [[i row] (cell= (indexed rows))]
+          (tr
+            (loop-tpl :bindings [[j x] (cell= (indexed row))]
+              (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
      (div :do-toggle over
        (p (text "~{over}"))
        (button :on-click #(reset! game (new-game sizen)) "Play Again")))))
