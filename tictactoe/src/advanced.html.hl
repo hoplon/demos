@@ -2,7 +2,7 @@
   (page "advanced.html"
     (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
   
-  (defc winners [])
+  (defc winners nil)
 </script>
 
 <html lang="en">
@@ -30,7 +30,7 @@
         (page "advanced.html"
           (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
 
-        (defc winners [])
+        (defc winners nil)
       </script>
       ;;}}
     </pre>
@@ -59,7 +59,7 @@
 
     <pre>
       ;;{{
-      <tictactoe.game size="3" history="{{ winners }}"/>
+      <tictactoe.game style="float:left" size="3" history="{{ winners }}"/>
       <tictactoe.scoreboard history="{{ winners }}"/>
       ;;}}
     </pre>
