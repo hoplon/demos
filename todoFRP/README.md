@@ -19,6 +19,6 @@ $ boot watch hoplon
 
 [1]: http://todomvc.com
 [2]: http://github.com/tailrecursion/hoplon
-[3]: http://micha.github.com/todofrp
+[3]: http://micha.github.com/todofrp/demo/public/
 [4]: https://github.com/tailrecursion/boot
 [5]: doc/index.cljs
