@@ -7,10 +7,9 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (ns demo.api.chat
-  (:refer-clojure                 :exclude  [defn swap!])
+  (:refer-clojure                 :exclude  [defn])
   (:use     [demo.http.rules      :exclude  [assert]])
-  (:require [tailrecursion.castra :refer    [defn ex error *session*]]
-            [alandipert.enduro    :refer    [swap! file-atom]]))
+  (:require [tailrecursion.castra :refer    [defn ex error *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -37,7 +36,7 @@
       {:from  "able"
        :text  "hello"})}})
 
-(def db (file-atom initial-db-value "data/db.clj"))
+(def db (atom initial-db-value))
 
 #_(set-validator! db
   (fn [db-val]

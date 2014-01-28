@@ -9,7 +9,6 @@
 (ns demo.http.rules
   (:refer-clojure :exclude [assert])
   (:require
-    [alandipert.enduro :as e]
     [tailrecursion.castra :refer [ex auth *request* *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -34,7 +33,7 @@
 
 (defn register! [db user pass1 pass2]
   (assert (= pass1 pass2) "Passwords don't match.")
-  (e/swap! db #(do (assert (available? % user) "Username not available.")
+  (swap! db #(do (assert (available? % user) "Username not available.")
                    (assoc-in % [:users user] {:pass pass1})))
   (do-login! user))
 
