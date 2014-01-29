@@ -28,8 +28,7 @@
 
 (defn play! [i j]
   (let [idx (+ (* i 3) j)]
-    (when (and (not @over)
-               (nil? (get @game idx)))
+    (when (and (not @over) (nil? (get @game idx)))
       (swap! game assoc idx "X"))))
 
 (html
@@ -37,9 +36,11 @@
    (title "Hoplon • Tic Tac Toe")
    (link :rel "stylesheet" :href "screen.css"))
   (body
-   (table (loop-tpl :bindings [[i row] (cell= (indexed rows))]
-     (tr (loop-tpl :bindings [[j x] (cell= (indexed row))]
-       (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+   (table :class "tictac"
+     (loop-tpl :bindings [[i row] (cell= (indexed rows))]
+       (tr
+        (loop-tpl :bindings [[j x] (cell= (indexed row))]
+          (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
    (div :do-toggle over
      (p (text "~{over}"))
      (button :on-click #(reset! game new-game) "Play Again"))
