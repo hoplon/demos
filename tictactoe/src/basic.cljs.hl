@@ -6,6 +6,7 @@
 (def new-game  (vec (repeat 9 nil)))
 
 (defc  game      new-game)
+(defc  undos     ())
 (defc= rows      (partition 3 game))
 (defc= columns   (transpose rows))
 (defc= diagonals [(diagonal rows) (diagonal (map reverse rows))])
@@ -22,6 +23,11 @@
 (defc= over      (cond winner    (str winner " won!")
                        no-moves? "Cat's game."))
 
+(defn undo! []
+  (when (seq @undos)
+    (reset! game (peek @undos))
+    (swap! undos pop)))
+
 (defn ai! []
   (when-not @over
     (swap! game assoc (rand-nth @moves) "O")))
@@ -29,7 +35,12 @@
 (defn play! [i j]
   (let [idx (+ (* i 3) j)]
     (when (and (not @over) (nil? (get @game idx)))
+      (swap! undos conj @game)
       (swap! game assoc idx "X"))))
+
+(defn reset-game! []
+  (reset! game new-game)
+  (reset! undos ()))
 
 (html
   (head
@@ -41,8 +52,10 @@
        (tr
         (loop-tpl :bindings [[j x] (cell= (indexed row))]
           (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+   (div :do-toggle (cell= (and (not over) (seq undos)))
+    (button :on-click undo! "Undo"))
    (div :do-toggle over
      (p (text "~{over}"))
-     (button :on-click #(reset! game new-game) "Play Again"))
+     (button :on-click reset-game! "Play Again"))
    (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/basic.cljs.hl"
       "Source Code")))
