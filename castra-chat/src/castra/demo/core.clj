@@ -31,10 +31,8 @@
   [port public-path]
   (swap! server #(or % (app port public-path))))
 
-(defn run-task [{:keys [port public-path]
-                 :or {port 33333
-                      public-path "resources/public"}
-                 :as boot}]
+(defn run-task
+  [port public-path]
   (.mkdirs (java.io.File. public-path))
   (start-server port public-path)
   (fn [continue]

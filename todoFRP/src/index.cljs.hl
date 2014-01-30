@@ -81,8 +81,8 @@
             (input
               :id "new-todo"
               :type "text"
-              :do-focus loaded?
-              :do-attr (cell= {:placeholder (if loaded? "What needs to be done?" "Loading...")}) 
+              :autofocus true
+              :placeholder "What needs to be done?"
               :on-focusout #(do! (by-id :new-todo) :value ""))))
         (section
           :id "main"
@@ -96,8 +96,6 @@
             "Mark all as complete")
           (ul :id "todo-list"
             (loop-tpl
-              :size 50
-              :done loaded?
               :reverse true
               :bind-ids [done# edit#]
               :bindings [[i {edit? :editing done? :completed todo-text :text show? :visible}] todos] 
@@ -111,8 +109,7 @@
                     :class "toggle"
                     :do-attr (cell= {:checked done?}) 
                     :on-click #(done! @i (val-id done#)))
-                  (label :do-css (cell= {:color (if done? "red" "green")}) 
-                    (text "~{todo-text}"))
+                  (label (text "~{todo-text}"))
                   (button
                     :type "submit"
                     :class "destroy"

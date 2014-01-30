@@ -17,6 +17,18 @@ $ boot watch hoplon
 * HTML and JavaScript files will be created in the `resources/public` directory.
 * [See the code with syntax highlighting here.][5]
 
+```
+$ open resources/public/index.html
+```
+
+Keep track of things you need to do!
+
+## CLJS Compiler Advanced Optimizations
+
+```
+$ boot [hoplon {:optimizations :advanced}]
+```
+
 [1]: http://todomvc.com
 [2]: http://github.com/tailrecursion/hoplon
 [3]: http://micha.github.com/todofrp/demo/public/

@@ -62,7 +62,7 @@
           (h4 "buddies")
 
           (ul
-            (loop-tpl :size 10 :bindings [buddy c/buddies]
+            (loop-tpl :bindings [buddy c/buddies]
               (li :do-toggle (cell= (not (or (s/blank? buddy) (= c/user buddy))))
                 (span :class "buddy" (text "~{buddy}"))
 
@@ -74,7 +74,7 @@
           (h4 "chats")
 
           (ul
-            (loop-tpl :size 10 :bindings [[conv conv-str] c/loop-convs]
+            (loop-tpl :bindings [[conv conv-str] c/loop-convs]
               (li :do-toggle (cell= (not (s/blank? conv-str)))
                 (a
                   :href "javascript:void(0)"
@@ -85,7 +85,7 @@
         (div :id "chat"
           (div :id "convo"
             (ul
-              (loop-tpl :size 10 :bindings [{from :from msg-text :text} c/msgs]
+              (loop-tpl :bindings [{from :from msg-text :text} c/msgs]
                 (li :do-toggle (cell= (not (s/blank? from)))
                   (span :class "from" (text "~{from}"))
                   (span (text ": ~{msg-text}")))))

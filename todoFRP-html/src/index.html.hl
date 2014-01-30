@@ -76,7 +76,8 @@
                id="new-todo"
                type="text"
                do-focus="{{ loaded? }}"
-               do-attr='{{ (cell= {:placeholder (if loaded? "What needs to be done?" "Loading...")}) }}'
+               autofocus="autofocus"
+               placeholder="What needs to be done?"
                on-focusout="{{ #(do! (by-id :new-todo) :value nil) }}">
           </form>
         </header>
@@ -91,8 +92,6 @@
           <label for="toggle-all">Mark all as complete</label>
           <ul id="todo-list">
             <loop-tpl
-               size="50"
-               done="{{ loaded? }}"
                reverse="{{ true }}"
                bind-ids="{{ [done# edit#] }}"
                bindings="{{ [[i {edit? :editing done? :completed todo-text :text show? :visible}] todos] }}">

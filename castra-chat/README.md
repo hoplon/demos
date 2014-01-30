@@ -7,7 +7,7 @@ A chat application using [hoplon][1].
 Install [boot][2]. Then in a terminal:
 
 ```
-$ boot watch hoplon run
+$ boot watch hoplon server
 ```
 
 A local Jetty server will be started. Point your browser at

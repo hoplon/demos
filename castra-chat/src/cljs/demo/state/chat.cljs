@@ -17,8 +17,6 @@
 
 (set! cljs.core/*print-fn* #(.log js/console %))
 
-(defn pad           [n & [pad]]   #(or (seq %) (repeat n pad)))
-
 (defc state         {})
 (defc error         nil)
 (defc loading       [])
@@ -31,9 +29,9 @@
 (defc= show-login?  (and loaded? (not logged-in?)))
 
 (defc= user         (:user state))
-(defc= buddies      ((pad 10) (:users state)))
-(defc= convs        ((pad 10) (sort (keys (:messages state)))))
-(defc= msgs         ((pad 10) (get-in state [:messages active-chat])))
+(defc= buddies      (:users state))
+(defc= convs        (sort (keys (:messages state))))
+(defc= msgs         (get-in state [:messages active-chat]))
 (defc= loop-convs   (mapv (fn [x] [x, (s/join ", " (disj x user))]) convs))
 
 (def clear-error!   #(reset! error nil))

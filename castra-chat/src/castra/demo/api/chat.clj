@@ -11,7 +11,7 @@
   (:use     [demo.http.rules      :exclude  [assert]])
   (:require [tailrecursion.castra :refer    [defn ex error *session*]]))
 
-;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn call      [f & args]  (apply f args))
 (defn apply-all [fns coll]  (mapv #(%1 %2) (cycle fns) coll))
@@ -20,7 +20,7 @@
 (defn map-k     [kfn m]     (map-kv kfn identity m))
 (defn map-v     [vfn m]     (map-kv identity vfn m))
 
-;;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def initial-db-value
   {:users
@@ -57,10 +57,10 @@
   (let [cons* #(cons %2 (or %1 '()))]
     (update-in db-val [:messages conv] cons* (new-message db-val from conv text))))
 
-;;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn get-state [& [user]]
-  {:rpc [(nil? user)
+  {:rpc/pre [(nil? user)
          (logged-in?)]}
   (let [user    (or user (:user @*session*)) 
         users   (->> @db :users keys sort)
@@ -70,19 +70,19 @@
     (when user {:user user, :users users, :messages convos})))
 
 (defn register [user pass1 pass2]
-  {:rpc [(register! db user pass1 pass2)]}
+  {:rpc/pre [(register! db user pass1 pass2)]}
   (get-state user))
 
 (defn login [user pass]
-  {:rpc [(login! db user pass)]}
+  {:rpc/pre [(login! db user pass)]}
   (get-state user))
 
 (defn logout []
-  {:rpc [(logout!)]}
+  {:rpc/pre [(logout!)]}
   nil)
 
 (defn send-message [from conv text]
-  {:rpc [(logged-in?)]}
+  {:rpc/pre [(logged-in?)]}
   (swap! db add-message from conv text)
   (get-state from))
 
