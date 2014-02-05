@@ -44,8 +44,10 @@
       (swap! data1 add!)
       (swap! data2 add!))))
 
-(html
-  (head)
+(html :lang "en"
+  (head
+    (meta :charset "UTF-8")
+    (title "Hoplon • Chart Demo"))
   (body
     (div :css {:width       "400px"
                :margin      "0 auto"
@@ -88,4 +90,4 @@
         :type "range" :min 400 :max 800 :step 1 :value 400
         :on-change #(reset! pwidth (val-id "w")))
 
-      (a :href src-url "Source Code"))))
+      (p (a :href src-url "Source Code")))))
