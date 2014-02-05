@@ -1,5 +1,5 @@
 (ns svg
-  (:refer-hoplon :exclude [a])
+  (:refer-hoplon :exclude [a title])
   (:refer-clojure :exclude [symbol]))
 
 (defn make-svg-ctor [tag]
@@ -27,3 +27,4 @@
 (def defs     (make-svg-ctor     "defs"))
 (def symbol   (make-svg-ctor   "symbol"))
 (def use      (make-svg-ctor      "use"))
+(def title    (make-svg-ctor    "title"))

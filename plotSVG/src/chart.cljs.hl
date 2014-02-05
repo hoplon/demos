@@ -11,7 +11,7 @@
         h  (- max-y min-y)
         dw (- x min-x)
         dh (- y min-y)]
-    [(* width (/ dw w)) (* height (/ dh h))]))
+    [(* width (/ dw w)) (* height (- 1 (/ dh h)))]))
 
 (defelem container [{:keys [chart] :as attr} kids]
   (cell-let [{:keys [width height]} chart]
@@ -22,14 +22,16 @@
     ((svg/circle
        :cx  (cell= (first coord))
        :cy  (cell= (second coord)))
-     (dissoc attr :chart :x :y))))
+     (dissoc attr :chart :x :y)
+     (svg/title (text "[~{x}, ~{y}]")))))
 
 (defelem point-rect [{:keys [chart x y width height] :as attr} _]
   (let [coord (cell= (rel-coord chart x y))]
     ((svg/rect
        :x (cell= (- (first coord) (/ width 2)))
        :y (cell= (- (second coord) (/ height 2))))
-     (dissoc attr :chart :x :y))))
+     (dissoc attr :chart :x :y)
+     (svg/title (text "[~{x}, ~{y}]")))))
 
 (defelem points-rect [{:keys [chart data width height] :as attr} _]
   (svg/g

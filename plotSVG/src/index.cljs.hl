@@ -7,22 +7,23 @@
 
 ;; returns a seq of random [x y] pairs, 0 <= y <= 9
 (defn data! []
-  (vec (for [x (range 0 11)] [x (rand-int 10)])))
+  (vec (for [x (range 0 11)] [x (rand-int 11)])))
 
 ;; push a random value onto the end of a data series
 (defn add! [data]
-  (conj data [(-> data last first inc) (rand-int 10)]))
+  (conj data [(-> data last first inc) (rand-int 11)]))
 
 ;; two data series
 (defc  data1   (data!))
 (defc  data2   (data!))
 
+;; user configurations "knobs"
+(defc  pwidth  400)
+(defc  paused? false)
+
 ;; "clipped" data (moving strip-chart)
 (defc= series1 (take-last 10 data1))
 (defc= series2 (take-last 10 data2))
-
-;; plot area width
-(defc  pwidth  400)
 
 ;; configure the plotting envelope (linear scale)
 (defc= chart1
@@ -36,32 +37,55 @@
 ;; add data random data points every 1000ms
 (with-init!
   (with-interval 1000
-    (swap! data1 add!)
-    (swap! data2 add!)))
+    (when-not @paused?
+      (swap! data1 add!)
+      (swap! data2 add!))))
 
 (html
   (head)
   (body
-    (div :css {:text-align "center" :padding "20px" :font-family "sans-serif"}
+    (div :css {:width       "400px"
+               :margin      "0 auto"
+               :text-align  "center"
+               :padding     "20px"
+               :font-family "sans-serif"}
 
       (h2 "Hoplon • Chart Demo")
 
-      (c/container :chart chart1 :css {:border "1px solid black"}
+      (hr)
+      
+      (p
+        "Click the plot area to pause/play. "
+        "Hover over a point to see its coordinates. "
+        "Slide the slider to adjust plot width.")
 
-        ;; data series 1
+      (c/container
+        :chart    chart1
+        :css      (cell= {:border      "1px solid black"
+                          :margin-left (str "-" (- (/ (:width chart1) 2) 200) "px")})
+        :on-click #(swap! paused? not)
+
+        ;; draw shading first so it doesn't cover lines or points
         (c/polygon :chart chart1 :data series1 :css {:fill c1 :stroke "none" :fill-opacity 0.5})
-        (c/polyline :chart chart1 :data series1 :css {:fill "none" :stroke c1 :stroke-width 2})
-        (c/points-circle :chart chart1 :data series1 :r 3 :css {:stroke c1 :fill c1})
-
-        ;; data series 2
         (c/polygon :chart chart1 :data series2 :css {:fill c2 :stroke "none" :fill-opacity 0.5})
+
+        ;; draw lines
+        (c/polyline :chart chart1 :data series1 :css {:fill "none" :stroke c1 :stroke-width 2})
         (c/polyline :chart chart1 :data series2 :css {:fill "none" :stroke c2 :stroke-width 2})
+
+        ;; draw points last so they're not covered by lines or shading
+        (c/points-circle :chart chart1 :data series1 :r 3 :css {:stroke c1 :fill c1})
         (c/points-rect :chart chart1 :data series2 :width 6 :height 6 :css {:stroke c2 :fill c2}))
 
       (br)
 
       ;; slider that lets the user change the width of the plot
       (input
-        :id "w" :style "width:400px;"
+        :id "w" :style "width:400px"
         :type "range" :min 400 :max 800 :step 1 :value 400
-        :on-change #(reset! pwidth (val-id "w"))))))
+        :on-change #(reset! pwidth (val-id "w")))
+
+      (p
+        "Part of "
+        (a :href "https://github.com/tailrecursion/hoplon-demos/" "Hoplon Demos")
+        ", check it out on GitHub!"))))
