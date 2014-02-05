@@ -1,24 +1,39 @@
 (page "index.html"
-  (:require [chart :as chart]))
+  (:require [chart :as c]))
+
+;; colors
+(def   c1      "#006666")
+(def   c2      "#660066")
 
 ;; returns a seq of random [x y] pairs, 0 <= y <= 9
-(def  data!   #(for [x (range 0 11)] [x (rand-int 10)]))
+(defn data! []
+  (for [x (range 0 11)] [x (rand-int 10)]))
+
+(defn add! [series]
+  (let [s (->> series (map (fn [[x y]] [(inc x) y])) rest vec)]
+    (conj s [(-> s last first inc) (rand-int 10)])))
 
 ;; two data series to plot
-(defc series1 (data!))
-(defc series2 (data!))
+(defc  series1 (data!))
+(defc  series2 (data!))
+
+;; plot area width
+(defc  pwidth  400)
 
 ;; configure the plotting envelope (linear scale)
-(defc chart1  (chart/config
-                :width 400 :height 200
-                :min-x   0 :max-x   10
-                :min-y   0 :max-y   10))
+(defc= chart1
+  (let [min-x (max (ffirst series1) (ffirst series2))
+        max-x (min (first (last series1)) (first (last series2)))]
+    (c/config
+      :width pwidth :height   200
+      :min-x  min-x :max-x  max-x
+      :min-y      0 :max-y     10)))
 
 (with-init!
   ;; refill series1 w/ random points every 1000ms
-  (with-interval 1000 (swap! series1 data!))
-  ;; refill series2 w/ random points every 1000ms, after 500ms initial delay
-  (with-timeout 500 (with-interval 1000 (swap! series2 data!))))
+  (with-interval 1000
+    (swap! series1 add!)
+    (swap! series2 add!)))
 
 (html
   (head)
@@ -27,17 +42,17 @@
 
       (h2 "Hoplon • Chart Demo")
 
-      (chart/container :chart chart1 :css {:border "1px solid black"}
+      (c/container :chart chart1 :css {:border "1px solid black"}
 
         ;; data series 1
-        (chart/polygon :chart chart1 :data series1 :css {:fill "#006666" :stroke "none" :fill-opacity 0.5})
-        (chart/polyline :chart chart1 :data series1 :css {:fill "none" :stroke "#006666" :stroke-width 2})
-        (chart/points-circle :chart chart1 :data series1 :r 3 :css {:stroke "#66066" :fill "#66066"})
+        (c/polygon :chart chart1 :data series1 :css {:fill c1 :stroke "none" :fill-opacity 0.5})
+        (c/polyline :chart chart1 :data series1 :css {:fill "none" :stroke c1 :stroke-width 2})
+        (c/points-circle :chart chart1 :data series1 :r 3 :css {:stroke c1 :fill c1})
 
         ;; data series 2
-        (chart/polygon :chart chart1 :data series2 :css {:fill "#660066" :stroke "none" :fill-opacity 0.5})
-        (chart/polyline :chart chart1 :data series2 :css {:fill "none" :stroke "#660066" :stroke-width 2})
-        (chart/points-rect :chart chart1 :data series2 :width 6 :height 6 :css {:stroke "#66066" :fill "#66066"}))
+        (c/polygon :chart chart1 :data series2 :css {:fill c2 :stroke "none" :fill-opacity 0.5})
+        (c/polyline :chart chart1 :data series2 :css {:fill "none" :stroke c2 :stroke-width 2})
+        (c/points-rect :chart chart1 :data series2 :width 6 :height 6 :css {:stroke c2 :fill c2}))
 
       (br)
 
@@ -45,4 +60,4 @@
       (input
         :id "w" :style "width:400px;"
         :type "range" :min 400 :max 800 :step 1 :value 400
-        :on-change #(swap! chart1 assoc :width (val-id "w"))))))))
+        :on-change #(reset! pwidth (val-id "w"))))))
