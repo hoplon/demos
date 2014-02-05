@@ -1,6 +1,9 @@
 (page "index.html"
   (:require [chart :as c]))
 
+;; Source code
+(def   src-url "https://github.com/tailrecursion/hoplon-demos/blob/master/plotSVG/src/index.cljs.hl")
+
 ;; colors
 (def   c1      "#006666")
 (def   c2      "#660066")
@@ -85,7 +88,4 @@
         :type "range" :min 400 :max 800 :step 1 :value 400
         :on-change #(reset! pwidth (val-id "w")))
 
-      (p
-        "Part of "
-        (a :href "https://github.com/tailrecursion/hoplon-demos/" "Hoplon Demos")
-        ", check it out on GitHub!"))))
+      (a :href src-url "Source Code"))))
