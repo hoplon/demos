@@ -1,0 +1,48 @@
+(page "index.html"
+  (:require [chart :as chart]))
+
+;; returns a seq of random [x y] pairs, 0 <= y <= 9
+(def  data!   #(for [x (range 0 11)] [x (rand-int 10)]))
+
+;; two data series to plot
+(defc series1 (data!))
+(defc series2 (data!))
+
+;; configure the plotting envelope (linear scale)
+(defc chart1  (chart/config
+                :width 400 :height 200
+                :min-x   0 :max-x   10
+                :min-y   0 :max-y   10))
+
+(with-init!
+  ;; refill series1 w/ random points every 1000ms
+  (with-interval 1000 (swap! series1 data!))
+  ;; refill series2 w/ random points every 1000ms, after 500ms initial delay
+  (with-timeout 500 (with-interval 1000 (swap! series2 data!))))
+
+(html
+  (head)
+  (body
+    (div :css {:text-align "center" :padding "20px" :font-family "sans-serif"}
+
+      (h2 "Hoplon • Chart Demo")
+
+      (chart/container :chart chart1 :css {:border "1px solid black"}
+
+        ;; data series 1
+        (chart/polygon :chart chart1 :data series1 :css {:fill "#006666" :stroke "none" :fill-opacity 0.5})
+        (chart/polyline :chart chart1 :data series1 :css {:fill "none" :stroke "#006666" :stroke-width 2})
+        (chart/points-circle :chart chart1 :data series1 :r 3 :css {:stroke "#66066" :fill "#66066"})
+
+        ;; data series 2
+        (chart/polygon :chart chart1 :data series2 :css {:fill "#660066" :stroke "none" :fill-opacity 0.5})
+        (chart/polyline :chart chart1 :data series2 :css {:fill "none" :stroke "#660066" :stroke-width 2})
+        (chart/points-rect :chart chart1 :data series2 :width 6 :height 6 :css {:stroke "#66066" :fill "#66066"}))
+
+      (br)
+
+      ;; slider that lets the user change the width of the plot
+      (input
+        :id "w" :style "width:400px;"
+        :type "range" :min 400 :max 800 :step 1 :value 400
+        :on-change #(swap! chart1 assoc :width (val-id "w"))))))))
