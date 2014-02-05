@@ -2,6 +2,8 @@
 
 A Hoplon demo that plots some data using SVG.
 
+![example plot][3]
+
 ## Dependencies
 
 - java 1.7+
@@ -33,3 +35,4 @@ Copyright © 2014, **Your Name Goes Here**
 
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
+[3]: https://raw2.github.com/tailrecursion/hoplon-demos/master/plotSVG/img/plot.png
