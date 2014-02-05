@@ -7,15 +7,19 @@
 
 ;; returns a seq of random [x y] pairs, 0 <= y <= 9
 (defn data! []
-  (for [x (range 0 11)] [x (rand-int 10)]))
+  (vec (for [x (range 0 11)] [x (rand-int 10)])))
 
-(defn add! [series]
-  (let [s (->> series (map (fn [[x y]] [(inc x) y])) rest vec)]
-    (conj s [(-> s last first inc) (rand-int 10)])))
+;; push a random value onto the end of a data series
+(defn add! [data]
+  (conj data [(-> data last first inc) (rand-int 10)]))
 
-;; two data series to plot
-(defc  series1 (data!))
-(defc  series2 (data!))
+;; two data series
+(defc  data1   (data!))
+(defc  data2   (data!))
+
+;; "clipped" data (moving strip-chart)
+(defc= series1 (take-last 10 data1))
+(defc= series2 (take-last 10 data2))
 
 ;; plot area width
 (defc  pwidth  400)
@@ -29,11 +33,11 @@
       :min-x  min-x :max-x  max-x
       :min-y      0 :max-y     10)))
 
+;; add data random data points every 1000ms
 (with-init!
-  ;; refill series1 w/ random points every 1000ms
   (with-interval 1000
-    (swap! series1 add!)
-    (swap! series2 add!)))
+    (swap! data1 add!)
+    (swap! data2 add!)))
 
 (html
   (head)
