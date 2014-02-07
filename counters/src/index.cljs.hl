@@ -1,29 +1,30 @@
 (page "index.html")
 
-(defelem counter []
+(defelem counter
+  [{:keys [clicked] :or {clicked identity}}]
   (let [my-count (cell 0)]
     (div
       (label (text "~{my-count}"))
-      (button :on-click #(swap! my-count inc) "+")
-      (button :on-click #(swap! my-count dec) "-"))))
+      (button :on-click #(clicked (swap! my-count inc)) "+")
+      (button :on-click #(clicked (swap! my-count dec)) "-"))))
 
 (defelem counters
-  [{:keys [size]}]
-  (let [clicked (cell nil)]
+  [{:keys [size] :or {size 10}}]
+  (let [last-clicked (cell nil)]
     (div
       (h1 "A Counting Widget!")
-      (p :do-toggle clicked
-        (text "Last clicked item was ~{clicked}"))
+      (p :do-toggle last-clicked
+        (text "Last clicked item was ~{last-clicked}"))
       (->> (repeat size counter)
            (map-indexed vector)
            (map (fn [[idx el]]
-                  ((el) :on-click #(reset! clicked idx))))))))
+                  (el :clicked #(do % (reset! last-clicked idx)))))))))
 
 (html
- (head
-   (title "Hoplon • Counters"))
- (body
-   (counters :size 10)
-   (p (a :href
-        "https://github.com/tailrecursion/hoplon-demos/blob/master/counters/src/index.cljs.hl" "Source code"))
-   (p "Inspired by " (a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
+  (head
+    (title "Hoplon • Counters"))
+  (body
+    (counters :size 10)
+    (p (a :href
+         "https://github.com/tailrecursion/hoplon-demos/blob/master/counters/src/index.cljs.hl" "Source code"))
+    (p "Inspired by " (a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
