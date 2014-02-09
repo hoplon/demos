@@ -44,7 +44,6 @@
       (div
         (selectize
          ;; hoplon-specific options
-         :id "foop"
          :cell        movie-id
          :class       "movies"
          ;; selectize options
