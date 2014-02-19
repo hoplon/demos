@@ -8,8 +8,11 @@
 
 (page "index.html"
   (:require
-    [demo.state.chat       :as c]
-    [clojure.string        :as s]))
+    [demo.state.chat             :as c]
+    [clojure.string              :as s]
+    [tailrecursion.hoplon.reload :as r]))
+
+(r/reload-all 25)
 
 (def register?        (cell nil))
 (def reg-link-text    (cell= (if register? "log in" "register")))

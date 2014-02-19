@@ -1,27 +1,32 @@
 (page "index.html")
 
+(defelem swap-button
+  [{:keys [state func] :or {func identity} :as attr} kids]
+  (let [attr (dissoc attr :state :func)]
+    ((button :on-click #(swap! state (deref* func))) attr kids)))
+
 (defelem counter
-  [{:keys [clicked] :or {clicked identity}}]
+  [attr _]
   (let [my-count (cell 0)]
-    (div
+    (div attr
       (label (text "~{my-count}"))
-      (button :on-click #(clicked (swap! my-count inc)) "+")
-      (button :on-click #(clicked (swap! my-count dec)) "-"))))
+      (swap-button :state my-count :func inc "+")
+      (swap-button :state my-count :func dec "-"))))
 
 (defelem counters
-  [{:keys [size] :or {size 10}}]
-  (let [last-clicked (cell nil)]
-    (div
+  [{:keys [size] :or {size 10} :as attr} _]
+  (let [last-clicked (cell nil)
+        attr         (dissoc attr :size)]
+    (div attr
       (h1 "A Counting Widget!")
-      (p :do-toggle last-clicked
+      (p :toggle last-clicked
         (text "Last clicked item was ~{last-clicked}"))
-      (->> (repeat size counter)
-           (map-indexed vector)
-           (map (fn [[idx el]]
-                  (el :clicked #(do % (reset! last-clicked idx)))))))))
+      (loop-tpl :bindings [i (cell= (range 0 size))]
+        (counter :on-click #(reset! last-clicked @i))))))
 
 (html
   (head
+    (meta :charset "UTF-8")
     (title "Hoplon • Counters"))
   (body
     (counters :size 10)
