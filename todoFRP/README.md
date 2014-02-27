@@ -11,14 +11,14 @@ An implementation of [TodoMVC][1] using [Hoplon][2].
 Install [boot][4]. Then in a terminal:
 
 ```
-$ boot watch hoplon
+$ boot development
 ```
 
 * HTML and JavaScript files will be created in the `resources/public` directory.
 * [See the code with syntax highlighting here.][5]
 
 ```
-$ open resources/public/index.html
+$ open http://localhost:8000
 ```
 
 Keep track of things you need to do!

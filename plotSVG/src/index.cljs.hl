@@ -1,5 +1,9 @@
 (page "index.html"
-  (:require [chart :as c]))
+  (:require
+   [chart :as c]
+   [tailrecursion.hoplon.reload :refer [reload-all]]))
+
+(reload-all)
 
 ;; Source code
 (def   src-url "https://github.com/tailrecursion/hoplon-demos/blob/master/plotSVG/src/index.cljs.hl")

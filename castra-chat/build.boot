@@ -3,11 +3,7 @@
 #tailrecursion.boot.core/version "2.2.1"
 
 (set-env!
-  :dependencies '[[tailrecursion/boot.task   "2.1.0"]
-                  [tailrecursion/hoplon      "5.3.0"]
-                  [tailrecursion/boot.notify "2.0.0-SNAPSHOT"]
-                  [tailrecursion/boot.ring   "0.1.0-SNAPSHOT"]
-                  [org.clojure/clojurescript "0.0-2156"]]
+  :dependencies (read-string (slurp "../deps.edn"))
   :out-path     "resources/public"
   :src-paths    #{"src/hoplon" "src/castra" "src/cljs"})
 

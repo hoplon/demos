@@ -26,7 +26,7 @@ $ boot development
 2. Open the compiled html file.
 
 ```bash
-$ open resources/public/index.html
+$ open http://localhost:8000
 ```
 
 3. You're already done.
