@@ -13,7 +13,7 @@
            :dataType "jsonp"
            :data {:q query :page_limit 10 :apikey "jv2szsy84jnsbj8cdtxt866m"}
            :error #(callback)
-           :success #(callback (.-movies %))})))
+           :success #(callback (aget % "movies"))})))
 
 (defn movie-option [movie]
   (let [{:strs [title synopsis abridged_cast]} movie]
