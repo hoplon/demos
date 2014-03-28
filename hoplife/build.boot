@@ -15,6 +15,11 @@
  '[tailrecursion.boot.task.notify :refer [hear]]
  '[tailrecursion.boot.task.ring   :refer [dev-server]])
 
+(deftask prod
+  "Build for production"
+  [& args]
+  (comp (hoplon {:optimizations :advanced})))
+
 (deftask dev
   "Build for development"
   [& args]
