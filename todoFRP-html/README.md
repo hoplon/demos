@@ -8,7 +8,13 @@ HTML markup instead of s-expressions.
 Install [boot][4]. Then in a terminal:
 
 ```
-$ boot watch hoplon
+$ boot development
+```
+
+Then in another terminal tab:
+
+```
+$ open http://localhost:8000
 ```
 
 * HTML and JavaScript files will be created in the `resources/public` directory.

@@ -1,4 +1,7 @@
-(page "index.html")
+(page "index.html"
+  (:require [tailrecursion.hoplon.reload :refer [reload-all]]))
+
+(reload-all)
 
 (defelem swap-button
   [{:keys [state func] :or {func identity} :as attr} kids]

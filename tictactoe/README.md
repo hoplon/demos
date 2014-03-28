@@ -18,14 +18,13 @@ directory.
 1. Start the auto-compiler.
 
 ```bash
-$ boot watch hoplon
+$ boot development
 ```
 
 2. Open the compiled html file.
 
 ```bash
-$ cd resources/public
-$ open index.html
+$ open http://localhost:8000
 ```
 
 [1]: https://github.com/tailrecursion/boot

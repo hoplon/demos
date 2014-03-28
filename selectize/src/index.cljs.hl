@@ -1,5 +1,9 @@
 (page "index.html"
-  (:require [selectize :refer [selectize]]))
+  (:require
+   [selectize :as s]
+   [tailrecursion.hoplon.reload :refer [reload-all]]))
+
+(reload-all)
 
 (defn rotten-tomatoes [query callback]
   (.ajax js/jQuery
@@ -9,7 +13,7 @@
            :dataType "jsonp"
            :data {:q query :page_limit 10 :apikey "jv2szsy84jnsbj8cdtxt866m"}
            :error #(callback)
-           :success #(callback (.-movies %))})))
+           :success #(callback (aget % "movies"))})))
 
 (defn movie-option [movie]
   (let [{:strs [title synopsis abridged_cast]} movie]
@@ -42,7 +46,7 @@
           year     (cell= (get movie "year"))
           starring (cell= (map #(get % "name") (get movie "abridged_cast")))]
       (div
-        (selectize
+        (s/selectize
          ;; hoplon-specific options
          :cell        movie-id
          :class       "movies"

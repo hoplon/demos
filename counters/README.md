@@ -14,14 +14,13 @@ This project demonstrates a simple counting widget in Hoplon.
 1. Start the auto-compiler with audio feedback.
 
 ```bash
-$ boot watch hear hoplon
+$ boot development
 ```
 
 2. Open the compiled html file.
 
 ```bash
-$ cd resources/public
-$ open index.html
+$ open http://localhost:8000
 ```
 
 [1]: https://github.com/tailrecursion/boot
