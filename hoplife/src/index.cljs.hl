@@ -6,12 +6,13 @@
   (reload-all))
 
 (def   default    #{[2 1] [2 2] [0 1] [1 2] [2 0] [13 11] [12 11] [11 11]})
-(def   +size+     32)
+(def   +size+     16)
 (def   +interval+ 100)
 (defc  running?   true)
 (defc  alive      default)
 
 ;; See http://clj-me.cgrand.net/2011/08/19/conways-game-of-life/
+;; Slightly modified to be toroidal
 (defn neighbours [[x y]]
   (for [dx [-1 0 1] dy (if (zero? dx) [-1 1] [-1 0 1])] 
     [(mod (+ dx x) +size+) (mod (+ dy y) +size+)]))
