@@ -1,9 +1,9 @@
 #!/usr/bin/env boot
 
-#tailrecursion.boot.core/version "2.2.1"
+#tailrecursion.boot.core/version "2.3.1"
 
 (set-env!
-  :dependencies (read-string (slurp "deps.edn"))
+  :dependencies (read-string (slurp "../deps.edn"))
   :out-path     "resources/public"
   :src-paths    #{"src"})
 
