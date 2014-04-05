@@ -14,11 +14,14 @@ Christophe Grand's [extremely elegant and terse method](http://clj-me.cgrand.net
 
 ## Usage
 
-1. Start the auto-compiler.
-```bash
-$ boot development
-```
-2. Go to `http://localhost:8000` in your browser.
+1. Start the auto-compiler. In a terminal:
+
+    ```bash
+    $ boot development
+    ```
+
+2. Go to [http://localhost:8000][3] in your browser.
 
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
+[3]: http://localhost:8000

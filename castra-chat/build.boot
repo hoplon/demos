@@ -26,7 +26,7 @@
   []
   (comp (r/head) (r/dev-mode) (r/session-cookie) (r/files) (castra 'demo.api.chat) (r/jetty)))
 
-(deftask chat-demo
+(deftask development
   "Build the castra chat demo. Server on port 8000."
   []
   (comp (watch) (hoplon {:prerender false}) (server)))

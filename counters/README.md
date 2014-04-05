@@ -8,20 +8,18 @@ This project demonstrates a simple counting widget in Hoplon.
 
 - java 1.7+
 - [boot][1]
+- [leiningen][2]
 
 ## Usage
 
-1. Start the auto-compiler with audio feedback.
+1. Start the auto-compiler with audio feedback. In a terminal:
 
-```bash
-$ boot development
-```
+    ```bash
+    $ boot development
+    ```
 
-2. Open the compiled html file.
-
-```bash
-$ open http://localhost:8000
-```
+2. Go to [http://localhost:8000][3] in your browser.
 
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
+[3]: http://localhost:8000

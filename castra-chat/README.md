@@ -2,17 +2,24 @@
 
 A chat application using [hoplon][1].
 
-## Doit
+## Dependencies
 
-Install [boot][2]. Then in a terminal:
+- java 1.7+
+- [boot][1]
+- [leiningen][2]
 
-```
-$ boot chat-demo
-```
-A local Jetty server will be started. Point your browser at
-[http://localhost:8000][3].  Several accounts are seeded: `able`, `baker`, and
-`charlie` are a few that work.  The password for each of is the same as the
-username.
+## Usage
+
+1. Start the auto-compiler. In a terminal:
+
+    ```bash
+    $ boot development
+    ```
+
+3. Go to [http://localhost:8000][3] in your browser.
+
+Several accounts are seeded: `able`, `baker`, and `charlie` are a few that
+work.  The password for each of is the same as the username.
 
 This demo is set up with live-reload so you can edit source files and see the
 page update in the browser in real time.
