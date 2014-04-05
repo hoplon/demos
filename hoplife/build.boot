@@ -3,7 +3,7 @@
 #tailrecursion.boot.core/version "2.3.1"
 
 (set-env!
- :dependencies (read-string (slurp "deps.edn"))
+ :dependencies (read-string (slurp "../deps.edn"))
  :src-paths    #{"src"}
  :out-path     "resources/public")
 
@@ -15,12 +15,12 @@
  '[tailrecursion.boot.task.notify :refer [hear]]
  '[tailrecursion.boot.task.ring   :refer [dev-server]])
 
-(deftask prod
+(deftask production
   "Build for production"
   [& args]
   (comp (hoplon {:optimizations :advanced})))
 
-(deftask dev
+(deftask development
   "Build for development"
   [& args]
   (comp

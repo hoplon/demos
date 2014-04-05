@@ -14,16 +14,11 @@ Christophe Grand's [extremely elegant and terse method](http://clj-me.cgrand.net
 
 ## Usage
 
-You'll probably want to have two terminals open in your project's
-directory.
-
 1. Start the auto-compiler.
-
 ```bash
-$ boot dev
+$ boot development
 ```
-
-2. Connect to the local dev server on [http://localhost:8000]
+2. Go to `http://localhost:8000` in your browser.
 
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
