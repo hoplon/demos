@@ -1,0 +1,12 @@
+(page "index.html"
+  (:require [app.rpc :as rpc]))
+
+(defc= random rpc/random-number)
+
+(rpc/init)
+
+(html
+  (head
+    (link :rel "stylesheet" :type "text/css" :href "css/main.css"))
+  (body
+    (h1 (text "Hello, World! ~{random}"))))
