@@ -86,7 +86,7 @@
               :type "text"
               :autofocus true
               :placeholder "What needs to be done?"
-              :on-focusout #(do! (by-id :new-todo) :value ""))))
+              :on-blur #(do! (by-id :new-todo) :value ""))))
         (section
           :id "main"
           :do-toggle (cell= (not (and (empty? active) (empty? completed))))
@@ -124,7 +124,7 @@
                     :class "edit"
                     :do-value todo-text
                     :do-focus edit?
-                    :on-focusout #(when @edit? (editing! @i false))
+                    :on-blur #(when @edit? (editing! @i false))
                     :on-change #(when @edit? (text! @i (val-id edit#)))))))))
         (footer 
           :id "footer"

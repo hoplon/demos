@@ -81,7 +81,7 @@
                do-focus="{{ loaded? }}"
                autofocus="autofocus"
                placeholder="What needs to be done?"
-               on-focusout="{{ #(do! (by-id :new-todo) :value nil) }}">
+               on-blur="{{ #(do! (by-id :new-todo) :value nil) }}">
           </form>
         </header>
         <section
@@ -121,7 +121,7 @@
                      class="edit"
                      do-value="{{ todo-text }}"
                      do-focus="{{ edit? }}"
-                     on-focusout="{{ #(when @edit? (editing! @i false)) }}"
+                     on-blur="{{ #(when @edit? (editing! @i false)) }}"
                      on-change="{{ #(when @edit? (text! @i (val-id edit#))) }}">
                 </form>
               </li>
