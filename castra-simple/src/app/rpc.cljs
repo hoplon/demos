@@ -1,7 +1,9 @@
 (ns app.rpc
   (:require-macros
     [tailrecursion.javelin :refer [defc defc=]])
-  (:require [tailrecursion.castra :refer [mkremote]]))
+  (:require
+   [tailrecursion.javelin]
+   [tailrecursion.castra :refer [mkremote]]))
 
 (defc state {:random nil})
 (defc error nil)
