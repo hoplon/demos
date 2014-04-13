@@ -11,9 +11,6 @@ random numbers that are generated on the server and transmited to the client.
 
 ## Usage
 
-You'll probably want to have two terminals open in your project's
-directory.
-
 1. Start the auto-compiler. In a terminal:
 
     ```bash
