@@ -1,0 +1,63 @@
+(page "index.html")
+
+(def queries
+  "Flickr search API queries, will be chosen randomly and submitted to obtain
+  interesting images which will be displayed in the scrolling div."
+  (list
+    "wtf" "omg" "meme" "spaghetti" "bananas" "motorcycles" "funny" "sad"
+    "happy" "blue" "red" "green" "amazing" "awesome" "terrifying" "alabama"
+    "nyc" "paris" "love" "hate" "submarines" "unicorns" "farming" "jewels"
+    "sneaky" "hilarious" "underground" "space" "nasa" "flamenco" "tango"
+    "castle" "tractor" "hunting" "sailing" "trouble" "goodbye" "hello"))
+
+(defc state   "The current list of image urls."      [])
+(defc loading "A vector of in-progress async calls." [])
+
+(defn flickr-search
+  "Given a search query and two cells, state and loading, makes an async
+  request to the Flickr JSONP API. When the request is sent an item is added 
+  to the loading cell. When the request completes the item is removed from the
+  loading cell and the image URLs are added to the end of the state cell."
+  [query state loading]
+  (when-not (seq @loading)
+    (let [js->clj #(js->clj % :keywordize-keys true)
+          data    (clj->js {:tags query :tagmode :any :format :json})
+          url     "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"]
+      (swap! loading conj query)
+      (doto (.getJSON js/jQuery url data)
+        (.done #(do (swap! loading pop)
+                    (->> % js->clj :items (map :media) (map :m) (swap! state into))))))))
+
+;; Add the :scroll-end attribute, which fires its callback when the element is
+;; scrolled down as far as it can go--to the bottom.
+(defmethod on! :scroll-end
+  [elem _ f]
+  (on! elem :scroll
+    #(let [el (.-target %)
+           ch (.-clientHeight el)
+           sh (.-scrollHeight el)
+           st (.-scrollTop    el)]
+       (when (= ch (- sh st)) (f %)))))
+
+;; initialize the application state by fetching a batch of images
+(flickr-search (rand-nth queries) state loading)
+
+(html :lang "en"
+  (head
+    (meta :charset "utf-8")
+    (title "Hoplon • Infinite Scroll Demo")
+    (link :rel "stylesheet" :type "text/css" :href "css/main.css"))
+  (body
+    (div :id "container"
+      (h1 "Infinite Scrolling")
+      (p "Scroll down to see more images.")
+      (div
+        :id "scroll"
+        :scroll-end #(flickr-search (rand-nth queries) state loading)
+        (loop-tpl :bindings [url state]
+          (div
+            (img :src url))))
+      (div
+        :id "loading"
+        :toggle (cell= (seq loading))
+        "LOADING IMAGES...")))) 
