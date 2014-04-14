@@ -8,6 +8,7 @@
 (defc text-input "")
 (defc range-input 20)
 (defc select-input "green")
+(defc multi-select #{"green"})
 (defc check-box false)
 (defc radio-input "b")
 
@@ -62,6 +63,27 @@
       (option :value "indigo" "indigo"))
     (p (text "Value of select input: ~{select-input}"))
 
+    (h2 "Multiple select input")
+    (select
+
+      ;; The handler is more complex here because of the parsing of the
+      ;; selectedOptions object. The cell is a set in this case.
+      :change #(let [options (.. % -target -selectedOptions)
+                     l (.-length options)]
+                 (reset! multi-select
+                   (set
+                     (for [i (range l)]
+                       (.-value (.item options i))))))
+      :multiple "true"
+
+      ;; You need to check each option value against the multi-select cell to
+      ;; se if it should be selected.
+      (option :selected (cell= (multi-select "blue")) :value "blue" "blue")
+      (option :selected (cell= (multi-select "green")) :value "green" "green")
+      (option :selected (cell= (multi-select "gold")) :value "gold" "gold")
+      (option :selected (cell= (multi-select "indigo")) :value "indigo" "indigo"))
+    (p (text "Value of multiple select input: ~{multi-select}"))
+
     (h2 "A checkbox")
     (label
       (input
@@ -77,11 +99,14 @@
     (p (text "Value of checkbox: ~{check-box}"))
 
     (h2 "A radio button")
+
     ;; Radio buttons require more code, but work fine with cells too.
     (label
       (input
         :type "radio"
         :click #(reset! radio-input (.. % -target -value))
+
+        ;; You need to check each input to se if it is checked.
         :checked (cell= (= "a" radio-input))
         :name "radio-group"
         :value "a")
