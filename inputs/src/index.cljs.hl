@@ -16,7 +16,7 @@
     (title "Hoplon • Inputs"))
   (body
     (h1 "Inputs and state in Hoplon")
-    (p "Every one of this input examples has a correponding Javelin cell.
+    (p "Every one of this input examples has a corresponding Javelin cell.
       When you change the input the cell is updated.")
     (h2 "A simple text input")
     (p "This shows that you can have more than one field pointing to the same
