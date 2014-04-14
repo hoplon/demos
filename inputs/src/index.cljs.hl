@@ -17,8 +17,8 @@
     (title "Hoplon • Inputs"))
   (body
     (h1 "Inputs and state in Hoplon")
-    (p "Every one of this input examples has a correponding Javelin cell.
-      When you change the input the cell is updated.")
+    (p "Each input example has a corresponding Javelin cell.
+      When you change the input its cell is updated.")
     (h2 "A simple text input")
     (p "This shows that you can have more than one field pointing to the same
       cell. Edit one input and see everything change in sync.")
