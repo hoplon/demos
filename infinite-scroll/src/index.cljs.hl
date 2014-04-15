@@ -1,6 +1,5 @@
 (page "index.html"
-  (:require
-   [flickr :as flickr]))
+  (:require [flickr :as flickr]))
 
 (def queries
   "Flickr search API queries, will be chosen randomly and submitted to obtain
@@ -54,7 +53,7 @@
       (div :id "wrapper"
         (div :id "loading" :toggle loading? "LOADING IMAGES...")
         (div :id "error" :toggle error
-          (text "Error fetching images: ")
+          "Error fetching images: "
           (a :href "javascript:void(0)" :click fetch-images! "try again"))
         (div :id "scroll" :scroll-end fetch-images!
           (loop-tpl :bindings [{:keys [link image]} state]
