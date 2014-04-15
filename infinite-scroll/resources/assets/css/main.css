@@ -8,13 +8,20 @@ body {
     text-align: center;
 }
 
-#scroll {
-    height: 400px;
-    overflow-y: scroll;
+#wrapper {
+    position: relative;
 }
 
 #loading {
-    width: 100%;
+    padding: 10px;
+    z-index: 1000;
     color: white;
     background-color: orange;
+}
+
+#scroll {
+    top: 0px;
+    width: 100%;
+    height: 400px;
+    overflow-y: scroll;
 }

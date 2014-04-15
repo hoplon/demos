@@ -61,12 +61,14 @@
     (div :id "container"
       (h1 "Infinite Scrolling")
       (p "Scroll down to see more images...")
-      (div
-        :id "scroll"
-        :scroll-end fetch-images!
-        (loop-tpl :bindings [{:keys [link url]} state]
-          (div (a :href link :target "_blank" (img :src url)))))
-      (div
-        :id "loading"
-        :fade-toggle loading?
-        "LOADING IMAGES...")))) 
+      (div :id "wrapper"
+        (div
+          :id "loading"
+          :fade-toggle loading?
+          "LOADING IMAGES...")
+        (div
+          :id "scroll"
+          :scroll-end fetch-images!
+          (loop-tpl :bindings [{:keys [link url]} state]
+            (div (a :href link :target "_blank" (img :src url)))))
+        (p (a :href "https://github.com/tailrecursion/hoplon-demos/tree/master/infinite-scroll/src/index.cljs.hl" "Source Code")))))) 
