@@ -4,11 +4,12 @@
 (def queries
   "Flickr search API queries, will be chosen randomly and submitted to obtain
   interesting images which will be displayed in the scrolling div."
-  ["wtf" "omg" "meme" "spaghetti" "bananas" "motorcycles" "funny" "sad"
-   "happy" "blue" "red" "green" "amazing" "awesome" "terrifying" "alabama"
-   "nyc" "paris" "love" "hate" "submarines" "unicorns" "farming" "jewels"
-   "sneaky" "hilarious" "underground" "space" "nasa" "flamenco" "tango"
-   "castle" "tractor" "hunting" "sailing" "trouble" "goodbye" "hello"])
+  ["wtf"     "meme"     "happy"     "jewels"      "farming"     "flamenco"
+   "omg"     "blue"     "green"     "castles"     "goodbye"     "spaghetti"
+   "sad"     "love"     "space"     "haircut"     "amazing"     "hilarious"
+   "red"     "hate"     "tango"     "tractor"     "awesome"     "submarines"
+   "nyc"     "nasa"     "ships"     "hunting"     "alabama"     "motorcycles"
+   "hey"     "fool"     "funny"     "sailing"     "bananas"     "underground"])
 
 (defc  state    "The current list of image urls."            [])
 (defc  error    "The last XHR error."                        nil)
