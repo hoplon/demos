@@ -13,6 +13,7 @@
     "castle" "tractor" "hunting" "sailing" "trouble" "goodbye" "hello"))
 
 (defc  state    "The current list of image urls."            [])
+(defc  error    "The last XHR error."                        nil)
 (defc  loading  "A vector of in-progress async calls."       [])
 (defc= loading? "True if there are in-progress async calls." (seq loading))
 
@@ -20,9 +21,12 @@
   "Fetch some images from the Flickr API and append them to the state cell."
   []
   (when-not @loading?
+    (reset! error nil)
     (swap! loading conj :loading)
-    (flickr/image-search (rand-nth queries)
-      #(do (swap! loading pop) (swap! state into %)))))
+    (let [q (rand-nth queries)]
+      (flickr/image-search q
+        #(do (swap! loading pop) (swap! state into %))
+        #(do (swap! loading pop) (reset! error :error))))))
 
 (defmethod on! :scroll-end
   ;; Add the :scroll-end attribute, which fires its callback when the element is
@@ -49,7 +53,10 @@
       (h1 "Infinite Scrolling")
       (p "Scroll down to see more images...")
       (div :id "wrapper"
-        (div :id "loading" :fade-toggle loading? "LOADING IMAGES...")
+        (div :id "loading" :toggle loading? "LOADING IMAGES...")
+        (div :id "error" :toggle error
+          (text "Error fetching images: ")
+          (a :href "javascript:void(0)" :click fetch-images! "try again"))
         (div :id "scroll" :scroll-end fetch-images!
           (loop-tpl :bindings [{:keys [link image]} state]
             (div (a :href link :target "_blank" (img :src image)))))

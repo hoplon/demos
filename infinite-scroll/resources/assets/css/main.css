@@ -19,6 +19,13 @@ body {
     background-color: orange;
 }
 
+#error {
+    padding: 10px;
+    z-index: 1000;
+    color: white;
+    background-color: red;
+}
+
 #scroll {
     top: 0px;
     width: 100%;
