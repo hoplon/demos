@@ -10,37 +10,47 @@
     "sneaky" "hilarious" "underground" "space" "nasa" "flamenco" "tango"
     "castle" "tractor" "hunting" "sailing" "trouble" "goodbye" "hello"))
 
-(defc state   "The current list of image urls."      [])
-(defc loading "A vector of in-progress async calls." [])
+(defc  state    "The current list of image urls."            [])
+(defc  loading  "A vector of in-progress async calls."       [])
+(defc= loading? "True if there are in-progress async calls." (seq loading))
+
+(defn swap-async!
+  [async-fn result-cell loading-cell swap-fn & args]
+  (when-not (seq @loading-cell)
+    (swap! loading-cell conj :loading)
+    (async-fn #(do (swap! loading-cell pop)
+                   (apply swap! result-cell swap-fn % args)))))
 
 (defn flickr-search
-  "Given a search query and two cells, state and loading, makes an async
-  request to the Flickr JSONP API. When the request is sent an item is added 
-  to the loading cell. When the request completes the item is removed from the
-  loading cell and the image URLs are added to the end of the state cell."
-  [query state loading]
-  (when-not (seq @loading)
-    (let [js->clj #(js->clj % :keywordize-keys true)
-          data    (clj->js {:tags query :tagmode :any :format :json})
-          url     "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"]
-      (swap! loading conj query)
-      (doto (.getJSON js/jQuery url data)
-        (.done #(do (swap! loading pop)
-                    (->> % js->clj :items (map :media) (map :m) (swap! state into))))))))
+  "Given a search query and a callback function, a JSONP request to the Flickr
+  API is made. The image result URLs are extracted from the response and passed
+  to the provided callback function."
+  [query callback]
+  (let [js->clj #(js->clj % :keywordize-keys true)
+        data    (clj->js {:tags query :tagmode :any :format :json})
+        url     "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"
+        parse   (fn [{link :link, {url :m} :media}] {:link link :url url})]
+    (doto (.getJSON js/jQuery url data)
+      (.done #(->> % js->clj :items (map parse) callback)))))
 
-;; Add the :scroll-end attribute, which fires its callback when the element is
-;; scrolled down as far as it can go--to the bottom.
+(defn fetch-images!
+  "Fetch some images from the Flickr API and append them to the state cell."
+  []
+  (swap-async! (partial flickr-search (rand-nth queries)) state loading into))
+
 (defmethod on! :scroll-end
-  [elem _ f]
+  ;; Add the :scroll-end attribute, which fires its callback when the element is
+  ;; scrolled down as far as it can go--to the bottom.
+  [elem _ callback]
   (on! elem :scroll
     #(let [el (.-target %)
            ch (.-clientHeight el)
            sh (.-scrollHeight el)
            st (.-scrollTop    el)]
-       (when (= ch (- sh st)) (f %)))))
+       (when (= ch (- sh st)) (callback %)))))
 
 ;; initialize the application state by fetching a batch of images
-(flickr-search (rand-nth queries) state loading)
+(with-init! (fetch-images!))
 
 (html :lang "en"
   (head
@@ -50,14 +60,13 @@
   (body
     (div :id "container"
       (h1 "Infinite Scrolling")
-      (p "Scroll down to see more images.")
+      (p "Scroll down to see more images...")
       (div
         :id "scroll"
-        :scroll-end #(flickr-search (rand-nth queries) state loading)
-        (loop-tpl :bindings [url state]
-          (div
-            (img :src url))))
+        :scroll-end fetch-images!
+        (loop-tpl :bindings [{:keys [link url]} state]
+          (div (a :href link :target "_blank" (img :src url)))))
       (div
         :id "loading"
-        :toggle (cell= (seq loading))
+        :fade-toggle loading?
         "LOADING IMAGES...")))) 

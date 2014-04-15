@@ -1,6 +1,8 @@
-# TodoFRP
+# Hoplon • Infinite Scroll Demo
 
-An implementation of [TodoMVC][1] using [Hoplon][2].
+An infinitely scrollable container built using [Hoplon][2]. Keep scrolling
+to see more images; when you reach the bottom it'll fetch more images and
+append them so you can continue scrolling and seeing more images...forever.
 
 ## Demo
 
@@ -23,24 +25,9 @@ An implementation of [TodoMVC][1] using [Hoplon][2].
 2. Go to [http://localhost:8000][7] in your browser.
 
 * HTML and JavaScript files will be created in the `resources/public` directory.
-* [See the code with syntax highlighting here.][5]
 
-
-Keep track of things you need to do!
-
-## CLJS Compiler Advanced Optimizations
-
-1. Start the auto-compiler.
-    ```bash
-    $ boot development
-    ```
-
-2. HTML and JavaScript files will be created in the `resources/public` directory.
-
-[1]: http://todomvc.com
 [2]: http://github.com/tailrecursion/hoplon
-[3]: http://micha.github.com/todofrp/demo/public/
+[3]: http://alandipert.github.io/hoplon-demos/infinite-scroll
 [4]: https://github.com/tailrecursion/boot
-[5]: doc/index.cljs
 [6]: https://github.com/technomancy/leiningen
 [7]: http://localhost:8000
