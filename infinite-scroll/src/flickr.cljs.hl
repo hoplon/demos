@@ -1,0 +1,13 @@
+(ns flickr)
+
+(defn image-search
+  "Given a search query and a callback function, a JSONP request to the Flickr
+  API is made. For each search result the link to the flickr page and the URL
+  of the image are returned as {:link <link URL>, :image <image URL>}."
+  [query callback]
+  (let [js->clj #(js->clj % :keywordize-keys true)
+        data    (clj->js {:tags query :tagmode :any :format :json})
+        url     "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"
+        parse   (fn [{link :link, {m :m} :media}] {:link link :image m})]
+    (doto (.getJSON js/jQuery url data)
+      (.done #(->> % js->clj :items (map parse) callback)))))

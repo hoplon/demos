@@ -1,4 +1,6 @@
-(page "index.html")
+(page "index.html"
+  (:require
+   [flickr :as flickr]))
 
 (def queries
   "Flickr search API queries, will be chosen randomly and submitted to obtain
@@ -14,29 +16,13 @@
 (defc  loading  "A vector of in-progress async calls."       [])
 (defc= loading? "True if there are in-progress async calls." (seq loading))
 
-(defn swap-async!
-  [async-fn result-cell loading-cell swap-fn & args]
-  (when-not (seq @loading-cell)
-    (swap! loading-cell conj :loading)
-    (async-fn #(do (swap! loading-cell pop)
-                   (apply swap! result-cell swap-fn % args)))))
-
-(defn flickr-search
-  "Given a search query and a callback function, a JSONP request to the Flickr
-  API is made. The image result URLs are extracted from the response and passed
-  to the provided callback function."
-  [query callback]
-  (let [js->clj #(js->clj % :keywordize-keys true)
-        data    (clj->js {:tags query :tagmode :any :format :json})
-        url     "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"
-        parse   (fn [{link :link, {url :m} :media}] {:link link :url url})]
-    (doto (.getJSON js/jQuery url data)
-      (.done #(->> % js->clj :items (map parse) callback)))))
-
 (defn fetch-images!
   "Fetch some images from the Flickr API and append them to the state cell."
   []
-  (swap-async! (partial flickr-search (rand-nth queries)) state loading into))
+  (when-not @loading?
+    (swap! loading conj :loading)
+    (flickr/image-search (rand-nth queries)
+      #(do (swap! loading pop) (swap! state into %)))))
 
 (defmethod on! :scroll-end
   ;; Add the :scroll-end attribute, which fires its callback when the element is
@@ -46,8 +32,9 @@
     #(let [el (.-target %)
            ch (.-clientHeight el)
            sh (.-scrollHeight el)
-           st (.-scrollTop    el)]
-       (when (= ch (- sh st)) (callback %)))))
+           st (.-scrollTop    el)
+           at-end? (= ch (- sh st))]
+       (when at-end? (callback %)))))
 
 ;; initialize the application state by fetching a batch of images
 (with-init! (fetch-images!))
@@ -62,13 +49,8 @@
       (h1 "Infinite Scrolling")
       (p "Scroll down to see more images...")
       (div :id "wrapper"
-        (div
-          :id "loading"
-          :fade-toggle loading?
-          "LOADING IMAGES...")
-        (div
-          :id "scroll"
-          :scroll-end fetch-images!
-          (loop-tpl :bindings [{:keys [link url]} state]
-            (div (a :href link :target "_blank" (img :src url)))))
+        (div :id "loading" :fade-toggle loading? "LOADING IMAGES...")
+        (div :id "scroll" :scroll-end fetch-images!
+          (loop-tpl :bindings [{:keys [link image]} state]
+            (div (a :href link :target "_blank" (img :src image)))))
         (p (a :href "https://github.com/tailrecursion/hoplon-demos/tree/master/infinite-scroll/src/index.cljs.hl" "Source Code")))))) 
