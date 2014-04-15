@@ -13,6 +13,7 @@ body {
 }
 
 #loading {
+    display: none;
     padding: 10px;
     z-index: 1000;
     color: white;
@@ -20,6 +21,7 @@ body {
 }
 
 #error {
+    display: none;
     padding: 10px;
     z-index: 1000;
     color: white;
