@@ -1,4 +1,6 @@
-(page "index.html")
+(page "index.html"
+  (:require
+    [clojure.string :as str]))
 
 (defc  state [])
 (defc  error nil)
@@ -7,10 +9,11 @@
 (defc= loading? (seq loading))
 (defc= sorted-state (vec (sort-by :page state)))
 (defc  pages-loaded [])
-(defc  initial-page 15)
 (defc= prev-page (dec (apply min pages-loaded)))
 (defc= next-page (inc (apply max pages-loaded)))
 (defc  last-scroll 0)
+(defc  hash-scroll true)
+(defc  timeout-id 0)
 
 (defn generate-numbers [n]
   (vec (map (fn [x] {:number (str x)}) (range (* (dec n) 10)
@@ -27,17 +30,17 @@
   (callback (fake-api p)))
 
 (defn fetch-initial-page!
-  []
+  [initial-page]
   (when-not @loading?
     (reset! error nil)
     (swap! loading conj :loading)
-    (let [q (str @initial-page)]
+    (let [q (str initial-page)]
       (get-page q
         #(do
            (swap! loading pop)
            (when %
              (swap! state conj %)
-             (swap! pages-loaded conj @initial-page))
+             (swap! pages-loaded conj initial-page))
            (when-not % (reset! error "Sem mais páginas")))))))
 
 (defn fetch-next-page!
@@ -82,7 +85,10 @@
          (< el-top (+ vertical-scroll (* 0.5 window-height))))))
 
 (with-init!
-  (fetch-initial-page!)
+  (if (str/blank? (.-hash (.-location js/window)))
+    (fetch-initial-page! 1)
+    (fetch-initial-page! (js/parseInt (last (str/split (.-hash (.-location js/window)) #"/")))))
+
   (on! js/window :scroll
     #(let [w               (js/jQuery js/window)
            vertical-scroll (.scrollTop w)
@@ -92,24 +98,41 @@
                                (* 0.9 (- document-height window-height)))
            header-height   (.height (js/jQuery "#header"))
            at-begin?       (= vertical-scroll 0)]
+
        (when (> (.abs js/Math (- vertical-scroll @last-scroll))
                 (* 0.1 window-height))
          (reset! last-scroll vertical-scroll)
          (.each (js/jQuery ".item-page")
            (fn [i v]
              (if (mostly-visible v)
-               (.replaceState js/history nil nil
-                 (.attr (js/jQuery v) "data-url"))))))
+               (do
+                 (js/clearTimeout @timeout-id)
+                 (reset! hash-scroll false)
+                 (set! (.-hash (.-location js/window))
+                   (.attr (js/jQuery v) "data-url"))
+                 (reset! timeout-id (js/setTimeout
+                                      (fn [] (reset! hash-scroll true))
+                                      500)))))))
        (if at-end?
          (fetch-next-page!)
          (when at-begin?
-           (fetch-prev-page!))))))
+           (fetch-prev-page!)))))
+
+  (on! js/window :hashchange
+    #(when @hash-scroll
+       (let [p (last (str/split (.-hash (.-location js/window)) #"/"))
+             el (js/jQuery (str "#page-"p))]
+         (if (> (.-length el) 0)
+           (let [position (.position el)
+                 tp (.-top position)
+                 b (js/jQuery "html,body")]
+             (.animate b (clj->js {:scrollTop tp})))
+           (.reload (.-location js/window) false))))))
 
 (html :lang "en"
   (head
     (meta :charset "utf-8")
-    (title "Hoplon • Infinite Scroll Paginated Demo")
-    #_(link :rel "stylesheet" :type "text/css" :href "css/main.css"))
+    (title "Hoplon • Infinite Scroll Paginated Demo"))
   (body
     (div :id "header"
       (h1 "Infinite Scrolling")
@@ -124,8 +147,9 @@
           (div
             :id (cell= (str "page-" p))
             :class "item-page"
-            :data-url (cell= (str "/items/" p))
-            (h1 (text "Page: ~{p}"))
+            :data-url (cell= (str "#/page/" p))
+            (h1 :id (cell= (str "page-" p))
+              (text "Page: ~{p}"))
             (loop-tpl :bindings [{it :number} d]
               (div
                 :css {:height 100}
