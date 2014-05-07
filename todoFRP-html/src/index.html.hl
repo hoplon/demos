@@ -3,7 +3,7 @@
     (:refer-clojure :exclude [nth])
     (:require
       [tailrecursion.hoplon.reload        :refer [reload-all]]
-      [tailrecursion.hoplon.util          :refer [nth name pluralize route-cell]]
+      [tailrecursion.hoplon.util          :refer [nth name pluralize]]
       [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
   ;; utility functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -36,7 +36,7 @@
 
   (defc  loaded?      false)
   (defc  editing      nil)
-  (def   route        (route-cell 100 "#/"))
+  (def   route        (route-cell "#/"))
 
   ;; formula cells (computed state) ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
