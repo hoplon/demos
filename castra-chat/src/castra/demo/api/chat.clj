@@ -7,9 +7,8 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (ns demo.api.chat
-  (:refer-clojure                 :exclude  [defn])
   (:use     [demo.http.rules      :exclude  [assert]])
-  (:require [tailrecursion.castra :refer    [defn ex error *session*]]))
+  (:require [tailrecursion.castra :refer    [defrpc ex error *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -30,9 +29,9 @@
    :messages
    {#{"able" "baker"}
     '({:from  "able"
-       :text  "oh you know, chatting and stuff"} 
+       :text  "oh you know, chatting and stuff"}
       {:from  "baker"
-       :text  "hi, what's on your mind?"} 
+       :text  "hi, what's on your mind?"}
       {:from  "able"
        :text  "hello"})}})
 
@@ -45,8 +44,8 @@
           all-exist?  #(and (set? %) (every? exists? %))
           user-ok?    {:pass string?}
           mesg-ok?    {:from exists?, :text string?}]
-      (and (->> db-val :users     keys (every? string?)) 
-           (->> db-val :users     vals (every? #(every-kv? user-ok? %))) 
+      (and (->> db-val :users     keys (every? string?))
+           (->> db-val :users     vals (every? #(every-kv? user-ok? %)))
            (->> db-val :messages  keys (every? all-exist?))
            (->> db-val :messages  vals (every? #(every-kv? mesg-ok? %)))))))
 
@@ -59,29 +58,29 @@
 
 ;;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-state [& [user]]
+(defrpc get-state [& [user]]
   {:rpc/pre [(nil? user)
          (logged-in?)]}
-  (let [user    (or user (:user @*session*)) 
+  (let [user    (or user (:user @*session*))
         users   (->> @db :users keys sort)
         convos  (->> (->> @db :messages keys (filter #(contains? % user)))
                   (select-keys (:messages @db))
                   (map-v (comp reverse (partial take 10))))]
     (when user {:user user, :users users, :messages convos})))
 
-(defn register [user pass1 pass2]
+(defrpc register [user pass1 pass2]
   {:rpc/pre [(register! db user pass1 pass2)]}
   (get-state user))
 
-(defn login [user pass]
+(defrpc login [user pass]
   {:rpc/pre [(login! db user pass)]}
   (get-state user))
 
-(defn logout []
+(defrpc logout []
   {:rpc/pre [(logout!)]}
   nil)
 
-(defn send-message [from conv text]
+(defrpc send-message [from conv text]
   {:rpc/pre [(logged-in?)]}
   (swap! db add-message from conv text)
   (get-state from))
