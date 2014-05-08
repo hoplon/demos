@@ -10,20 +10,13 @@
 ;; Static resources (css, images, etc.):
 (add-sync! (get-env :out-path) #{"assets"})
 
-(require '[tailrecursion.hoplon.boot      :refer :all]
-         '[tailrecursion.castra.handler   :as c]
-         '[tailrecursion.boot.task.ring   :as r])
-
-(deftask castra
-  [& specs]
-  (r/ring-task (fn [_] (apply c/castra specs))))
+(require '[tailrecursion.hoplon.boot :refer :all]
+         '[tailrecursion.castra.task :as c])
 
 (deftask development
   "Build castra-simple for development."
   []
-  (comp (watch) (hoplon {:prerender false})
-        (r/head) (r/dev-mode) (r/session-cookie) (r/files)
-        (castra 'app.api) (r/jetty)))
+  (comp (watch) (hoplon {:prerender false}) (c/castra-dev-server 'app.api)))
 
 (deftask production
   "Build castra-simple for production."
