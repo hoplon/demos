@@ -1,6 +1,5 @@
 (ns app.api
-  (:refer-clojure :exclude [defn])
-  (:require [tailrecursion.castra :refer [defn]]))
+  (:require [tailrecursion.castra :refer [defrpc]]))
 
-(defn get-state []
+(defrpc get-state []
   {:random (rand-int 100)})
