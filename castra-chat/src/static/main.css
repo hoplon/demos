@@ -58,15 +58,16 @@ span.from {
 #convo {
   position:     absolute;
   width:        100%;
-  bottom:       0px; 
+  bottom:       0px;
   left:         0px; }
 
 #convo input {
   position:     absolute;
+  display:      inline;
   right:        0px;
   bottom:       0px;
   border:       1px solid #ccc;
-  width:        656px; }
+  width:        85%; }
 
 #convo label {
   display:      inline-block;
