@@ -1,0 +1,27 @@
+(page index.html
+  (:require
+   [tailrecursion.castra :refer [mkremote]]
+   [tailrecursion.hoplon.reload :refer [reload-all]]))
+
+;; uncomment to enable auto-reload
+;; (reload-all)
+
+;; cells
+(defc  state        nil)
+(defc  error        nil)
+(defc  loading      nil)
+(defc= current-time (when state (.toTimeString state)))
+
+;; remotes
+(def doit (mkremote 'hello-world.api/doit state error loading))
+
+(with-init!
+  (cell= (.log js/console (:trace error)))
+  (doit))
+
+(html
+  (head (title "Hello World"))
+  (body :css {:text-align "center"}
+    (h2 "Server Time")
+    (p (code :text current-time)) 
+    (button :click #(doit) "update")))
