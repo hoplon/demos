@@ -1,7 +1,8 @@
 (page "index.html"
   (:require [tailrecursion.hoplon.reload :refer [reload-all]]))
 
-;; This line makes the browser check for an update every second.
+;; This line makes the browser check for an update every second and reloads
+;; when the css or main.js changed.
 (reload-all 1000)
 
 ;; Cells for each input example.

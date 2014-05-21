@@ -12,7 +12,7 @@
     [clojure.string              :as s]
     [tailrecursion.hoplon.reload :as r]))
 
-(r/reload-all 25)
+(r/reload-all 1000)
 
 (def register?        (cell nil))
 (def reg-link-text    (cell= (if register? "log in" "register")))
@@ -42,8 +42,8 @@
           :id "login"
           :on-submit #(log-reg! (val-id "user") (val-id "pass") (val-id "pass2"))
           (div
-            (label "Username") 
-            (input :type "text" :id "user" :autofocus "autofocus")) 
+            (label "Username")
+            (input :type "text" :id "user" :autofocus "autofocus"))
 
           (div
             (label "Password")
@@ -57,7 +57,7 @@
 
           (a :href "javascript:void(0)" :on-click toggle-register!
             (text "~{reg-link-text}"))))
-      
+
       (div :id "chat-pane" :do-toggle c/show-chat?
         (h1 (text "hello, ~{c/user}!"))
 

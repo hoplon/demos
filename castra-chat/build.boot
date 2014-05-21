@@ -11,22 +11,15 @@
 (add-sync! (get-env :out-path) #{"src/static"})
 
 (require
-  '[demo.core :as demo]
-  '[tailrecursion.castra.handler   :as c]
-  '[tailrecursion.boot.task.ring   :as r]
-  '[tailrecursion.hoplon.boot      :refer :all]
-  '[tailrecursion.boot.task.notify :refer :all])
-
-(deftask castra
-  [& specs]
-  (r/ring-task (fn [_] (apply c/castra specs))))
-
-(deftask server
-  "Start castra dev server (port 8000)."
-  []
-  (comp (r/head) (r/dev-mode) (r/session-cookie) (r/files) (castra 'demo.api.chat) (r/jetty)))
+  '[tailrecursion.hoplon.boot :refer :all]
+  '[tailrecursion.castra.task :as c])
 
 (deftask development
   "Build the castra chat demo. Server on port 8000."
   []
-  (comp (watch) (hoplon {:prerender false}) (server)))
+  (comp (watch) (hoplon {:prerender false}) (c/castra-dev-server 'demo.api.chat)))
+
+(deftask production
+  "Build the castra chat demo for production."
+  []
+  (hoplon {:optimizations :advanced}))
