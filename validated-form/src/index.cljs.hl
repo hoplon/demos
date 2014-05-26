@@ -1,0 +1,72 @@
+(page "index.html"
+  (:require-macros [vform.core :refer [defv]]))
+
+;; input cells
+
+(defc form-name nil)
+(defc form-email nil)
+
+;; helpers / validators
+
+(defn validate-presence [v] (seq v))
+
+(defn validate-regexp [r]
+  (fn [v] (re-matches r (or v ""))))
+
+;; formula cells
+
+(defv form-name-valid? form-name validate-presence)
+(defv form-email-valid? form-email (validate-regexp #"(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b"))
+
+(defc= is-form-valid? (and (:valid? form-name-valid?) (:valid? form-email-valid?)))
+
+(defc= form-data {:name form-name
+                  :email form-email})
+
+;; operations
+
+(defn submit-form [_] (js/alert (str "Send: " (pr-str @form-data))))
+
+;; custom elements
+
+(defelem cell-input [{:keys [cell] :as attrs}]
+  (let [target-value #(do! (-> % .-currentTarget) :value)]
+    (input (-> attrs
+               (dissoc :cell)
+               (assoc :type (:type attrs "text")
+                      :value cell
+                      :on-input #(reset! cell (target-value %)))))))
+
+(defelem form-group [{:keys [valid?] :as attrs} body]
+  (let [dirty? (fn [v] (-> v nil? not))]
+    ((div (dissoc attrs :valid?) body)
+    :do-class (cell= {:form-group true
+                      :has-error (and (dirty? (:value valid?)) (not (:valid? valid?)))}))))
+
+(defelem input-control [attrs]
+  ((cell-input attrs) :do-class {:form-control true}))
+
+;; interface
+
+(html
+  (head
+    (title "Hoplon • Validated Form")
+    (link :rel "stylesheet" :href "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
+    (link :rel "stylesheet" :href "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css")
+    (link :rel "stylesheet" :href "style.css"))
+  (body
+    (div :class "site-wrapper"
+      (div :class "site-wrapper-inner"
+        (div :class "cover-container"
+          (div :class "inner cover"
+            (form :on-submit submit-form
+              (form-group :valid? form-name-valid?
+                (label "Name")
+                (input-control :cell form-name))
+              (form-group :valid? form-email-valid?
+                (label "Email")
+                (input-control :cell form-email))
+              (div :class "text-right"
+                (button :class "btn btn-primary"
+                        :type "submit"
+                        :disabled (cell= (not is-form-valid?)) "Submit")))))))))
