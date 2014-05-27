@@ -52,6 +52,7 @@
          (.addListener Event map "click"
            (fn [] (when map-click (map-click map))))
          (cell= (.setOptions map opts))
+         (.trigger Event map "resize")
          (cell-doseq [{:keys [lat lon content] :as pin} pins]
            (let [marker (Marker. (clj->js {}))
                  info   (InfoWindow. (clj->js {}))]
