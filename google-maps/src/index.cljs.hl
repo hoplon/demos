@@ -1,38 +1,43 @@
 (page "index.html"
+  (:refer-hoplon :exclude [center])
   (:require [tailrecursion.google.api :as g :refer [google-map]]))
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
-(defc pins [[-34.197 150.644]
-            [-34.397 150.644]
-            [-34.397 150.544]])
+(defc center {:lat -34.397 :lon 150.644})
+(defc pins   [{:lat -34.197 :lon 150.644 :content (div :css {:height "100px" :width "200px"} (h1 "foo") (p "This is a good place."))}
+              {:lat -34.397 :lon 150.644 :content (div :css {:height "100px" :width "200px"} (h1 "foo") (p "This is a good place."))}
+              {:lat -34.397 :lon 150.544 :content (div :css {:height "100px" :width "200px"} (h1 "foo") (p "This is a good place."))}])
 
 (with-init!
-  (with-timeout 2000 (swap! pins update-in [0 1] (partial + 0.1)))
-  (with-timeout 3000 (swap! pins update-in [1 1] (partial + 0.1)))
-  (with-timeout 4000 (swap! pins update-in [2 1] (partial + 0.1)))
+  (with-timeout 2000 (swap! pins update-in [0 :lon] (partial + 0.1)))
+  (with-timeout 3000 (swap! pins update-in [1 :lon] (partial + 0.1)))
+  (with-timeout 4000 (swap! pins update-in [2 :lon] (partial + 0.1)))
   (with-timeout 5000 (swap! pins pop))
-  (with-timeout 6000 (swap! pins conj [-34.397 150.544])))
+  (with-timeout 6000 (swap! pins conj {:lat -34.397 :lon 150.544}))
+  (with-timeout 7000 (swap! center update-in [:lon] (partial + 0.2)))
+  (with-timeout 8000 (swap! center update-in [:lat] (partial + 0.2)))
+  )
 
 (html
   (head)
   (body :css {:text-align "center"}
     (h1 "Google Maps API v3 Demo")
     (google-map
-      :css  {:height "400px"
-             :width  "400px"
-             :margin "0 auto"
-             :border "1px solid red"}
-      :lat  -34.397
-      :lon  150.644
-      :pins pins
-      :opts {:zoom 8})
+      :css       {:height "400px"
+                  :width  "800px"
+                  :margin "0 auto"
+                  :border "1px solid red"}
+      :center    center
+      :pins      pins
+      :pin-click #(print :pin-clicked %)
+      :map-click #(print :map-clicked %)
+      :opts      {:zoom 8})
     (google-map
-      :css  {:height "400px"
-             :width  "400px"
-             :margin "0 auto"
-             :border "1px solid blue"}
-      :lat  -34.397
-      :lon  150.644
-      :pins pins
-      :opts {:zoom 8})))
+      :css       {:height "400px"
+                  :width  "800px"
+                  :margin "0 auto"
+                  :border "1px solid blue"}
+      :center    {:lat -34.397 :lon 150.644}
+      :pins      pins
+      :opts      {:zoom 8})))
