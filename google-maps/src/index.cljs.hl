@@ -1,0 +1,38 @@
+(page "index.html"
+  (:require [tailrecursion.google.api :as g :refer [google-map]]))
+
+(reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
+
+(defc pins [[-34.197 150.644]
+            [-34.397 150.644]
+            [-34.397 150.544]])
+
+(with-init!
+  (with-timeout 2000 (swap! pins update-in [0 1] (partial + 0.1)))
+  (with-timeout 3000 (swap! pins update-in [1 1] (partial + 0.1)))
+  (with-timeout 4000 (swap! pins update-in [2 1] (partial + 0.1)))
+  (with-timeout 5000 (swap! pins pop))
+  (with-timeout 6000 (swap! pins conj [-34.397 150.544])))
+
+(html
+  (head)
+  (body :css {:text-align "center"}
+    (h1 "Google Maps API v3 Demo")
+    (google-map
+      :css  {:height "400px"
+             :width  "400px"
+             :margin "0 auto"
+             :border "1px solid red"}
+      :lat  -34.397
+      :lon  150.644
+      :pins pins
+      :opts {:zoom 8})
+    (google-map
+      :css  {:height "400px"
+             :width  "400px"
+             :margin "0 auto"
+             :border "1px solid blue"}
+      :lat  -34.397
+      :lon  150.644
+      :pins pins
+      :opts {:zoom 8})))
