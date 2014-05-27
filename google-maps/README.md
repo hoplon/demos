@@ -1,4 +1,4 @@
-# Google Maps Demo
+# Google Maps
 
 This project demonstrates how to use the Google Maps API v3 in Hoplon. Check
 out [the demo][4].
