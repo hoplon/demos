@@ -5,19 +5,46 @@
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
 (defc center {:lat -34.397 :lon 150.644})
-(defc pins   [{:lat -34.197 :lon 150.644 :content (div :css {:height "100px" :width "200px"} (h1 "foo") (p "This is a good place."))}
-              {:lat -34.397 :lon 150.644 :content (div :css {:height "100px" :width "200px"} (h1 "foo") (p "This is a good place."))}
-              {:lat -34.397 :lon 150.544 :content (div :css {:height "100px" :width "200px"} (h1 "foo") (p "This is a good place."))}])
+(defc opts   {:zoom 8})
+(defc pins   [{:lat     -34.197
+               :lon     150.644
+               :content (div :css {:height "100px" :width "200px"}
+                          (h1 "foo")
+                          (p "This is a good place."))}
+              {:lat     -34.397
+               :lon     150.644
+               :content (div :css {:height "100px" :width "200px"}
+                          (h1 "bar")
+                          (p "This is also a good place."))}
+              {:lat     -34.397
+               :lon     150.544
+               :content (div :css {:height "100px" :width "200px"}
+                          (h1 "baz")
+                          (p "This is the best place."))}])
+
+(defn do-steps [msec [step & steps]]
+  (with-timeout msec
+    (when step (step))
+    (when steps (do-steps msec steps))))
 
 (with-init!
-  (with-timeout 2000 (swap! pins update-in [0 :lon] (partial + 0.1)))
-  (with-timeout 3000 (swap! pins update-in [1 :lon] (partial + 0.1)))
-  (with-timeout 4000 (swap! pins update-in [2 :lon] (partial + 0.1)))
-  (with-timeout 5000 (swap! pins pop))
-  (with-timeout 6000 (swap! pins conj {:lat -34.397 :lon 150.544}))
-  (with-timeout 7000 (swap! center update-in [:lon] (partial + 0.2)))
-  (with-timeout 8000 (swap! center update-in [:lat] (partial + 0.2)))
-  )
+  (with-timeout 2000
+    (do-steps 500
+      [#(swap! pins update-in [0 :lon] (partial + 0.1))
+       #(swap! pins update-in [1 :lon] (partial + 0.1))
+       #(swap! pins update-in [2 :lon] (partial + 0.1))
+       #(swap! pins pop)
+       #(swap! pins conj {:lat -34.397
+                          :lon 150.544
+                          :content (div :css {:height "100px" :width "200px"}
+                                     (h1 "baz")
+                                     (p "The best place is back again!"))})
+       #(swap! center update-in [:lon] (partial + 0.2))
+       #(swap! center update-in [:lat] (partial + 0.2))
+       #(swap! opts update-in [:zoom] inc)
+       #(swap! opts update-in [:zoom] inc)
+       #(swap! opts update-in [:zoom] dec)
+       #(swap! opts update-in [:zoom] dec)])))
 
 (html
   (head)
@@ -32,7 +59,7 @@
       :pins      pins
       :pin-click #(print :pin-clicked %)
       :map-click #(print :map-clicked %)
-      :opts      {:zoom 8})
+      :opts      opts)
     (google-map
       :css       {:height "400px"
                   :width  "800px"
