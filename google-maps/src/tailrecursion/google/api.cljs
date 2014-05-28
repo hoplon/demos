@@ -38,16 +38,13 @@
 (defn- dom2str [elem]
   (.-innerHTML (div elem)))
 
-(defn delayed [ready? f]
-  (let [loaded? (cell false)
-        ready?  (or ready? (cell true))
-        loaded! (partial reset! loaded?)]
-    #(cell= (when (and ready? (not loaded?)) (loaded! true) (f)))))
+(defn delay-until [ready? f & args]
+  #(cell= (when ready? (~(memoize (fn [] (or (apply f args) ::ok)))))))
 
-(defelem google-map [{:keys [center opts pins pin-click map-click delay] :as attr} _]
-  (with-let [elem (div (dissoc attr :center :opts :pins :pin-click :map-click :delay))]
+(defelem google-map [{:keys [center opts pins pin-click map-click ready?] :as attr} [elem]]
+  (with-let [elem (or elem (div (dissoc attr :center :opts :pins :pin-click :map-click :ready?)))]
     (ensure-maps
-      (delayed delay
+      (delay-until (or ready? (cell true))
         #(let [Map        (.. js/google -maps -Map)
                LatLng     (.. js/google -maps -LatLng)
                Marker     (.. js/google -maps -Marker)
@@ -59,17 +56,16 @@
            (.addListener Event map "click"
              (fn [] (when map-click (map-click map))))
            (cell= (.setOptions map opts))
-           (cell-doseq [{:keys [lat lon content] :as pin} pins]
-             (let [marker (Marker. (clj->js {}))
-                   info   (InfoWindow. (clj->js {}))]
+           (cell-doseq [{:keys [lat lon info opts] :as pin} pins]
+             (let [marker  (Marker. (clj->js {}))
+                   iwindow (InfoWindow. (clj->js {}))]
                (.addListener Event marker "click"
                  (fn []
-                   (when (:content @pin) (.open info map marker))
-                   (when pin-click (pin-click @pin))))
-               (cell= (doto info (.setContent (dom2str content)) .close))
+                   (when @info (.open iwindow map marker))
+                   (when pin-click (pin-click map marker iwindow @pin))))
+               (cell= (doto iwindow (.setContent (dom2str info)) .close))
                (cell= (let [map (when lat map)
                             pos (when lat (LatLng. lat lon))
-                            pin (dissoc pin :lat :lon :content)
-                            opt (clj->js (merge {} pin {:map map :position pos}))]
-                        (.close info)
+                            opt (clj->js (merge {} opts {:map map :position pos}))]
+                        (.close iwindow)
                         (.setOptions marker opt))))))))))
