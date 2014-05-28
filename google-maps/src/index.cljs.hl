@@ -4,6 +4,7 @@
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
+(defc ready? false)
 (defc center {:lat -34.397 :lon 150.644})
 (defc opts   {:zoom 8})
 (defc pins   [{:lat  -34.197
@@ -22,12 +23,17 @@
                        (h1 "baz")
                        (p "This is the best place."))}])
 
+(defn bounce-marker [marker]
+  (.setAnimation marker (.. js/google -maps -Animation -BOUNCE))
+  (with-timeout 1400 (.setAnimation marker nil)))
+
 (defn do-steps [msec [step & steps]]
   (with-timeout msec
     (when step (step))
     (when steps (do-steps msec steps))))
 
 (with-init!
+  (with-timeout 4000 (reset! ready? true))
   (with-timeout 2000
     (do-steps 500
       [#(swap! pins update-in [0 :lon] (partial + 0.1))
@@ -51,11 +57,9 @@
                                   (h1 "baz")
                                   (p "The a place that didn't fit in the map originally."))})])))
 
-(defc ready? false)
-(with-init! (with-timeout 4000 (reset! ready? true)))
-
 (html
-  (head)
+  (head
+    (title "Hoplon • Google Maps"))
   (body :css {:text-align "center"}
     (h1 "Hoplon & Google Maps")
     (google-map
@@ -65,8 +69,7 @@
                   :border "1px solid red"}
       :center    center
       :pins      pins
-      :pin-click #(do (.setAnimation %2 (.. js/google -maps -Animation -BOUNCE))
-                      (with-timeout 1400 (.setAnimation %2 nil)))
+      :pin-click #(bounce-marker %2)
       :map-click #(print :map-clicked %)
       :fit-pins  true
       :opts      opts)
