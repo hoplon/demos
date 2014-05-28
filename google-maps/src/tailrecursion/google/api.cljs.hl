@@ -1,0 +1,80 @@
+(ns tailrecursion.google.api)
+
+(defn queued [load-fn]
+  (let [callbacks (atom [])
+        status    (atom nil)]
+    (fn [callback]
+      (if (= :complete @status)
+        (callback)
+        (do (swap! callbacks conj callback)
+            (when-not @status
+              (reset! status :loading)
+              (load-fn #(do (reset! status :complete)
+                            (doseq [f @callbacks] (f))))))))))
+
+(defc  api-key      nil)
+(defc  maps-version "3")
+(defc  maps-options {:other_params "sensor=false"})
+(defc= api-url      (str "http://www.google.com/jsapi?key=" api-key))
+
+(def ensure-api
+  (queued
+    (fn [callback]
+      (with-init! (.getScript js/jQuery @api-url callback)))))
+
+(def ensure-maps
+  (queued
+    (fn [callback]
+      (ensure-api
+        #(.load js/google "maps" @maps-version
+           (clj->js (assoc @maps-options :callback callback)))))))
+
+(defn- dom2str [elem] (.-innerHTML (div elem)))
+(defn- indexed [coll] (map-indexed vector coll))
+
+(defn delay-until [ready? f & args]
+  #(cell= (when ready? (~(memoize (fn [] (or (apply f args) ::ok)))))))
+
+(defn visible? [elem]
+  (with-let [c (cell nil)]
+    (with-interval 100 (reset! c (.is (js/jQuery elem) ":visible")))))
+
+(defelem google-map [{:keys [center opts pins pin-click map-click fit-pins] :as attr} [elem]]
+  (with-let [elem (or elem (div (dissoc attr :center :opts :pins :pin-click :map-click :ready :fit-pins)))]
+    (let [visible? (visible? elem)]
+      (ensure-maps
+        (delay-until visible?
+          (fn []
+            (let [maps         (.. js/google -maps)
+                  Map          (.-Map maps)
+                  Event        (.-event maps)
+                  LatLng       (.-LatLng maps)
+                  Marker       (.-Marker maps)
+                  InfoWindow   (.-InfoWindow maps)
+                  LatLngBounds (.-LatLngBounds maps)
+                  lat-lng      #(LatLng. (js/parseFloat %1) (js/parseFloat %2))
+                  opts         (cell= (let [{:keys [lat lon]} center]
+                                        (clj->js (merge {} opts {:center (lat-lng lat lon)}))))
+                  map          (Map. elem @opts)
+                  bounds       (cell= (with-let [b (LatLngBounds.)]
+                                        (doseq [{:keys [lat lon]} pins]
+                                          (.extend b (lat-lng lat lon)))))]
+              (.addListener Event map "click"
+                #(when map-click (map-click map)))
+              (cell= (.setOptions map opts))
+              (cell= (when (and fit-pins (seq pins))
+                       ((~(partial delay-until visible?)
+                         #(.fitBounds map bounds)))))
+              (cell-doseq [[i {:keys [lat lon info opts] :as pin}] (cell= (indexed pins))]
+                (let [marker  (Marker. (clj->js {}))
+                      iwindow (InfoWindow. (clj->js {}))]
+                  (.addListener Event marker "click"
+                    (fn []
+                      (when @info (.open iwindow map marker))
+                      (when pin-click (pin-click map marker iwindow @pin))))
+                  (cell= (doto iwindow (.setContent (dom2str info)) .close))
+                  (cell= (let [map (when lat map)
+                               pos (when lat (lat-lng lat lon))
+                               opt (clj->js (merge {} opts {:map map :position pos}))]
+                           (.close iwindow)
+                           (.setOptions marker opt))))))))))))

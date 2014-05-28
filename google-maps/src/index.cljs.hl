@@ -1,6 +1,8 @@
 (page "index.html"
   (:refer-hoplon :exclude [center])
-  (:require [tailrecursion.google.api :as g :refer [google-map]]))
+  (:require
+   [tailrecursion.google.api        :as g :refer [google-map]]
+   [tailrecursion.twitter.bootstrap :as b :refer [page container tab tabs]]))
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
@@ -51,46 +53,37 @@
        #(swap! pins into (rand-pins miami-beach 5))
        #(swap! pins subvec 4)])))
 
-(html :lang "en"
-  (head
-    (title "Hoplon • Google Maps")
-    (script
-      :type "text/javascript"
-      :src  "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
-    (link
-      :rel  "stylesheet"
-      :type "text/css"
-      :href "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"))
-  (body
-    (div :class "container"
-      (div
-        (h1 "Hoplon & Google Maps")
-        (hr)
-        (ul :class "nav nav-tabs"
-          (li :class "active" (a :href "#first-map" :data-toggle "tab" "First Map"))
-          (li (a :href "#second-map" :data-toggle "tab" "Second Map")))
-        (div :class "tab-content"
-          (div :class "tab-pane active" :id "first-map"
-            (google-map
-              :css       {:height "600px"
-                          :width  "100%"
-                          :margin "0 auto"
-                          :border "1px solid red"}
-              :center    san-francisco
-              :pins      pins
-              :pin-click #(bounce-marker %2)
-              :map-click #(print :map-clicked %)
-              :fit-pins  auto?
-              :opts      opts))
-          (div :class "tab-pane" :id "second-map"
-            (google-map
-              :css       {:height "600px"
-                          :width  "100%"
-                          :margin "0 auto"
-                          :border "1px solid blue"}
-              :center    san-francisco
-              :pins      @pins
-              :opts      {:zoom 12}))))
-      (hr)
-      (p :css {:text-align "center"}
-        (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code")))))
+(page :title "Hoplon • Google Maps"
+  (container
+    (h1 "Hoplon & Google Maps")
+    (hr)
+    (tabs
+      (tab
+        :active true
+        :link "first-map"
+        :name "First Map"
+        (google-map
+          :css       {:height "600px"
+                      :width  "100%"
+                      :margin "0 auto"
+                      :border "1px solid red"}
+          :center    san-francisco
+          :pins      pins
+          :pin-click #(bounce-marker %2)
+          :map-click #(print :map-clicked %)
+          :fit-pins  auto?
+          :opts      opts))
+      (tab
+        :link "second-map"
+        :name "Second Map"
+        (google-map
+          :css       {:height "600px"
+                      :width  "100%"
+                      :margin "0 auto"
+                      :border "1px solid blue"}
+          :center    san-francisco
+          :pins      @pins
+          :opts      {:zoom 12})))
+    (hr)
+    (p :css {:text-align "center"}
+      (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code"))))
