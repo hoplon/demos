@@ -4,91 +4,93 @@
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
+(def miami-beach   {:name "Miami Beach"   :lat 25.8130 :lon  -80.1341})
+(def san-francisco {:name "San Francisco" :lat 37.7833 :lon -122.4167})
+
+(defelem info [{:keys [title body]} _]
+  (div :css {:height "100px" :width "300px"}
+    (h4 title)
+    (hr)
+    (p body)))
+
+(defn rand-pin [{:keys [name lat lon]}]
+  (let [perturb!  #(. (+ % (* 0.030 (- (rand) 0.5))) (toFixed 4))
+        [lat lon] (map perturb! [lat lon])
+        name      (str "A place in " name)
+        content   (str "Coordinates: " lat "ºN, " lon "ºW.")]
+    {:lat lat :lon lon :info (info :title name :body content)}))
+
+(defn rand-pins [city n]
+  (vec (take n (repeatedly #(rand-pin city)))))
+
 (defn do-steps [msec [step & steps]]
   (with-timeout msec
     (when step (step))
     (when steps (do-steps msec steps))))
 
-(defelem info [{:keys [title body]} _]
-  (div :css {:height "100px" :width "200px"}
-    (h3 title)
-    (p body)))
-
 (defn bounce-marker [marker]
   (.setAnimation marker (.. js/google -maps -Animation -BOUNCE))
   (with-timeout 1400 (.setAnimation marker nil)))
 
-(defc ready? false)
-(defc center {:lat -34.397 :lon 150.644})
+(defc auto?  true)
 (defc opts   {:zoom 8})
-(defc pins   [{:lat  -34.197
-               :lon  150.644
-               :info (info :title "Foo" :body "This is a good place.")}
-              {:lat  -34.397
-               :lon  150.644
-               :info (info :title "Bar" :body "This is also a good place.")}
-              {:lat  -34.397
-               :lon  150.544
-               :info (info :title "Baz" :body "This is the best place.")}])
+(defc pins   (rand-pins san-francisco 4))
 
 (with-init!
-  (with-timeout 4000 (reset! ready? true))
-  (with-timeout 2000
-    (do-steps 500
-      [#(swap! pins update-in [0 :lon] (partial + 0.1))
-       #(swap! pins update-in [1 :lon] (partial + 0.1))
-       #(swap! pins update-in [2 :lon] (partial + 0.1))
+  (with-timeout 1000
+    (do-steps 1500
+      [#(reset! pins (rand-pins san-francisco 4))
+       #(reset! pins (rand-pins san-francisco 4))
+       #(reset! pins (rand-pins san-francisco 4))
+       #(swap! auto? not)
        #(swap! pins pop)
-       #(swap! pins conj {:lat  -34.397
-                          :lon  150.544
-                          :info (info :title "Baz" :body "The best place, back again!")})
-       #(swap! center update-in [:lon] (partial + 0.2))
-       #(swap! center update-in [:lat] (partial + 0.2))
-       #(swap! opts update-in [:zoom] inc)
-       #(swap! opts update-in [:zoom] dec)
-       (constantly true)
-       (constantly true)
-       #(swap! pins conj {:lat  -33.000
-                          :lon  151.000
-                          :info (info :title "Baf" :body "The a place that didn't fit in the map originally.")})
-       (constantly true)
-       (constantly true)
-       #(reset! pins
-          [{:lat  (+  39.00 (* 10 (- (rand) 0.5)))
-            :lon  (+ -77.00 (*  1 (- (rand) 0.5)))
-            :info (info :title "Random 1" :body "The first random point.")}
-           {:lat  (+  39.00 (* 10 (- (rand) 0.5)))
-            :lon  (+ -77.00 (*  1 (- (rand) 0.5)))
-            :info (info :title "Random 2" :body "The second random point.")}
-           {:lat  (+  39.00 (* 10 (- (rand) 0.5)))
-            :lon  (+ -77.00 (*  1 (- (rand) 0.5)))
-            :info (info :title "Random 3" :body "The third random point.")}])])))
+       #(swap! pins pop)
+       #(swap! pins conj (rand-pin san-francisco))
+       #(swap! pins conj (rand-pin san-francisco))
+       #(swap! auto? not)
+       #(swap! pins into (rand-pins miami-beach 5))
+       #(swap! pins subvec 4)])))
 
-(html
+(html :lang "en"
   (head
-    (title "Hoplon • Google Maps"))
-  (body :css {:text-align "center"}
-    (h1 "Hoplon & Google Maps")
-    (google-map
-      :css       {:height "400px"
-                  :width  "800px"
-                  :margin "0 auto"
-                  :border "1px solid red"}
-      :center    center
-      :pins      pins
-      :pin-click #(bounce-marker %2)
-      :map-click #(print :map-clicked %)
-      :fit-pins  true
-      :opts      opts)
-    (google-map
-      :center    {:lat -34.397 :lon 150.644}
-      :ready     ready?
-      :pins      @pins
-      :opts      {:zoom 8}
+    (title "Hoplon • Google Maps")
+    (script
+      :type "text/javascript"
+      :src  "//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js")
+    (link
+      :rel  "stylesheet"
+      :type "text/css"
+      :href "//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"))
+  (body
+    (div :class "container"
       (div
-        :css       {:height "400px"
-                    :width  "800px"
-                    :margin "0 auto"
-                    :border "1px solid blue"}
-        "Waiting for " (code "ready?") "..."))
-    (p (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code"))))
+        (h1 "Hoplon & Google Maps")
+        (hr)
+        (ul :class "nav nav-tabs"
+          (li :class "active" (a :href "#first-map" :data-toggle "tab" "First Map"))
+          (li (a :href "#second-map" :data-toggle "tab" "Second Map")))
+        (div :class "tab-content"
+          (div :class "tab-pane active" :id "first-map"
+            (google-map
+              :css       {:height "600px"
+                          :width  "100%"
+                          :margin "0 auto"
+                          :border "1px solid red"}
+              :center    san-francisco
+              :pins      pins
+              :pin-click #(bounce-marker %2)
+              :map-click #(print :map-clicked %)
+              :fit-pins  auto?
+              :opts      opts))
+          (div :class "tab-pane" :id "second-map"
+            (google-map
+              :css       {:height "600px"
+                          :width  "100%"
+                          :margin "0 auto"
+                          :border "1px solid blue"}
+              :center    san-francisco
+              :pins      @pins
+              :opts      {:zoom 12}))))
+      (hr)
+      (p :css {:text-align "center"}
+        (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code")))))
