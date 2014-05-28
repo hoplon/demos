@@ -4,33 +4,32 @@
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
-(defc ready? false)
-(defc center {:lat -34.397 :lon 150.644})
-(defc opts   {:zoom 8})
-(defc pins   [{:lat  -34.197
-               :lon  150.644
-               :info (div :css {:height "100px" :width "200px"}
-                       (h1 "foo")
-                       (p "This is a good place."))}
-              {:lat  -34.397
-               :lon  150.644
-               :info (div :css {:height "100px" :width "200px"}
-                       (h1 "bar")
-                       (p "This is also a good place."))}
-              {:lat  -34.397
-               :lon  150.544
-               :info (div :css {:height "100px" :width "200px"}
-                       (h1 "baz")
-                       (p "This is the best place."))}])
+(defn do-steps [msec [step & steps]]
+  (with-timeout msec
+    (when step (step))
+    (when steps (do-steps msec steps))))
+
+(defelem info [{:keys [title body]} _]
+  (div :css {:height "100px" :width "200px"}
+    (h3 title)
+    (p body)))
 
 (defn bounce-marker [marker]
   (.setAnimation marker (.. js/google -maps -Animation -BOUNCE))
   (with-timeout 1400 (.setAnimation marker nil)))
 
-(defn do-steps [msec [step & steps]]
-  (with-timeout msec
-    (when step (step))
-    (when steps (do-steps msec steps))))
+(defc ready? false)
+(defc center {:lat -34.397 :lon 150.644})
+(defc opts   {:zoom 8})
+(defc pins   [{:lat  -34.197
+               :lon  150.644
+               :info (info :title "Foo" :body "This is a good place.")}
+              {:lat  -34.397
+               :lon  150.644
+               :info (info :title "Bar" :body "This is also a good place.")}
+              {:lat  -34.397
+               :lon  150.544
+               :info (info :title "Baz" :body "This is the best place.")}])
 
 (with-init!
   (with-timeout 4000 (reset! ready? true))
@@ -42,9 +41,7 @@
        #(swap! pins pop)
        #(swap! pins conj {:lat  -34.397
                           :lon  150.544
-                          :info (div :css {:height "100px" :width "200px"}
-                                  (h1 "baz")
-                                  (p "The best place is back again!"))})
+                          :info (info :title "Baz" :body "The best place, back again!")})
        #(swap! center update-in [:lon] (partial + 0.2))
        #(swap! center update-in [:lat] (partial + 0.2))
        #(swap! opts update-in [:zoom] inc)
@@ -53,9 +50,19 @@
        (constantly true)
        #(swap! pins conj {:lat  -33.000
                           :lon  151.000
-                          :info (div :css {:height "100px" :width "200px"}
-                                  (h1 "baz")
-                                  (p "The a place that didn't fit in the map originally."))})])))
+                          :info (info :title "Baf" :body "The a place that didn't fit in the map originally.")})
+       (constantly true)
+       (constantly true)
+       #(reset! pins
+          [{:lat  (+  39.00 (* 10 (- (rand) 0.5)))
+            :lon  (+ -77.00 (*  1 (- (rand) 0.5)))
+            :info (info :title "Random 1" :body "The first random point.")}
+           {:lat  (+  39.00 (* 10 (- (rand) 0.5)))
+            :lon  (+ -77.00 (*  1 (- (rand) 0.5)))
+            :info (info :title "Random 2" :body "The second random point.")}
+           {:lat  (+  39.00 (* 10 (- (rand) 0.5)))
+            :lon  (+ -77.00 (*  1 (- (rand) 0.5)))
+            :info (info :title "Random 3" :body "The third random point.")}])])))
 
 (html
   (head

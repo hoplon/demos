@@ -58,13 +58,13 @@
                selected-pin (cell nil)
                bounds       (cell= (with-let [b (LatLngBounds.)]
                                      (doseq [{:keys [lat lon]} pins]
-                                       (.extend b (LatLng. lat lon)))))
-               do-bounds    (fn [] (.fitBounds map @bounds))]
+                                       (.extend b (LatLng. lat lon)))))]
            (.addListener Event map "click"
              (fn []
                (reset! selected-pin nil)
                (when map-click (map-click map))))
            (cell= (.setOptions map opts))
+           (cell= (when (and fit-pins (seq pins)) (.fitBounds map bounds)))
            (cell-doseq [[i {:keys [lat lon info opts] :as pin}] (cell= (indexed pins))]
              (let [marker  (Marker. (clj->js {}))
                    iwindow (InfoWindow. (clj->js {}))]
@@ -80,5 +80,4 @@
                             pos (when lat (LatLng. lat lon))
                             opt (clj->js (merge {} opts {:map map :position pos}))]
                         (.close iwindow)
-                        (.setOptions marker opt)
-                        (when (and map fit-pins) (do-bounds)))))))))))
+                        (.setOptions marker opt))))))))))
