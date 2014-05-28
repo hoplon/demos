@@ -2,7 +2,7 @@
   (:refer-hoplon :exclude [center])
   (:require
    [tailrecursion.google.api        :as g :refer [google-map]]
-   [tailrecursion.twitter.bootstrap :as b :refer [page container tab tabs]]))
+   [tailrecursion.twitter.bootstrap :as b :refer [bootstrap-page container tab tabs]]))
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
@@ -53,7 +53,8 @@
        #(swap! pins into (rand-pins miami-beach 5))
        #(swap! pins subvec 4)])))
 
-(page :title "Hoplon • Google Maps"
+(bootstrap-page
+  :title "Hoplon • Google Maps"
   (container
     (h1 "Hoplon & Google Maps")
     (hr)

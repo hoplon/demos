@@ -1,6 +1,6 @@
 (ns tailrecursion.twitter.bootstrap)
 
-(defelem page [{:keys [title] :as attr} kids]
+(defelem bootstrap-page [{:keys [title] :as attr} kids]
   (html (dissoc attr :title)
     (head
       (tailrecursion.hoplon/title title)
