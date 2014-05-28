@@ -17,7 +17,7 @@
 (deftask development
   "Build project for development, local dev server."
   []
-  (comp (watch) (hear) (hoplon {:prerender false}) (dev-server)))
+  (comp (watch) (hear) (hoplon {:pretty-print true :prerender false}) (dev-server)))
 
 (deftask production
   "Build project for production."

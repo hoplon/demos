@@ -35,37 +35,49 @@
         #(.load js/google "maps" @maps-version
            (clj->js (assoc @maps-options :callback callback)))))))
 
-(defn- dom2str [elem]
-  (.-innerHTML (div elem)))
+(defn- dom2str [elem] (.-innerHTML (div elem)))
+(defn- indexed [coll] (map-indexed vector coll))
 
 (defn delay-until [ready? f & args]
   #(cell= (when ready? (~(memoize (fn [] (or (apply f args) ::ok)))))))
 
-(defelem google-map [{:keys [center opts pins pin-click map-click ready?] :as attr} [elem]]
-  (with-let [elem (or elem (div (dissoc attr :center :opts :pins :pin-click :map-click :ready?)))]
+(defelem google-map [{:keys [center opts pins pin-click map-click ready fit-pins] :as attr} [elem]]
+  (with-let [elem (or elem (div (dissoc attr :center :opts :pins :pin-click :map-click :ready :fit-pins)))]
     (ensure-maps
-      (delay-until (or ready? (cell true))
-        #(let [Map        (.. js/google -maps -Map)
-               LatLng     (.. js/google -maps -LatLng)
-               Marker     (.. js/google -maps -Marker)
-               InfoWindow (.. js/google -maps -InfoWindow)
-               Event      (.. js/google -maps -event)
-               opts       (cell= (let [{:keys [lat lon]} center]
-                                   (clj->js (merge {} opts {:center (LatLng. lat lon)}))))
-               map        (Map. elem @opts)]
+      (delay-until (or ready (cell true))
+        #(let [maps         (.. js/google -maps)
+               Map          (.-Map maps)
+               Event        (.-event maps)
+               LatLng       (.-LatLng maps)
+               Marker       (.-Marker maps)
+               InfoWindow   (.-InfoWindow maps)
+               LatLngBounds (.-LatLngBounds maps)
+               opts         (cell= (let [{:keys [lat lon]} center]
+                                     (clj->js (merge {} opts {:center (LatLng. lat lon)}))))
+               map          (Map. elem @opts)
+               selected-pin (cell nil)
+               bounds       (cell= (with-let [b (LatLngBounds.)]
+                                     (doseq [{:keys [lat lon]} pins]
+                                       (.extend b (LatLng. lat lon)))))]
            (.addListener Event map "click"
-             (fn [] (when map-click (map-click map))))
+             (fn []
+               (reset! selected-pin nil)
+               (when map-click (map-click map))))
            (cell= (.setOptions map opts))
-           (cell-doseq [{:keys [lat lon info opts] :as pin} pins]
-             (let [marker  (Marker. (clj->js {}))
+           (cell-doseq [[i {:keys [lat lon info opts] :as pin}] (cell= (indexed pins))]
+             (let [marker  (Marker. (clj->js {:position (LatLng. 39.0 -77.0)}))
                    iwindow (InfoWindow. (clj->js {}))]
                (.addListener Event marker "click"
                  (fn []
-                   (when @info (.open iwindow map marker))
+                   (reset! selected-pin (if (= @selected-pin @i) nil @i))
                    (when pin-click (pin-click map marker iwindow @pin))))
+               (cell= (if-not (and info (= selected-pin i))
+                        (.close iwindow)
+                        (.open iwindow map marker)))
                (cell= (doto iwindow (.setContent (dom2str info)) .close))
                (cell= (let [map (when lat map)
                             pos (when lat (LatLng. lat lon))
                             opt (clj->js (merge {} opts {:map map :position pos}))]
                         (.close iwindow)
-                        (.setOptions marker opt))))))))))
+                        (.setOptions marker opt)
+                        (when (and map fit-pins) (.fitBounds map bounds)))))))))))
