@@ -1,6 +1,6 @@
 #!/usr/bin/env boot
 
-#tailrecursion.boot.core/version "2.3.1"
+#tailrecursion.boot.core/version "2.4.0"
 
 (set-env!
  :dependencies (read-string (slurp "../deps.edn"))

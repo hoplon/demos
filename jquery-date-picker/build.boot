@@ -3,7 +3,9 @@
 #tailrecursion.boot.core/version "2.4.0"
 
 (set-env!
-  :dependencies (read-string (slurp "../deps.edn"))
+  :dependencies (into
+                  (read-string (slurp "../deps.edn"))
+                  (read-string (slurp "deps.edn")))
   :out-path     "resources/public"
   :src-paths    #{"src"})
 
@@ -17,7 +19,7 @@
 (deftask development
   "Build project for development, local dev server."
   []
-  (comp (watch) (hear) (hoplon {:pretty-print true :prerender false}) (dev-server)))
+  (comp (watch) (hear) (hoplon {:prerender false}) (dev-server)))
 
 (deftask production
   "Build project for production."
