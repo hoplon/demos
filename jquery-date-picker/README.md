@@ -1,4 +1,4 @@
-# Google Maps
+# jQuery Date Picker
 
 This project demonstrates how to use the [jQuery date range picker][6], part of
 the [hoplon utils][5] project. Check out [the demo][4].
