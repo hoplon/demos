@@ -2,7 +2,6 @@
   (:refer-hoplon :exclude [center])
   (:require
    [tailrecursion.jquery.daterangepicker :refer [daterange]]
-   [tailrecursion.hoplon.reload     :as r :refer [reload-all]]
    [tailrecursion.twitter.bootstrap :as b
     :refer [checkbox container control-label form-group form-horizontal]]))
 
