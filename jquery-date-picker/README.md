@@ -1,7 +1,7 @@
 # Google Maps
 
-This project demonstrates how to use the Google Maps API v3 in Hoplon. Check
-out [the demo][4].
+This project demonstrates how to use the [jQuery date range picker][6], part of
+the [hoplon utils][5] project. Check out [the demo][4].
 
 ## Dependencies
 
@@ -22,4 +22,6 @@ out [the demo][4].
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
 [3]: http://localhost:8000
-[4]: http://alandipert.github.io/hoplon-demos/google-maps/
+[4]: http://alandipert.github.io/hoplon-demos/jquery-date-picker/
+[5]: http://github.com/tailrecursion/hoplon-util
+[6]: http://github.com/tailrecursion/hoplon-util/jquery.daterangepicker
