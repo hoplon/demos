@@ -3,7 +3,9 @@
 #tailrecursion.boot.core/version "2.4.0"
 
 (set-env!
-  :dependencies (read-string (slurp "../deps.edn"))
+  :dependencies (into
+                  (read-string (slurp "../deps.edn"))
+                  (read-string (slurp "deps.edn")))
   :out-path     "resources/public"
   :src-paths    #{"src"})
 

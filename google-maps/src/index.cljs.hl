@@ -53,38 +53,35 @@
        #(swap! pins into (rand-pins miami-beach 5))
        #(swap! pins subvec 4)])))
 
-(bootstrap-page
-  :title "Hoplon • Google Maps"
-  (container
-    (h1 "Hoplon & Google Maps")
-    (hr)
-    (tabs
-      (tab
-        :active true
-        :link "first-map"
-        :name "First Map"
-        (google-map
-          :css       {:height "600px"
-                      :width  "100%"
-                      :margin "0 auto"
-                      :border "1px solid red"}
-          :center    san-francisco
-          :pins      pins
-          :pin-click #(bounce-marker %2)
-          :map-click #(print :map-clicked %)
-          :fit-pins  auto?
-          :opts      opts))
-      (tab
-        :link "second-map"
-        :name "Second Map"
-        (google-map
-          :css       {:height "600px"
-                      :width  "100%"
-                      :margin "0 auto"
-                      :border "1px solid blue"}
-          :center    san-francisco
-          :pins      @pins
-          :opts      {:zoom 12})))
-    (hr)
-    (p :css {:text-align "center"}
-      (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code"))))
+(html :lang "en"
+  (head
+    (title "Hoplon • Google Maps"))
+  (body
+    (container
+      (h1 "Hoplon & Google Maps")
+      (hr)
+      (tabs
+        (tab :name "First Map"
+          (google-map
+            :css       {:height "600px"
+                        :width  "100%"
+                        :margin "0 auto"
+                        :border "1px solid red"}
+            :center    san-francisco
+            :pins      pins
+            :pin-click #(bounce-marker %2)
+            :map-click #(print :map-clicked %)
+            :fit-pins  auto?
+            :opts      opts))
+        (tab :name "Second Map"
+          (google-map
+            :css       {:height "600px"
+                        :width  "100%"
+                        :margin "0 auto"
+                        :border "1px solid blue"}
+            :center    san-francisco
+            :pins      @pins
+            :opts      {:zoom 12})))
+      (hr)
+      (p :css {:text-align "center"}
+        (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code")))))

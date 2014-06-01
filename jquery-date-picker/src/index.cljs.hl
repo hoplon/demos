@@ -6,10 +6,10 @@
    [tailrecursion.twitter.bootstrap :as b
     :refer [checkbox container control-label form-group form-horizontal]]))
 
-#_(reload-all)
-
 (defc close? true)
 (defc dates  nil)
+
+(defc tab-state 0)
 
 (cell= (print :dates dates))
 
