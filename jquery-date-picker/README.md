@@ -1,7 +1,9 @@
 # jQuery Date Picker
 
 This project demonstrates how to use the [jQuery date range picker][6], part of
-the [hoplon utils][5] project. Check out [the demo][4].
+the [hoplon utils][5] project.
+
+Visit [the live demo][4] and select some dates for yourself!
 
 ## Dependencies
 
