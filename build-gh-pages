@@ -6,6 +6,7 @@ mkdir .gh-pages
 find . -maxdepth 1 -type d \! -iname ".*" \! -iname "deps" \
     | sed 's/^..//' \
     | while read a; do
+        if [ -e "$a"/.no-demo ]; then continue; fi
         echo -e "\e[31mBuilding $a\e[0m"
         (cd "$a"; boot production; cp -R resources/public ../.gh-pages/"$a")
     done

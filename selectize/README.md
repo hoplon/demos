@@ -9,7 +9,7 @@ The `selectize` element is used to search for movies by title on
 [Rotten Tomatoes](http://www.rottentomatoes.com/) with their
 [Movies Search API](http://developer.rottentomatoes.com/docs/read/json/v10/Movies_Search).
 
-[See this demo.](http://alandipert.github.io/hoplon-demos/selectize/)
+[See this demo.](http://tailrecursion.github.io/hoplon-demos/selectize/)
 
 ## Dependencies
 

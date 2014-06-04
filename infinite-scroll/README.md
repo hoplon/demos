@@ -27,7 +27,7 @@ append them so you can continue scrolling and seeing more images...forever.
 * HTML and JavaScript files will be created in the `resources/public` directory.
 
 [2]: http://github.com/tailrecursion/hoplon
-[3]: http://alandipert.github.io/hoplon-demos/infinite-scroll
+[3]: http://tailrecursion.github.io/hoplon-demos/infinite-scroll
 [4]: https://github.com/tailrecursion/boot
 [6]: https://github.com/technomancy/leiningen
 [7]: http://localhost:8000

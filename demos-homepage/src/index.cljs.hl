@@ -1,0 +1,43 @@
+(page "index.html"
+  (:require-macros
+   [macros.core :refer [demo-dirs]])
+  (:require
+   [hoplon.twitter.bootstrap :refer [container]]
+   [tailrecursion.hoplon.reload :refer [reload-all]]))
+
+(reload-all)
+
+(def url:hoplon         "http://hoplon.io")
+(def url:hoplon-demos   "https://github.com/tailrecursion/hoplon-demos")
+(def url:hoplon-discuss "http://hoplon.discoursehosting.net")
+
+(defelem demo-item [_ [name]]
+  (li :class "list-group-item"
+    (a :href name name)))
+
+(defelem copyright-footer [_ _]
+  (div :css {:padding "30px 0px"}
+    (div :css {:text-align "center"}
+      "Copyright © Alan Dipert and Micha Niskin. All rights reserved.")))
+
+(html
+  (head
+    (title "Hoplon • Demos"))
+  (body
+    (div :class "jumbotron"
+      (container :class "lambda"
+        (h1 "Hoplon Demos")
+        (p "A simpler way to program the web, with examples!")))
+    (container
+      (div :col {:sm 6}
+        (p "Check out the demos, then try these links:")
+        (ul
+          (li (a :href url:hoplon         "The main Hoplon website."))
+          (li (a :href url:hoplon-demos   "Source code for all demos is here."))
+          (li (a :href url:hoplon-discuss "Join the Hoplon discussion group."))
+          (li "Check out the " (code "#hoplon") " channel on Freenode IRC.")))
+      (div :col {:sm 6}
+        (ul :class "list-group"
+          (mapv demo-item (demo-dirs)))))
+    (hr)
+    (copyright-footer)))

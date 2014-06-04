@@ -21,4 +21,4 @@ This project demonstrates forms with validations. Check out [the demo][4].
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
 [3]: http://localhost:8000
-[4]: http://alandipert.github.io/hoplon-demos/validated-form/
+[4]: http://tailrecursion.github.io/hoplon-demos/validated-form/

@@ -24,6 +24,6 @@ Visit [the live demo][4] and select some dates for yourself!
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
 [3]: http://localhost:8000
-[4]: http://alandipert.github.io/hoplon-demos/jquery-date-picker/
+[4]: http://tailrecursion.github.io/hoplon-demos/jquery-date-picker/
 [5]: http://github.com/tailrecursion/hoplon-util
 [6]: https://github.com/tailrecursion/hoplon-util/tree/master/hoplon/jquery.daterangepicker

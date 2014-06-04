@@ -4,7 +4,7 @@ This project demonstrates [Conway's Game of Life](http://en.wikipedia.org/wiki/C
 
 Christophe Grand's [extremely elegant and terse method](http://clj-me.cgrand.net/2011/08/19/conways-game-of-life/) is used to implement the game rules.
 
-[See this demo.](http://alandipert.github.io/hoplon-demos/hoplife/)
+[See this demo.](http://tailrecursion.github.io/hoplon-demos/hoplife/)
 
 ## Dependencies
 

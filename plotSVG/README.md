@@ -27,5 +27,5 @@ A Hoplon demo that plots some data using SVG.
 [1]: https://github.com/tailrecursion/boot
 [2]: https://github.com/technomancy/leiningen
 [3]: https://raw2.github.com/tailrecursion/hoplon-demos/master/plotSVG/img/plot.png
-[4]: http://alandipert.github.io/hoplon-demos/plotSVG/
+[4]: http://tailrecursion.github.io/hoplon-demos/plotSVG/
 [5]: http://localhost:8000

@@ -39,7 +39,7 @@ Keep track of things you need to do!
 
 [1]: http://todomvc.com
 [2]: http://github.com/tailrecursion/hoplon
-[3]: http://micha.github.com/todofrp/demo/public/
+[3]: http://tailrecursion.github.io/hoplon-demos/todoFRP/
 [4]: https://github.com/tailrecursion/boot
 [5]: doc/index.cljs
 [6]: https://github.com/technomancy/leiningen
