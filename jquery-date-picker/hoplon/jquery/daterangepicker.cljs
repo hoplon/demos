@@ -1,0 +1,9 @@
+(ns hoplon.jquery.daterangepicker (:require [tailrecursion.javelin :refer [alts! cell-map propagate! next-rank deref* lift cell input? cell-doseq* bf-seq destroy-cell! last-rank set-cell! set-formula! cell?]] [tailrecursion.hoplon :refer [script do! track article noscript command h4 h3 mark basefont h5 span input h2 th label h6 pre nav vector?* address sup h1 table font option datalist u safe-nth on! footer select q samp source summary li p td noframes node? iframe rel tr s *initfns* add-attributes! colgroup relx html dfn optgroup tbody text-val! ul hgroup sub strong data progress loop-tpl* acronym append-child replace-children! img details fieldset html-head em html-time rt when-dom video keygen div val-id dt ol link init form is-ie8 check-val! menu timeout del a parse-args area legend hr dir header param meter tfoot blockquote eventsource b dl figcaption caption route-cell style rel-event abbr ruby applet html-meta bdi embed rp figure on-append! canvas section object strike title button output audio initialized? add-children! dd bdo cite code kbd big seq?* frame rely col tt i ins thead unsplice isindex frameset center spliced base $text by-id $comment br textarea wbr html-map small add-initfn! html-body aside html-var]]) (:require-macros [tailrecursion.javelin :refer [cell-doseq cell= defc defc= mx with-let prop-cell mx2 cell-let set-cell!= macroexpand-all]] [tailrecursion.hoplon :refer [with-init! body text defelem loop-tpl head with-timeout with-interval def-values flatten-expr]]))
+
+(defn create [elem opts] (.dateRangePicker elem (clj->js (or opts {}))))
+
+(defn destroy [elem] (with-let [e elem] (when (.-destroy e) (.destroy e))))
+
+(defn on-change! [state] (fn [_ dates] (reset! state [(aget dates "date1") (aget dates "date2")])))
+
+(defelem daterange [{:keys [state opts], :as attr} _] (with-let [elem ((input (dissoc attr :opts)) :datepicker-change (on-change! state))] (with-init! (cell= (doto (js/jQuery elem) destroy (create opts))))))
