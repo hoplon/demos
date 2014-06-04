@@ -1,11 +1,14 @@
 #!/usr/bin/env boot
 
-#tailrecursion.boot.core/version "2.4.0"
+#tailrecursion.boot.core/version "2.4.1"
+
+(load-file "../build.util.clj")
+(require '[build.util :as build])
 
 (set-env!
- :dependencies (read-string (slurp "../deps.edn"))
- :src-paths    #{"src"}
- :out-path     "resources/public")
+  :dependencies (build/deps)
+  :src-paths    #{"src"}
+  :out-path     "resources/public")
 
 (add-sync! (get-env :out-path) #{"resources/assets"})
 

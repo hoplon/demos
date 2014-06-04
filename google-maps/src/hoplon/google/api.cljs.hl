@@ -1,4 +1,4 @@
-(ns tailrecursion.google.api)
+(ns hoplon.google.api)
 
 (defn queued [load-fn]
   (let [callbacks (atom [])

@@ -1,8 +1,8 @@
 (page "index.html"
   (:refer-hoplon :exclude [center])
   (:require
-   [tailrecursion.google.api        :as g :refer [google-map]]
-   [tailrecursion.twitter.bootstrap :as b :refer [container tab tabs]]))
+   [hoplon.google.api        :as g :refer [google-map]]
+   [hoplon.twitter.bootstrap :as b :refer [container tab tabs]]))
 
 (reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
