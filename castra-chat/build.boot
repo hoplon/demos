@@ -1,6 +1,6 @@
 #!/usr/bin/env boot
 
-#tailrecursion.boot.core/version "2.4.1"
+#tailrecursion.boot.core/version "2.5.0"
 
 (load-file "../build.util.clj")
 (require '[build.util :as build])
