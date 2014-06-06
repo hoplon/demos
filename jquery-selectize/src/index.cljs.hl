@@ -1,6 +1,6 @@
 (page "index.html"
   (:require
-   [selectize :as s]
+   [hoplon.jquery.selectize :as s]
    [tailrecursion.hoplon.reload :refer [reload-all]]))
 
 (reload-all)
@@ -32,8 +32,7 @@
 
 (html
   (head
-    (title "Hoplon Selectize")
-    (link :rel "stylesheet" :type "text/css" :href "selectize.css")
+    (title "Hoplon • jQuery Selectize")
     (link :rel "stylesheet" :type "text/css" :href "selectize_movies.css"))
   (body
     :style "font-family: sans-serif; width: 40%; margin: auto;"
@@ -65,5 +64,5 @@
             (loop-tpl :bindings [star starring]
               (li (text "~{star}")))))
         (div :style "text-align:center;"
-          (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/selectize/src/index.cljs.hl"
-      "Hoplon Source Code"))))))
+          (p (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/jquery-selectize/src/index.cljs.hl"
+               "Hoplon Source Code")))))))
