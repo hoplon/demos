@@ -13,7 +13,6 @@
  *
  * @author Brian Reavis <brian@thirdroute.com>
  */
-
 .selectize-control.plugin-drag_drop.multi > .selectize-input > div.ui-sortable-placeholder {
   background: #f2f2f2 !important;
   background: rgba(0, 0, 0, 0.06) !important;
