@@ -6,14 +6,14 @@
    [hoplon.twitter.bootstrap
     :refer [checkbox container control-label form-group form-horizontal]]))
 
-(reload-all)
+#_(reload-all)
 
 (defc close? true)
-(defc dates  nil)
+(defc dates1 nil)
+(defc dates2 [(js/Date.) (js/Date.)])
 
-(defc tab-state 0)
-
-(cell= (print :dates dates))
+(cell= (print :dates1 dates1))
+(cell= (print :dates2 dates2))
 
 (html :lang "en"
   (head
@@ -23,11 +23,19 @@
       (h1 "Hoplon & jQuery Date Range Picker")
       (hr)
       (form-horizontal
-        (form-group :success dates
-          (control-label :col {:sm 2} "Date Range")
+        (form-group :success dates1
+          (control-label :col {:sm 2} "Date Range 1")
           (div :col {:sm 10}
             (daterange
-              :state       dates
+              :state       dates1
+              :class       "form-control"
+              :placeholder "Enter a date range"
+              :opts        (cell= {:autoClose close?}))))
+        (form-group :success dates2
+          (control-label :col {:sm 2} "Date Range 2")
+          (div :col {:sm 10}
+            (daterange
+              :state       dates2
               :class       "form-control"
               :placeholder "Enter a date range"
               :opts        (cell= {:autoClose close?}))))
