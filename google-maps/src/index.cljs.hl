@@ -17,10 +17,11 @@
 
 (defn rand-pin [{:keys [name lat lon]}]
   (let [perturb!  #(. (+ % (* 0.030 (- (rand) 0.5))) (toFixed 4))
+        icon      (str "icons/" (inc (rand-int 6)) "/number_" (rand-int 101) ".png")
         [lat lon] (map perturb! [lat lon])
         name      (str "A place in " name)
         content   (str "Coordinates: " lat "ºN, " lon "ºW.")]
-    {:lat lat :lon lon :info (info :title name :body content)}))
+    {:lat lat :lon lon :info (info :title name :body content) :opts {:icon icon}}))
 
 (defn rand-pins [city n]
   (vec (take n (repeatedly #(rand-pin city)))))
@@ -70,7 +71,9 @@
             :center    san-francisco
             :pins      pins
             :pin-click #(bounce-marker %2)
-            :map-click #(print :map-clicked %)
+            :pin-rightclick #(.log js/console %1 %2 %3 %4 %5)
+            :map-click #(.log js/console %1)
+            :map-rightclick #(do  (.log js/console %2)false)
             :fit-pins  auto?
             :opts      opts))
         (tab :name "Second Map"
