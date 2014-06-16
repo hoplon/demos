@@ -35,24 +35,26 @@
   (.setAnimation marker (.. js/google -maps -Animation -BOUNCE))
   (with-timeout 1400 (.setAnimation marker nil)))
 
-(defc auto?  true)
-(defc opts   {:zoom 8})
-(defc pins   (rand-pins san-francisco 4))
+(defc auto?     true)
+(defc opts      {:zoom 8})
+(defc pins      (rand-pins san-francisco 4))
+(defc line-opts {:strokeColor "Black" :strokeWeight 1})
+(defc= polyline [{:path pins :opts line-opts}])
 
 (with-init!
   (with-timeout 1000
     (do-steps 1500
-      [#(reset! pins (rand-pins san-francisco 4))
-       #(reset! pins (rand-pins san-francisco 4))
-       #(reset! pins (rand-pins san-francisco 4))
+      [#(do (reset! pins (rand-pins san-francisco 1)) (swap! line-opts assoc :strokeColor "Blue" :strokeWeight 3))
+       #(do (reset! pins (rand-pins san-francisco 2)) (swap! line-opts assoc :strokeColor "Red" :strokeWeight 2))
+       #(do (reset! pins (rand-pins san-francisco 4)) (swap! line-opts assoc :strokeColor "Green"))
        #(swap! auto? not)
        #(swap! pins pop)
        #(swap! pins pop)
        #(swap! pins conj (rand-pin san-francisco))
        #(swap! pins conj (rand-pin san-francisco))
        #(swap! auto? not)
-       #(swap! pins into (rand-pins miami-beach 5))
-       #(swap! pins subvec 4)])))
+       #(do (swap! pins into (rand-pins miami-beach 5)) (swap! line-opts assoc :strokeOpacity 0.0))
+       #(do (swap! pins subvec 4) (swap! line-opts assoc :strokeOpacity 1.0 :strokeColor "RoyalBlue"))])))
 
 (html :lang "en"
   (head
@@ -70,6 +72,7 @@
                         :border "1px solid red"}
             :center    san-francisco
             :pins      pins
+            :polygons  polyline
             :pin-click #(bounce-marker %2)
             :pin-rightclick #(.log js/console %1 %2 %3 %4 %5)
             :map-click #(.log js/console %1)

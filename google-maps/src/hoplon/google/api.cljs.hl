@@ -42,10 +42,12 @@
   (with-let [c (cell nil)]
     (with-interval 100 (reset! c (.is (js/jQuery elem) ":visible")))))
 
-(defelem google-map [{:keys [center opts pins pin-click map-click fit-pins] :as attr} [elem]]
+(defelem google-map [{:keys [center opts pins polylines polygons fit-pins] :as attr} [elem]]
   (with-let [elem (or elem (div (select-keys attr [:css :style])))]
     (let [visible?      (visible? elem)
           map-callbacks (filter #(let [k (name (key %))] (starts-with? k "map-")) attr)
+          pln-callbacks (filter #(let [k (name (key %))] (starts-with? k "pln-")) attr) 
+          pgn-callbacks (filter #(let [k (name (key %))] (starts-with? k "pgn-")) attr) 
           pin-callbacks (filter #(let [k (name (key %))] (starts-with? k "pin-")) attr)]
       (ensure-maps
         (delay-until visible?
@@ -55,6 +57,8 @@
                   Event        (.-event maps)
                   LatLng       (.-LatLng maps)
                   Marker       (.-Marker maps)
+                  Polyline     (.-Polyline maps)
+                  Polygon      (.-Polygon maps)
                   InfoWindow   (.-InfoWindow maps)
                   LatLngBounds (.-LatLngBounds maps)
                   lat-lng      #(LatLng. (js/parseFloat %1) (js/parseFloat %2))
@@ -68,6 +72,29 @@
                                              fun (val x)
                                              wrp (fn [& args] (apply fun imap args)) ]
                                          (.addListener Event imap evt wrp)))
+              (cell-doseq [[i {:keys [path opts] :as pline}] (cell= (indexed polylines))]
+                (let [polyline  (Polyline. (clj->js {}))]
+                  (doseq [x pln-callbacks]
+                    (let [evt (.substr (name (key x)) 4)
+                          fun (val x)
+                          wrp (fn [& args] (apply fun imap polyline pline args))]
+                      (.addListener Event polyline evt wrp)))
+                  (cell= (let [map  (when path imap)
+                               path (when path (mapv #(lat-lng (:lat %) (:lon %)) path))
+                               opt  (clj->js (merge {} opts {:map map :path path}))]
+                           (.setOptions polyline opt)))))
+              
+              (cell-doseq [[i {:keys [path opts] :as pgon}] (cell= (indexed polygons))]
+                (let [polygon (Polygon. (clj->js {}))]
+                  (doseq [x pgn-callbacks]
+                    (let [evt (.substr (name (key x)) 4)
+                          fun (val x)
+                          wrp (fn [& args] (apply fun imap polygon pgon args))]
+                      (.addListener Event polygon evt wrp)))
+                  (cell= (let [map  (when path imap)
+                               path (when path (mapv #(lat-lng (:lat %) (:lon %)) path))
+                               opt  (clj->js (merge {} opts {:map map :path path}))]
+                           (.setOptions polygon opt)))))
               
               (cell= (.setOptions imap opts))
               (cell= (when (and fit-pins (seq pins))
