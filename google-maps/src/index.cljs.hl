@@ -1,10 +1,11 @@
 (page "index.html"
   (:refer-hoplon :exclude [center])
   (:require
-   [hoplon.google.api        :as g :refer [google-map]]
+   [hoplon.google.jsapi.maps       :refer [google-map]]
+   [hoplon.google.jsapi.loader     :refer [api-key]]
    [hoplon.twitter.bootstrap :as b :refer [container tab tabs]]))
 
-(reset! g/api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
+(reset! api-key "AIzaSyA3SuTQQlfhLL0O--JS91QqUkKBJp6HE7g")
 
 (def miami-beach   {:name "Miami Beach"   :lat 25.8130 :lon  -80.1341})
 (def san-francisco {:name "San Francisco" :lat 37.7833 :lon -122.4167})
