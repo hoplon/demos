@@ -15,6 +15,5 @@ pom.xml.asc
 *.swn
 *.swo
 *.swp
-.nrepl-port
 .boot/tmp
 /boot
