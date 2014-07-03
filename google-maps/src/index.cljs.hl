@@ -71,24 +71,24 @@
                         :width  "100%"
                         :margin "0 auto"
                         :border "1px solid red"}
-            :center    san-francisco
-            :pins      pins
-            :polygons  polyline
-            :pin-click #(bounce-marker %2)
-            :pin-rightclick #(.log js/console %1 %2 %3 %4 %5)
-            :map-click #(.log js/console %1)
-            :map-rightclick #(do  (.log js/console %2)false)
-            :fit-pins  auto?
-            :opts      opts))
+            :hoplon.google.jsapi.maps.control/center    san-francisco
+            :hoplon.google.jsapi.maps.overlays/markers      pins
+            :hoplon.google.jsapi.maps.overlays/polygons  polyline
+            :hoplon.google.jsapi.maps.marker/click #(bounce-marker %2)
+            :hoplon.google.jsapi.maps.marker/rightclick #(.log js/console %1 %2 %3 %4 %5)
+            :hoplon.google.jsapi.maps.map/click #(.log js/console %1)
+            :hoplon.google.jsapi.maps.map/rightclick #(do  (.log js/console %2)false)
+            :hoplon.google.jsapi.maps.control/fit-pins  auto?
+            :hoplon.google.jsapi.maps.control/opts      opts))
         (tab :name "Second Map"
           (google-map
             :css       {:height "600px"
                         :width  "100%"
                         :margin "0 auto"
                         :border "1px solid blue"}
-            :center    san-francisco
-            :pins      @pins
-            :opts      {:zoom 12})))
+            :hoplon.google.jsapi.maps.control/center    san-francisco
+            :hoplon.google.jsapi.maps.overlays/markers     @pins
+            :hoplon.google.jsapi.maps.control/opts      {:zoom 12})))
       (hr)
       (p :css {:text-align "center"}
         (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code")))))
