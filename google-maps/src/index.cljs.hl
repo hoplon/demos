@@ -1,7 +1,7 @@
 (page "index.html"
   (:refer-hoplon :exclude [center])
   (:require
-   [hoplon.google.jsapi.maps       :refer [google-map]]
+   [hoplon.google.jsapi.maps :as m :refer [google-map]]
    [hoplon.google.jsapi.loader     :refer [api-key]]
    [hoplon.twitter.bootstrap :as b :refer [container tab tabs]]))
 
@@ -45,7 +45,8 @@
 (with-init!
   (with-timeout 1000
     (do-steps 1500
-      [#(do (reset! pins (rand-pins san-francisco 1)) (swap! line-opts assoc :strokeColor "Blue" :strokeWeight 3))
+      [
+       #(do (reset! pins (rand-pins san-francisco 1)) (swap! line-opts assoc :strokeColor "Blue" :strokeWeight 3))
        #(do (reset! pins (rand-pins san-francisco 2)) (swap! line-opts assoc :strokeColor "Red" :strokeWeight 2))
        #(do (reset! pins (rand-pins san-francisco 4)) (swap! line-opts assoc :strokeColor "Green"))
        #(swap! auto? not)
@@ -55,7 +56,9 @@
        #(swap! pins conj (rand-pin san-francisco))
        #(swap! auto? not)
        #(do (swap! pins into (rand-pins miami-beach 5)) (swap! line-opts assoc :strokeOpacity 0.0))
-       #(do (swap! pins subvec 4) (swap! line-opts assoc :strokeOpacity 1.0 :strokeColor "RoyalBlue"))])))
+       #(do (swap! pins subvec 4) (swap! line-opts assoc :strokeOpacity 1.0 :strokeColor "RoyalBlue"))
+       #(do (reset! pins (rand-pins san-francisco 4)) (swap! line-opts assoc :strokeColor "Green"))
+       ])))
 
 (html :lang "en"
   (head
@@ -67,28 +70,29 @@
       (tabs
         (tab :name "First Map"
           (google-map
-            :css       {:height "600px"
-                        :width  "100%"
-                        :margin "0 auto"
-                        :border "1px solid red"}
-            :hoplon.google.jsapi.maps.control/center    san-francisco
-            :hoplon.google.jsapi.maps.overlays/markers      pins
-            :hoplon.google.jsapi.maps.overlays/polygons  polyline
-            :hoplon.google.jsapi.maps.marker/click #(bounce-marker %2)
-            :hoplon.google.jsapi.maps.marker/rightclick #(.log js/console %1 %2 %3 %4 %5)
-            :hoplon.google.jsapi.maps.map/click #(.log js/console %1)
-            :hoplon.google.jsapi.maps.map/rightclick #(do  (.log js/console %2)false)
-            :hoplon.google.jsapi.maps.control/fit-pins  auto?
-            :hoplon.google.jsapi.maps.control/opts      opts))
+            :css                  {:height "600px"
+                                   :width  "100%"
+                                   :margin "0 auto"
+                                   :border "1px solid red"}
+            ::m/center            san-francisco
+            ::m/markers           pins
+            ::m/polygons          polyline
+            ::m/marker-click      #(bounce-marker %2)
+            ::m/marker-rightclick #(.log js/console %1 %2 %3 %4 %5)
+            ::m/map-click         #(.log js/console %1)
+            ::m/map-rightclick    #(do (.log js/console %2) false)
+            ::m/fit-pins          auto?
+            ::m/opts              opts
+            ::m/layer-bicycling   true))
         (tab :name "Second Map"
           (google-map
-            :css       {:height "600px"
-                        :width  "100%"
-                        :margin "0 auto"
-                        :border "1px solid blue"}
-            :hoplon.google.jsapi.maps.control/center    san-francisco
-            :hoplon.google.jsapi.maps.overlays/markers     @pins
-            :hoplon.google.jsapi.maps.control/opts      {:zoom 12})))
+            :css                  {:height "600px"
+                                   :width  "100%"
+                                   :margin "0 auto"
+                                   :border "1px solid blue"}
+            ::m/center            san-francisco
+            ::m/markers           @pins
+            ::m/opts              {:zoom 12})))
       (hr)
       (p :css {:text-align "center"}
         (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/google-maps/src/index.cljs.hl" "source code")))))
