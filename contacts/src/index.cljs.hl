@@ -57,5 +57,5 @@
     (h2 "Contact list")
     (ul (contact-list :from my-contacts :sorted-by :last))
     (contact-input :to my-contacts "Add contact")
-    (p "Inspired by the "
-      (a :href "https://github.com/swannodette/om/wiki/Basic-Tutorial" "Om Basic Tutorial"))))
+    (hr)
+    (a :href "https://github.com/tailrecursion/hoplon-demos/tree/master/contacts" "Source code on Github")))
