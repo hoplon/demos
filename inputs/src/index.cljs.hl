@@ -32,7 +32,7 @@
 
       ;; The on-keyup event fires on every keystroke for demo purposes. In
       ;; practice you should only update on-blur or on-change.
-      :keyup #(reset! text-input (.. % -target -value)))
+      :keyup #(reset! text-input @%))
       ;; On all the examples we are using the event to get the value of the
       ;; input. So no id is necessary.
 
@@ -42,7 +42,7 @@
       :type "text"
       :placeholder "Type something here"
       :value text-input
-      :keyup #(reset! text-input (.. % -target -value)))
+      :keyup #(reset! text-input @%))
     (p (text "Value of text input: ~{text-input}"))
 
     (h2 "A range input")
@@ -51,12 +51,12 @@
       :style "width:400px"
       :type "range" :min 0 :max 100 :step 1
       :value range-input
-      :change #(reset! range-input (.. % -target -value)))
+      :input #(reset! range-input @%))
     (p (text "Value of range input: ~{range-input}"))
 
     (h2 "A select input")
     (select
-      :change #(reset! select-input (.. % -target -value))
+      :change #(reset! select-input @%)
       :value select-input
       (option :value "blue"  "blue")
       (option :value "green" "green")
@@ -105,7 +105,7 @@
     (label
       (input
         :type "radio"
-        :click #(reset! radio-input (.. % -target -value))
+        :click #(reset! radio-input @%)
 
         ;; You need to check each input to se if it is checked.
         :checked (cell= (= "a" radio-input))
@@ -116,7 +116,7 @@
     (label
       (input
         :type "radio"
-        :click #(reset! radio-input (.. % -target -value))
+        :click #(reset! radio-input @%)
         :checked (cell= (= "b" radio-input))
         :name "radio-group"
         :value "b")

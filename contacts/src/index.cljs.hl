@@ -41,7 +41,7 @@
     (div
       (input
         :value new-contact
-        :input #(reset! new-contact (.val (js/jQuery (.-target %)))))
+        :input #(reset! new-contact @%))
       (button
         :click #(when-let [c @parsed]
                   (swap! to conj c)
