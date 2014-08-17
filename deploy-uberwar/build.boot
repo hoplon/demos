@@ -27,6 +27,7 @@
                  :ring               {:handler hello-world.core/app}})
   (comp
     (hoplon {:optimizations :advanced})
+    (lein "clean")
     (lein "ring" "uberwar" "hello.war")))
 
 (deftask development
