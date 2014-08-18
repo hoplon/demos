@@ -21,7 +21,7 @@
 (deftask development
   "Build project for development, local dev server."
   []
-  (comp (watch) (hear) (hoplon {:pretty-print true :prerender false}) (c/castra-dev-server 'castra.api)))
+  (comp (watch) (hear) (hoplon {:pretty-print true :source-map true :prerender false}) (c/castra-dev-server 'castra.api)))
 
 (deftask production
   "Build project for production."
