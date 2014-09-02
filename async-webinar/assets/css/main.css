@@ -1,0 +1,81 @@
+body {
+    margin: 0 0 300px 0;
+    padding: 0;
+    font-family: helvetica, arial, sans-serif;
+}
+
+button {
+    outline: none;
+    color: #666;
+    font-size: 16px;
+    border: 2px solid #666;
+    background-color: white;
+    border-radius: 4px;
+    padding: 4px 12px;
+    text-transform: uppercase;
+}
+
+button:hover {
+    color: black;
+    border-color: black;
+}
+
+button.disabled:hover {
+    color: #666;
+    border-color: #666;
+}
+
+button:active {
+    background-color: #efefef;
+}
+
+button.disabled:active {
+    background-color: white;
+}
+
+table td.left {
+    vertical-align: top;
+}
+
+.example {
+    padding: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.example table {
+    width: 100%;
+}
+
+.example table td {
+    width: 50%;
+}
+
+h2 {
+    margin-top: 0px;
+}
+
+.display {
+    background-color: #efefef;
+    padding: 10px;
+    font-family: courier, monospace;
+    font-size: 16px;
+    border: 1px solid #ccc;
+}
+
+.scrolling {
+    position: relative;
+    height: 220px;
+    max-height: 200px;
+    overflow-y: hidden;
+}
+
+.scrolling > div {
+    position: absolute;
+    bottom: -12px;
+    left: 0px;
+    right: 0px;
+}
+
+button.disabled {
+    opacity: 0.5;
+}
