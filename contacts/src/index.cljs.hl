@@ -44,8 +44,8 @@
         :input #(reset! new-contact @%))
       (button
         :click #(when-let [c @parsed]
-                  (swap! to conj c)
-                  (reset! new-contact ""))
+                  (dosync (swap! to conj c)
+                          (reset! new-contact "")))
         :disabled (cell= (not parsed))
         label)
       (pre (cell= (pr-str parsed))))))
