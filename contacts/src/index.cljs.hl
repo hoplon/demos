@@ -58,5 +58,5 @@
     (ul (contact-list :from my-contacts :sorted-by :last))
     (contact-input :to my-contacts "Add contact")
     (hr)
-    (p (em "Note: The Add contact button is disabled until you enter a valid contact.  A valid contact consists two or three whitespace-delimited names."))
+    (p (em "Note: The Add contact button is disabled until you enter a valid contact.  A valid contact consists of two or three whitespace-delimited names."))
     (a :href "https://github.com/tailrecursion/hoplon-demos/tree/master/contacts" "Source code on Github")))
