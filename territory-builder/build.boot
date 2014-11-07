@@ -13,15 +13,20 @@
 (require
   '[tailrecursion.hoplon.boot      :refer :all]
   '[tailrecursion.boot.task.notify :refer [hear]]
-  '[tailrecursion.castra.task :as c]
+  '[tailrecursion.castra.task      :refer [castra-dev-server]]
   '[tailrecursion.boot.task.ring   :refer [dev-server]])
 
 (add-sync! (get-env :out-path) #{"assets"})
 
+(deftask castra
+  "launch castra server"
+  []
+  (castra-dev-server 'castra.api))
+
 (deftask development
   "Build project for development, local dev server."
   []
-  (comp (watch) (hear) (hoplon {:pretty-print true :source-map true :prerender false}) (c/castra-dev-server 'castra.api)))
+  (comp (watch) (hear) (hoplon {:pretty-print true :source-map true :prerender false}) (castra)))
 
 (deftask production
   "Build project for production."
