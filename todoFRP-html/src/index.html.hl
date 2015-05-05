@@ -2,15 +2,12 @@
   (page "index.html"
     (:refer-clojure :exclude [nth])
     (:require
-      [tailrecursion.hoplon.reload        :refer [reload-all]]
       [tailrecursion.hoplon.util          :refer [nth name pluralize]]
       [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
   ;; utility functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (declare route state editing)
-
-  (reload-all)
 
   (def mapvi  (comp vec map-indexed))
 
@@ -59,8 +56,8 @@
 
 <html lang="en">
   <head>
-    <meta charset="utf8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <html-meta charset="utf8">
+    <html-meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="stylesheet" href="base.css">
     <title>Hoplon • TodoMVC</title>
   </head>
@@ -74,7 +71,7 @@
       <section id="todoapp">
         <header id="header">
           <h1>todos</h1>
-          <form on-submit="{{ #(do (new! (val-id :new-todo)) (do! (by-id :new-todo) :value nil)) }}">
+          <form on-submit="{{ #(do (new! (val-id :new-todo)) (do! (by-id :new-todo) :value nil) false) }}">
             <input
                id="new-todo"
                type="text"
@@ -114,7 +111,7 @@
                      class="destroy"
                      on-click="{{ #(destroy! @i) }}"></button>
                 </div>
-                <form on-submit="{{ #(editing! @i false) }}">
+                <form on-submit="{{ #(do (editing! @i false) false) }}">
                   <input
                      id="{{ edit# }}"
                      type="text"
