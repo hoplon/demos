@@ -1,3 +1,7 @@
 zzz/
 /.gh-pages/
 .repl-history
+*/target
+*/.nrepl-*
+*/.repl-*
+
