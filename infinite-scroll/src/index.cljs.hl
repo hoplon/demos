@@ -44,7 +44,7 @@
 
 (html :lang "en"
   (head
-    (meta :charset "utf-8")
+    (html-meta :charset "utf-8")
     (title "Hoplon • Infinite Scroll Demo")
     (link :rel "stylesheet" :type "text/css" :href "css/main.css"))
   (body
