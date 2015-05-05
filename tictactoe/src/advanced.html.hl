@@ -1,7 +1,7 @@
 <script type="text/hoplon">
   (page "advanced.html"
     (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
-  
+
   (defc winners nil)
 </script>
 
