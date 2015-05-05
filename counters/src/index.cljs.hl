@@ -1,7 +1,4 @@
-(page "index.html"
-  (:require [tailrecursion.hoplon.reload :refer [reload-all]]))
-
-(reload-all)
+(page "index.html")
 
 (defelem swap-button
   [{:keys [state func] :or {func identity} :as attr} kids]
@@ -29,7 +26,7 @@
 
 (html
   (head
-    (meta :charset "UTF-8")
+    (html-meta :charset "UTF-8")
     (title "Hoplon • Counters"))
   (body
     (counters :size 10)
