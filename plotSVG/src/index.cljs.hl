@@ -1,9 +1,6 @@
 (page "index.html"
   (:require
-   [chart :as c]
-   [tailrecursion.hoplon.reload :refer [reload-all]]))
-
-(reload-all)
+   [chart :as c]))
 
 ;; Source code
 (def   src-url "https://github.com/tailrecursion/hoplon-demos/blob/master/plotSVG/src/index.cljs.hl")
@@ -50,7 +47,7 @@
 
 (html :lang "en"
   (head
-    (meta :charset "UTF-8")
+    (html-meta :charset "UTF-8")
     (title "Hoplon • Chart Demo"))
   (body
     (div :css {:width       "400px"
