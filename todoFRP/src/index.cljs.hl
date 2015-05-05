@@ -9,15 +9,12 @@
 (page "index.html"
   (:refer-clojure :exclude [nth])
   (:require
-   [tailrecursion.hoplon.reload        :refer [reload-all]]
-   [tailrecursion.hoplon.util          :refer [nth name pluralize]]
-   [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
+    [tailrecursion.hoplon.util          :refer [nth name pluralize]]
+    [tailrecursion.hoplon.storage-atom  :refer [local-storage]]))
 
 ;; utility functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (declare route state editing)
-
-(reload-all)
 
 (def mapvi  (comp vec map-indexed))
 
@@ -67,8 +64,8 @@
 
 (html :lang "en"
   (head
-    (meta :charset "utf-8")
-    (meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
+    (html-meta :charset "utf-8")
+    (html-meta :http-equiv "X-UA-Compatible" :content "IE=edge,chrome=1")
     (link :rel "stylesheet" :href "base.css")
     (title "Hoplon • TodoMVC"))
   (body
