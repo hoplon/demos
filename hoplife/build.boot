@@ -1,33 +1,33 @@
-#!/usr/bin/env boot
-
-#tailrecursion.boot.core/version "2.5.0"
-
 (load-file "../build.util.clj")
 (require '[build.util :as build])
 
 (set-env!
   :dependencies (build/deps)
-  :src-paths    #{"src"}
-  :out-path     "resources/public")
-
-(add-sync! (get-env :out-path) #{"resources/assets"})
+  :source-paths   #{"src"})
 
 (require
- '[tailrecursion.hoplon.boot      :refer :all]
- '[tailrecursion.boot.task        :refer :all]
- '[tailrecursion.boot.task.notify :refer [hear]]
- '[tailrecursion.boot.task.ring   :refer [dev-server]])
+  '[adzerk.boot-cljs          :refer [cljs]]
+  '[adzerk.boot-reload        :refer [reload]]
+  '[adzerk.boot-cljs-repl     :refer [cljs-repl start-repl]]
+  '[tailrecursion.boot-hoplon :refer [hoplon prerender]]
+  '[pandeiro.boot-http        :refer [serve]])
 
-(deftask production
-  "Build for production"
-  [& args]
-  (comp (hoplon {:optimizations :advanced})))
-
-(deftask development
-  "Build for development"
-  [& args]
+(deftask dev
+  "Build project for local development."
+  []
   (comp
-   (watch)
-   #_(hear)
-   (hoplon {:prerender false})
-   (dev-server)))
+    (serve)
+    (watch)
+    (speak)
+    (hoplon)
+    (reload)
+    (cljs-repl)
+    (cljs)))
+
+(deftask prod
+  "Build project for production deployment."
+  []
+  (comp
+    (hoplon)
+    (cljs :optimizations :advanced)
+    (prerender)))
