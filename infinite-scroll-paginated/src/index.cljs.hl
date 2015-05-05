@@ -148,7 +148,7 @@
 
 (html :lang "en"
   (head
-    (meta :charset "utf-8")
+    (html-meta :charset "utf-8")
     (title "Hoplon • Infinite Scroll Paginated Demo"))
   (body
     (div :id "header"
