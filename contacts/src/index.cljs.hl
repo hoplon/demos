@@ -1,8 +1,5 @@
 (page "index.html"
-  (:require [clojure.string :as string]
-            [tailrecursion.hoplon.reload :refer [reload-all]]))
-
-(reload-all)
+  (:require [clojure.string :as string]))
 
 (def my-contacts
   (cell #{{:first "Ben" :last "Bitdiddle" :email "benb@mit.edu"}
