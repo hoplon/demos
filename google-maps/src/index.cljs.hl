@@ -60,7 +60,8 @@
 
 (html :lang "en"
   (head
-    (title "Hoplon • Google Maps"))
+    (title "Hoplon • Google Maps")
+    (link :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" :rel "stylesheet"))
   (body
     (container
       (h1 "Hoplon & Google Maps")
