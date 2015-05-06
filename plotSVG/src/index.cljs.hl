@@ -1,6 +1,6 @@
 (page "index.html"
   (:require
-   [chart :as c]))
+    [chart :as c]))
 
 ;; Source code
 (def   src-url "https://github.com/tailrecursion/hoplon-demos/blob/master/plotSVG/src/index.cljs.hl")
