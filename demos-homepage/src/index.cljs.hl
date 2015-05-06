@@ -1,11 +1,8 @@
 (page "index.html"
   (:require-macros
-   [macros.core :refer [demo-dirs]])
+    [macros.core :refer [demo-dirs]])
   (:require
-   [hoplon.twitter.bootstrap :refer [container]]
-   [tailrecursion.hoplon.reload :refer [reload-all]]))
-
-(reload-all)
+    [hoplon.twitter.bootstrap :refer [container]]))
 
 (def url:hoplon         "http://hoplon.io")
 (def url:hoplon-demos   "https://github.com/tailrecursion/hoplon-demos")
@@ -22,7 +19,9 @@
 
 (html
   (head
-    (title "Hoplon • Demos"))
+    (title "Hoplon • Demos")
+    (link :href "main.css" :rel "stylesheet")
+    (link :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" :rel "stylesheet")))
   (body
     (div :class "jumbotron"
       (container :class "lambda"
