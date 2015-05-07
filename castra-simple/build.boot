@@ -1,35 +1,35 @@
-#!/usr/bin/env boot
-
-#tailrecursion.boot.core/version "2.5.0"
-
 (load-file "../build.util.clj")
 (require '[build.util :as build])
 
 (set-env!
-  :dependencies (build/deps)
-  :out-path     "resources/public"
-  :src-paths    #{"src"})
+  :dependencies (conj (build/deps)
+                  '[tailrecursion/castra "2.2.2"]
+                  '[ring/ring-defaults "0.1.4"]
+                  '[compojure "1.3.3"])
+  :resource-paths #{"assets"}
+  :source-paths   #{"src"})
 
-;; Static resources (css, images, etc.):
-(add-sync! (get-env :out-path) #{"assets"})
+(require
+  '[adzerk.boot-cljs          :refer [cljs]]
+  '[adzerk.boot-reload        :refer [reload]]
+  '[tailrecursion.boot-hoplon    :refer [hoplon prerender]]
+  '[pandeiro.boot-http           :refer [serve]])
 
-(require '[tailrecursion.hoplon.boot :refer :all]
-         '[tailrecursion.castra.task :as c])
-
-(deftask development
-  "Build castra-simple for development and deploy to local dev server."
-  []
-  (comp (watch) (hoplon {:prerender false}) (c/castra-dev-server 'app.api)))
-
-(deftask staging
-  "Build castra-simple for production and deploy to local dev server."
+(deftask dev
+  "Build project for local development."
   []
   (comp
-    (hoplon {:optimizations :advanced})
-    (c/castra-dev-server 'app.api)
-    (with-pre-wrap @(promise))))
+    (serve :handler 'app.handler/app :reload true)
+    (watch)
+    (speak)
+    (hoplon)
+    (reload)
+    (cljs)))
 
-(deftask production
-  "Build castra-simple for production."
+(deftask prod
+  "Build project for production deployment."
   []
-  (hoplon {:optimizations :advanced}))
+  (comp
+    (hoplon)
+    (cljs :optimizations :advanced)
+    (prerender)))
