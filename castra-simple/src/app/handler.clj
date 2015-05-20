@@ -12,4 +12,4 @@
   (route/resources "/" {:root ""}))
 
 (def app
-  (d/wrap-defaults app-routes (assoc-in d/site-defaults [:security :anti-forgery] false)))
+  (d/wrap-defaults app-routes d/api-defaults))
