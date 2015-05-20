@@ -9,32 +9,38 @@
 (ns demo.core
   (:require
     [ring.adapter.jetty               :refer [run-jetty]]
-    [ring.middleware.resource         :refer [wrap-resource]]
-    [ring.middleware.session          :refer [wrap-session]]
-    [ring.middleware.session.cookie   :refer [cookie-store]]
-    [ring.middleware.file             :refer [wrap-file]]
-    [ring.middleware.file-info        :refer [wrap-file-info]]
-    [tailrecursion.castra.handler     :refer [castra]]))
+    [ring.middleware.session          :refer  [wrap-session]]
+    [ring.middleware.session.cookie   :refer  [cookie-store]]
+    [compojure.core :as c]
+    [compojure.route :as route]
+    [ring.middleware.defaults :as d]
+    [ring.util.response :as response]
+    [tailrecursion.castra.handler :as castra]))
 
 (def server (atom nil))
 
-(defn app [port public-path]
-  (->
-    (castra 'demo.api.chat)
-    (wrap-session {:store (cookie-store {:key "a 16-byte secret"})})
-    (wrap-file public-path)
-    (wrap-file-info)
-    (run-jetty {:join? false :port port})))
+(c/defroutes app-routes
+  (c/GET "/" req (response/content-type (response/resource-response "index.html") "text/html") )
+  (c/POST "/" req (castra/castra 'demo.api.chat))
+  (route/resources "/" {:root ""}))
+
+(def handler
+  (-> app-routes
+      (wrap-session  {:store  (cookie-store  {:key "a 16-byte secret"})})
+      (d/wrap-defaults d/api-defaults)))
+
+(defn app [port]
+  (-> handler
+      (run-jetty {:join? false :port port})))
 
 (defn start-server
   "Start castra demo server (port 33333)."
-  [port public-path]
-  (swap! server #(or % (app port public-path))))
+  [port]
+  (swap! server #(or % (app port))))
 
 (defn run-task
-  [port public-path]
-  (.mkdirs (java.io.File. public-path))
-  (start-server port public-path)
+  [port]
+  (start-server port)
   (fn [continue]
     (fn [event]
       (continue event))))

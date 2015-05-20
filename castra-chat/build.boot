@@ -1,28 +1,35 @@
-#!/usr/bin/env boot
-
-#tailrecursion.boot.core/version "2.5.0"
-
 (load-file "../build.util.clj")
 (require '[build.util :as build])
 
 (set-env!
-  :dependencies (build/deps)
-  :out-path     "resources/public"
-  :src-paths    #{"src/hoplon" "src/castra" "src/cljs"})
-
-;; Static assets
-(add-sync! (get-env :out-path) #{"src/static"})
+  :dependencies (conj (build/deps)
+                  '[tailrecursion/castra "2.2.2"]
+                  '[ring/ring-defaults "0.1.4"]
+                  '[compojure "1.3.3"])
+  :resource-paths #{"src/static"}
+  :source-paths   #{"src/hoplon" "src/castra" "src/cljs"})
 
 (require
-  '[tailrecursion.hoplon.boot :refer :all]
-  '[tailrecursion.castra.task :as c])
+  '[adzerk.boot-cljs          :refer [cljs]]
+  '[adzerk.boot-reload        :refer [reload]]
+  '[tailrecursion.boot-hoplon    :refer [hoplon prerender]]
+  '[pandeiro.boot-http           :refer [serve]])
 
-(deftask development
-  "Build the castra chat demo. Server on port 8000."
+(deftask dev
+  "Build project for local development."
   []
-  (comp (watch) (hoplon {:prerender false}) (c/castra-dev-server 'demo.api.chat)))
+  (comp
+    (serve :handler 'demo.core/handler :reload true)
+    (watch)
+    (speak)
+    (hoplon)
+    (reload)
+    (cljs)))
 
-(deftask production
-  "Build the castra chat demo for production."
+(deftask prod
+  "Build project for production deployment."
   []
-  (hoplon {:optimizations :advanced}))
+  (comp
+    (hoplon)
+    (cljs :optimizations :advanced)
+    (prerender)))
