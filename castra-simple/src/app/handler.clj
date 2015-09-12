@@ -7,7 +7,7 @@
     [tailrecursion.castra.handler :as castra]))
 
 (c/defroutes app-routes
-  (c/GET "/" req (response/content-type (response/resource-response "index.html") "text/html") )
+  (c/GET "/" req (response/content-type (response/resource-response "index.html") "text/html"))
   (c/POST "/" req (castra/castra 'app.api))
   (route/resources "/" {:root ""}))
 
