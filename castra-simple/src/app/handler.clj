@@ -4,12 +4,14 @@
     [compojure.route :as route]
     [ring.middleware.defaults :as d]
     [ring.util.response :as response]
-    [tailrecursion.castra.handler :as castra]))
+    [castra.middleware :as castra]))
 
 (c/defroutes app-routes
   (c/GET "/" req (response/content-type (response/resource-response "index.html") "text/html"))
-  (c/POST "/" req (castra/castra 'app.api))
   (route/resources "/" {:root ""}))
 
 (def app
-  (d/wrap-defaults app-routes d/api-defaults))
+  (-> app-routes
+      (d/wrap-defaults d/api-defaults)
+      (castra/wrap-castra-session "a 16-byte secret")
+      (castra/wrap-castra 'app.api)))

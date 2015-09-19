@@ -14,11 +14,11 @@ random numbers that are generated on the server and transmited to the client.
 1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot development
+    $ boot dev
     ```
 
 2. Go to [http://localhost:8000][3] in your browser.
 
-[1]: https://github.com/tailrecursion/boot
+[1]: https://github.com/boot-clj/boot
 [2]: https://github.com/technomancy/leiningen
 [3]: http://localhost:8000

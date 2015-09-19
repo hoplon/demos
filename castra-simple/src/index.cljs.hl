@@ -9,4 +9,4 @@
   (head
     (link :rel "stylesheet" :type "text/css" :href "css/main.css"))
   (body
-    (h1 (text "Hello, World! ~{random}"))))
+    (h1 (text "Hello, Hoplon and Castra World! ~{random}"))))
