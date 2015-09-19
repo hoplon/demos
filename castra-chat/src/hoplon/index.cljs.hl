@@ -16,7 +16,13 @@
 (def toggle-register! #(swap! register? not))
 (def log-reg!         #(if @register? (c/register! %1 %2 %3) (c/login! %1 %2)))
 
-(cell= (print (:trace c/error)))
+(defn by-id [id]
+  (.getElementById js/document (name id)))
+
+(defn val-id [id]
+  (do! (by-id id) :value))
+
+(cell= (prn c/error #_(:trace )))
 
 (c/init)
 

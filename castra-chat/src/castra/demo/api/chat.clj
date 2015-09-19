@@ -7,11 +7,11 @@
 ;; You must not remove this notice, or any other, from this software.
 
 (ns demo.api.chat
-  (:use     [demo.http.rules      :exclude  [assert]])
-  (:require [tailrecursion.castra :refer    [defrpc ex error *session*]]))
+  (:use     [demo.http.rules    :exclude  [assert]])
+  (:require [castra.core :refer [defrpc ex *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(def error ::error)
 (defn call      [f & args]  (apply f args))
 (defn apply-all [fns coll]  (mapv #(%1 %2) (cycle fns) coll))
 (defn every-kv? [fn-map m]  (->> m (merge-with call fn-map) vals (every? identity)))
@@ -60,7 +60,7 @@
 
 (defrpc get-state [& [user]]
   {:rpc/pre [(nil? user)
-         (logged-in?)]}
+             (logged-in?)]}
   (let [user    (or user (:user @*session*))
         users   (->> @db :users keys sort)
         convos  (->> (->> @db :messages keys (filter #(contains? % user)))

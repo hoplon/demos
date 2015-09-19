@@ -9,10 +9,10 @@
 (ns demo.http.rules
   (:refer-clojure :exclude [assert])
   (:require
-    [tailrecursion.castra :refer [ex auth *request* *session*]]))
+    [castra.core :refer [ex *request* *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(def auth ::auth)
 (defmacro assert [expr & [msg]]
   `(when-not ~expr (throw (ex auth (or ~msg "Server error.")))))
 
