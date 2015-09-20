@@ -1,4 +1,4 @@
-(ns tailrecursion.hoplon-demos.tictactoe)
+(ns hoplon.demos.tictactoe)
 
 (def transpose (partial apply map vector))
 (def diagonal  (partial map (comp first drop) (range)))
@@ -53,7 +53,7 @@
         (loop-tpl :bindings [[i row] (cell= (indexed rows))]
           (tr
             (loop-tpl :bindings [[j x] (cell= (indexed row))]
-              (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
-     (div :do-toggle over
+              (td :click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+     (div :toggle over
        (p (text "~{over}"))
-       (button :on-click #(reset! game (new-game sizen)) "Play Again")))))
+       (button :click #(reset! game (new-game sizen)) "Play Again")))))

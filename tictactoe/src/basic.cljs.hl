@@ -44,18 +44,18 @@
 
 (html
   (head
-   (title "Hoplon • Tic Tac Toe")
-   (link :rel "stylesheet" :href "screen.css"))
+    (title "Hoplon • Tic Tac Toe")
+    (link :rel "stylesheet" :href "screen.css"))
   (body
-   (table :class "tictac"
-     (loop-tpl :bindings [[i row] (cell= (indexed rows))]
-       (tr
-        (loop-tpl :bindings [[j x] (cell= (indexed row))]
-          (td :on-click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
-   (div :do-toggle (cell= (and (not over) (seq undos)))
-    (button :on-click undo! "Undo"))
-   (div :do-toggle over
-     (p (text "~{over}"))
-     (button :on-click reset-game! "Play Again"))
-   (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/basic.cljs.hl"
+    (table :class "tictac"
+      (loop-tpl :bindings [[i row] (cell= (indexed rows))]
+        (tr
+          (loop-tpl :bindings [[j x] (cell= (indexed row))]
+            (td :click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
+    (div :toggle (cell= (and (not over) (seq undos)))
+      (button :click undo! "Undo"))
+    (div :toggle over
+      (p (text "~{over}"))
+      (button :click reset-game! "Play Again"))
+    (a :href "https://github.com/hoplon/demos/blob/master/tictactoe/src/basic.cljs.hl"
       "Source Code")))

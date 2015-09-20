@@ -1,6 +1,6 @@
 <script type="text/hoplon">
   (page "advanced.html"
-    (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
+    (:require [hoplon.demos.tictactoe :as tictactoe]))
 
   (defc winners nil)
 </script>
@@ -20,7 +20,7 @@
     </p>
 
     <p>
-      The first tag on this page imports the tailrecursion.hoplon-demos.tictactoe library
+      The first tag on this page imports the hoplon.demos.tictactoe library
       and defines a cell in which to store the historical record of winners:
     </p>
 
@@ -28,7 +28,7 @@
       ;;{{
       <script type="text/hoplon">
         (page "advanced.html"
-          (:require [tailrecursion.hoplon-demos.tictactoe :as tictactoe]))
+          (:require [hoplon.demos.tictactoe :as tictactoe]))
 
         (defc winners nil)
       </script>
@@ -70,7 +70,7 @@
     <div style="clear:both"/>
 
     <div style="padding-top: 20px;padding-bottom:50px;">
-      <a href="https://github.com/tailrecursion/hoplon-demos/blob/master/tictactoe/src/advanced.html.hl">Source Code</a>
+      <a href="https://github.com/hoplon/demos/blob/master/tictactoe/src/advanced.html.hl">Source Code</a>
     </div>
   </body>
 </html>

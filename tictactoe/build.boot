@@ -14,7 +14,7 @@
   '[adzerk.boot-cljs         :refer [cljs]]
   '[adzerk.boot-cljs-repl    :refer [cljs-repl start-repl]]
   '[adzerk.boot-reload       :refer [reload]]
-  '[hoplon.boot-hoplon       :refer [hoplon html2cljs prerender]]
+  '[hoplon.boot-hoplon       :refer [hoplon prerender]]
   '[tailrecursion.boot-jetty :refer [serve]])
 
 (deftask dev
@@ -23,8 +23,6 @@
   (comp
     (watch)
     (speak)
-    (html2cljs :file "index.html.hl")
-    (html2cljs :file "advanced.html.hl")
     (hoplon)
     (cljs-repl)
     (cljs)
@@ -35,8 +33,6 @@
   "Build project for production deployment."
   []
   (comp
-    (html2cljs :file "index.html.hl")
-    (html2cljs :file "advanced.html.hl")
     (hoplon)
     (cljs :optimizations :advanced)
     (prerender)))
