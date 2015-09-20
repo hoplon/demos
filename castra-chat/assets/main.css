@@ -21,7 +21,6 @@ span.from {
   width:        50px; }
 
 #error {
-  display:      none;
   position:     fixed;
   z-index:      9999;
   width:        100%;
@@ -32,7 +31,6 @@ span.from {
   font-weight:  bold; }
 
 #loading {
-  display:      none;
   position:     fixed;
   z-index:      99999;
   left:         50%;
@@ -72,12 +70,6 @@ span.from {
 #convo label {
   display:      inline-block;
   width:        100px; }
-
-#login-pane {
-  display:      none; }
-
-#chat-pane {
-  display:      none; }
 
 #content {
   width:        960px;

@@ -22,8 +22,6 @@
 (defn val-id [id]
   (do! (by-id id) :value))
 
-(cell= (prn c/error #_(:trace )))
-
 (c/init)
 
 (html
@@ -33,17 +31,25 @@
   (body
     (div
       :id "error"
-      :on-click c/clear-error!
-      :do-slide-toggle c/error
-      (text "~(:message c/error)"))
+      :click c/clear-error!
+      :slide-toggle c/error
+      :css {:display "none"}
+      (text "~{c/error-message}"))
 
-    (div :id "loading" :do-fade-toggle c/loading? "loading...")
+    (div
+      :id "loading"
+      :fade-toggle c/loading?
+      :css {:display "none"}
+      "loading...")
 
     (div {:id "content"}
-      (div {:id "login-pane" :do-toggle c/show-login?}
+      (div
+        :id "login-pane"
+        :css {:display "none"}
+        :toggle c/show-login?
         (form
           :id "login"
-          :on-submit #(log-reg! (val-id "user") (val-id "pass") (val-id "pass2"))
+          :submit #(log-reg! (val-id "user") (val-id "pass") (val-id "pass2"))
           (div
             (label "Username")
             (input :type "text" :id "user" :autofocus "autofocus"))
@@ -52,16 +58,19 @@
             (label "Password")
             (input :type "password" :id "pass"))
 
-          (div :do-toggle register?
+          (div :toggle register?
             (label "Confirm")
             (input :type "password" :id "pass2"))
 
           (button :type "submit" "submit")
 
-          (a :href "javascript:void(0)" :on-click toggle-register!
+          (a :href "javascript:void(0)" :click toggle-register!
             (text "~{reg-link-text}"))))
 
-      (div :id "chat-pane" :do-toggle c/show-chat?
+      (div
+        :id "chat-pane"
+        :css {:display "none"}
+        :toggle c/show-chat?
         (h1 (text "hello, ~{c/user}!"))
 
         (div :id "buddies"
@@ -69,38 +78,38 @@
 
           (ul
             (loop-tpl :bindings [buddy c/buddies]
-              (li :do-toggle (cell= (not (or (s/blank? buddy) (= c/user buddy))))
+              (li :toggle (cell= (not (or (s/blank? buddy) (= c/user buddy))))
                 (span :class "buddy" (text "~{buddy}"))
 
                 (input
                   :type "checkbox"
-                  :do-value (cell= (contains? c/active-chat buddy))
-                  :on-click #(c/toggle-chat! buddy)))))
+                  :value (cell= (contains? c/active-chat buddy))
+                  :click #(c/toggle-chat! buddy)))))
 
           (h4 "chats")
 
           (ul
             (loop-tpl :bindings [[conv conv-str] c/loop-convs]
-              (li :do-toggle (cell= (not (s/blank? conv-str)))
+              (li :toggle (cell= (not (s/blank? conv-str)))
                 (a
                   :href "javascript:void(0)"
-                  :do-class (cell= {:active (= c/active-chat conv)})
-                  :on-click #(c/switch-chat! conv)
+                  :class (cell= {:active (= c/active-chat conv)})
+                  :click #(c/switch-chat! conv)
                   (text "~{conv-str}"))))))
 
         (div :id "chat"
           (div :id "convo"
             (ul
               (loop-tpl :bindings [{from :from msg-text :text} c/msgs]
-                (li :do-toggle (cell= (not (s/blank? from)))
+                (li :toggle (cell= (not (s/blank? from)))
                   (span :class "from" (text "~{from}"))
                   (span (text ": ~{msg-text}")))))
 
-            (form {:on-submit #(do (c/send-message! (val-id "chat-message"))
+            (form {:submit #(do (c/send-message! (val-id "chat-message"))
                                    (do! (by-id "chat-message") :value ""))}
               (label (text "~{c/user} >"))
               (input
                 :type "text"
                 :id "chat-message"
-                :do-toggle (cell= (< 0 (count (disj c/active-chat c/user))))
-                :do-focus c/active-chat))))))))
+                :toggle (cell= (< 0 (count (disj c/active-chat c/user))))
+                :focus c/active-chat))))))))

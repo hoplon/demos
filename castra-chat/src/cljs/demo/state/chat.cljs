@@ -19,6 +19,7 @@
 
 (defc state         {})
 (defc error         nil)
+(defc= error-message (when error (.-message error)))
 (defc loading       [])
 (defc active-chat   nil)
 
@@ -27,7 +28,10 @@
 (defc= logged-in?   (not (or (nil? state) (= {} state))))
 (defc= show-chat?   (and loaded? logged-in?))
 (defc= show-login?  (and loaded? (not logged-in?)))
-
+(cell= (prn :loaded loaded?))
+(cell= (prn :show-chat show-chat?))
+(cell= (prn :show-login show-login?))
+(cell= (prn :logged-in logged-in?))
 (defc= user         (:user state))
 (defc= buddies      (:users state))
 (defc= convs        (sort (keys (:messages state))))
@@ -47,8 +51,7 @@
 (def send-message!  #(send-message* @user @active-chat %))
 
 (cell=
-  (let [s (get-in error [:data :state] ::nope)]
-    (prn :s s)
+  (let [s (get (ex-data error) :state ::nope)]
     (when-not (= ::nope s)
       (reset! ~(cell state) s))))
 
