@@ -59,4 +59,4 @@
         (div :id "scroll" :scroll-end fetch-images!
           (loop-tpl :bindings [{:keys [link image]} state]
             (div (a :href link :target "_blank" (img :src image)))))
-        (p (a :href "https://github.com/tailrecursion/hoplon-demos/tree/master/infinite-scroll/src/index.cljs.hl" "Source Code")))))) 
+        (p (a :href "https://github.com/tailrecursion/hoplon-demos/tree/master/infinite-scroll/src/index.cljs.hl" "Source Code"))))))
