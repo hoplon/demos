@@ -1,7 +1,7 @@
 (ns chart
   (:require
     [clojure.string :as str]
-    [tailrecursion.hoplon.svg :as svg]))
+    [hoplon.svg :as svg]))
 
 (defrecord Chart [width height min-x max-x min-y max-y])
 

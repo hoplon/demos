@@ -2,6 +2,12 @@
   (:require
     [chart :as c]))
 
+(defn by-id [id]
+  (.getElementById js/document (name id)))
+
+(defn val-id [id]
+  (do! (by-id id) :value))
+
 ;; Source code
 (def   src-url "https://github.com/tailrecursion/hoplon-demos/blob/master/plotSVG/src/index.cljs.hl")
 
@@ -59,7 +65,7 @@
       (h2 "Hoplon • Chart Demo")
 
       (hr)
-      
+
       (p
         "Click the plot area to pause/play. "
         "Hover over a point to see its coordinates. "
@@ -69,7 +75,7 @@
         :chart    chart1
         :css      (cell= {:border      "1px solid black"
                           :margin-left (str "-" (- (/ (:width chart1) 2) 200) "px")})
-        :on-click #(swap! paused? not)
+        :click #(swap! paused? not)
 
         ;; draw shading first so it doesn't cover lines or points
         (c/polygon :chart chart1 :data series1 :css {:fill c1 :stroke "none" :fill-opacity 0.5})
@@ -89,6 +95,6 @@
       (input
         :id "w" :style "width:400px"
         :type "range" :min 400 :max 800 :step 1 :value 400
-        :on-change #(reset! pwidth (val-id "w")))
+        :change #(reset! pwidth (val-id "w")))
 
       (p (a :href src-url "Source Code")))))
