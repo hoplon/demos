@@ -1,13 +1,12 @@
 (ns territory-builder.core
   (:gen-class)
   (:require
-   [ring.middleware.resource        :refer [wrap-resource]]
-   [ring.middleware.session         :refer [wrap-session]]
-   [ring.middleware.file            :refer [wrap-file]]
-   [ring.middleware.index-file      :refer [wrap-index-paths]]
-   [ring.middleware.file-info       :refer [wrap-file-info]]
-   [ring.adapter.jetty              :refer [run-jetty]]
-   [castra.middleware :as castra]))
+    [castra.middleware :as castra]
+    [compojure.core :as c]
+    [compojure.route :as route]
+    [ring.adapter.jetty :refer [run-jetty]]
+    [ring.middleware.defaults :as d]
+    [ring.util.response :as response]))
 
 (c/defroutes app-routes
   (c/GET "/" req (response/content-type (response/resource-response "index.html") "text/html"))

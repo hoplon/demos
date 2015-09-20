@@ -1,11 +1,11 @@
 <script type="text/hoplon">
   (page "index.html"
-     (:refer-hoplon :exclude [center])
-     (:require
-       [hoplon.google.jsapi.maps :as m :refer [google-map point-in-polygon]]
-       [hoplon.google.jsapi.loader     :refer [api-key]]
-       [castra.core              :as c :refer [mkremote]]
-       [hoplon.twitter.bootstrap :as b :refer [container tab tabs]]))
+    (:refer-hoplon :exclude [center])
+    (:require
+      [hoplon.google.jsapi.maps :as m :refer [google-map point-in-polygon]]
+      [hoplon.google.jsapi.loader     :refer [api-key]]
+      [castra.core              :as c :refer [mkremote]]
+      [hoplon.twitter.bootstrap :as b :refer [container tab tabs]]))
 
 (reset! api-key "AIzaSyDGqkxjAuq4IeG7rUt6C33Jsiv41bkQfBk")
 (def miami-beach              {:name "Miami Beach"   :lat 25.8130 :lon  -80.1341})
@@ -20,8 +20,9 @@
 (defc loading                 [])
 (defc res                     nil)
 (defc current-address         nil)
+(defc input-address           "")
 
-(defc= containers             (if res (into #{} (for [x (:polygons state)] (do (when (point-in-polygon res (:path x)) (:id x))))) #{}))
+(defc= containers             (if res (into #{} (for [x (:polygons state)] (when (point-in-polygon res (:path x)) (:id x)))) #{}))
 (defc= polygons               (mapv #(if (= (:status %) :complete)
                                        (if (contains? containers (:id %)) (assoc % :opts selected-polygon-opts) (assoc % :opts polygon-opts))
                                        (assoc % :opts incomplete-polygon-opts))(:polygons state)))
@@ -30,15 +31,15 @@
 (defc= polylines              (if working-polygon [{:path (:path working-polygon) :opts working-line-opts}]))
 (defc= markers                (if working-polygon [(assoc (first (:path working-polygon)) :pos :start) (assoc (last (:path working-polygon)) :pos :end)]))
 
-(def get-state        (mkremote 'castra.api/get-state         state error loading))
-(def rmt-add-point    (mkremote 'castra.api/add-point         state error loading))
-(def rmt-finalize     (mkremote 'castra.api/finalize-polygon  state error loading))
-(def rmt-clearall     (mkremote 'castra.api/clear-polygons    state error loading))
-(def rmt-pop-poly     (mkremote 'castra.api/pop-polygon-path  state error loading))
-(def rmt-edit-poly    (mkremote 'castra.api/edit-polygon      state error loading))
-(def rmt-geocode      (mkremote 'castra.api/address->latlng   res   error loading))
+(def get-state        (mkremote 'territory-builder.api/get-state         state error loading))
+(def rmt-add-point    (mkremote 'territory-builder.api/add-point         state error loading))
+(def rmt-finalize     (mkremote 'territory-builder.api/finalize-polygon  state error loading))
+(def rmt-clearall     (mkremote 'territory-builder.api/clear-polygons    state error loading))
+(def rmt-pop-poly     (mkremote 'territory-builder.api/pop-polygon-path  state error loading))
+(def rmt-edit-poly    (mkremote 'territory-builder.api/edit-polygon      state error loading))
+(def rmt-geocode      (mkremote 'territory-builder.api/address->latlng   res   error loading))
 
-(add-initfn! get-state)
+(add-initfn! #(get-state))
 
 (defn marker-click [imap marker iwin pin evt]
   (when (= (:pos pin) :start) (rmt-finalize (:id @working-polygon)))
@@ -62,7 +63,8 @@
 (defn remove-last-point []
   (rmt-pop-poly (:id @working-polygon)))
 
-(defn check-address [address](rmt-geocode address))
+(defn check-address [address]
+  (rmt-geocode address))
 
 (defn clear-polygons [] (rmt-clearall))
 
@@ -87,9 +89,9 @@
         hoplon.google.jsapi.maps.polygons='{{ polygons }}'
         hoplon.google.jsapi.maps.opts='{{ {:zoom 12} }}'/>
       <b.container>
-        <input type="text" size="100" id="address" />
-        <button on-click='{{ #(check-address (val-id :address)) }}'>check address</button>
-        <button on-click='{{ #(clear-polygons) }}'>clear polygons</button>
+        <input type="text" size="100" change='{{ #(reset! input-address @%) }}' />
+        <button click='{{ #(check-address @input-address) }}'>check address</button>
+        <button click='{{ #(clear-polygons) }}'>clear polygons</button>
       </b.container>
     </b.container>
   </body>

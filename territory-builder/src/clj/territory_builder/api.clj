@@ -1,4 +1,4 @@
-(ns territory-builder-api
+(ns territory-builder.api
   (:require
     [castra.core :refer [defrpc]]
     [geocoder.google :as google]
