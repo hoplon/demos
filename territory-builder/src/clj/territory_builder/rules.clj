@@ -1,7 +1,6 @@
-(ns castra.rules
+(ns territory-builder.rules
   (:require
     [tailrecursion.castra :refer [ex auth *request* *session*]]))
 
 (def allow (constantly true))
 (def deny  #(throw (ex auth "Access Denied!")))
-

@@ -1,14 +1,12 @@
 <script type="text/hoplon">
-(page "index.html"
-        (:refer-hoplon :exclude  [center])
-        (:require
-             [hoplon.google.jsapi.maps :as m :refer  [google-map point-in-polygon]]
-             [hoplon.google.jsapi.loader     :refer  [api-key]]
-             [tailrecursion.hoplon.reload    :refer  [reload-all]]
-             [tailrecursion.castra     :as c :refer  [mkremote]]
-             [hoplon.twitter.bootstrap :as b :refer  [container tab tabs]]))
+  (page "index.html"
+     (:refer-hoplon :exclude [center])
+     (:require
+       [hoplon.google.jsapi.maps :as m :refer [google-map point-in-polygon]]
+       [hoplon.google.jsapi.loader     :refer [api-key]]
+       [castra.core              :as c :refer [mkremote]]
+       [hoplon.twitter.bootstrap :as b :refer [container tab tabs]]))
 
-(reload-all)
 (reset! api-key "AIzaSyDGqkxjAuq4IeG7rUt6C33Jsiv41bkQfBk")
 (def miami-beach              {:name "Miami Beach"   :lat 25.8130 :lon  -80.1341})
 (def working-line-opts        {:strokeColor "Green" :strokeWeight "3"})
@@ -16,7 +14,7 @@
 (def selected-polygon-opts    (assoc polygon-opts :strokeColor "Red" :strokeWeight "2"))
 (def incomplete-polygon-opts  {:visible false})
 (def marker-opts              {})
-  
+
 (defc state                   nil)
 (defc error                   nil)
 (defc loading                 [])
@@ -24,8 +22,8 @@
 (defc current-address         nil)
 
 (defc= containers             (if res (into #{} (for [x (:polygons state)] (do (when (point-in-polygon res (:path x)) (:id x))))) #{}))
-(defc= polygons               (mapv #(if (= (:status %) :complete) 
-                                       (if (contains? containers (:id %)) (assoc % :opts selected-polygon-opts) (assoc % :opts polygon-opts)) 
+(defc= polygons               (mapv #(if (= (:status %) :complete)
+                                       (if (contains? containers (:id %)) (assoc % :opts selected-polygon-opts) (assoc % :opts polygon-opts))
                                        (assoc % :opts incomplete-polygon-opts))(:polygons state)))
 (defc= complete-polygons      (into [] (filter #(= (:status %) :complete) (:polygons state))))
 (defc= working-polygon        (first (filter #(= (:status %) :incomplete) polygons)))

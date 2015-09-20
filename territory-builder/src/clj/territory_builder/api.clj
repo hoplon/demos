@@ -1,7 +1,8 @@
-(ns castra.api
-  (:require [castra.rules         :refer [allow deny]])
-  (:require [geocoder.google      :as google])
-  (:require [tailrecursion.castra :refer [defrpc]]))
+(ns territory-builder-api
+  (:require
+    [castra.core :refer [defrpc]]
+    [geocoder.google :as google]
+    [territory-builder.rules :refer [allow deny]]))
 
 (def polygons (atom []))
 ;(add-watch polygons :state (fn [k r o n] (println n)))
@@ -30,7 +31,7 @@
   {:polygons @polygons})
 
 (defrpc add-point [point polygon-id]
-  {:rpc [(allow)] 
+  {:rpc [(allow)]
    :rpc/query [(get-state)]}
   (let [poly  (get-polygon polygon-id)
         path  (or (:path poly) [])
