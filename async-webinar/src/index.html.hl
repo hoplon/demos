@@ -28,7 +28,7 @@
     (swap! ex2-content conj "Done"))
   (when (= @ex2-click-count 0)
     (swap! ex2-click-count inc)
-    (swap! ex2-content conj "Got a Click!" "Waiting for another click ....")))  
+    (swap! ex2-content conj "Got a Click!" "Waiting for another click ....")))
 
 ;; =============================================================================
 ;; Example 3
@@ -180,7 +180,7 @@
                 </tr>
             </table>
         </div>
-        
+
         <!-- Example 3 -->
         <div id="ex3" class="example">
             <h2>Example 3</h2>
@@ -315,7 +315,7 @@
                 <tr>
                     <td class="left">
                         <button id="ex10-button-start-stop" do-text='{{ ex10-button-name}}' on-click='{{ #(ex10) }}'></button>
-                        <button id="ex10-button-prev" on-click='{{ #(ex10-nav :prev) }}' 
+                        <button id="ex10-button-prev" on-click='{{ #(ex10-nav :prev) }}'
                           do-class='{{ (cell= {:disabled (not= ex10-button-name "STOP!")}) }}'>Previous
                         </button>
                         <button id="ex10-button-next" on-click='{{ #(ex10-nav :next) }}' do-class='{{ (cell= {:disabled (not= ex10-button-name "STOP!")}) }}'>Next</button>
