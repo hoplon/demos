@@ -1,4 +1,4 @@
-[[adzerk/boot-cljs          "1.7.48-3"]
+[[adzerk/boot-cljs          "1.7.48-4"]
  [org.clojure/clojurescript "1.7.48"]
  [adzerk/boot-cljs-repl     "0.1.9"]
  [adzerk/boot-reload        "0.3.2"]
