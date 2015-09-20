@@ -35,16 +35,16 @@
                (dissoc :cell)
                (assoc :type (:type attrs "text")
                       :value cell
-                      :on-input #(reset! cell (target-value %)))))))
+                      :input #(reset! cell (target-value %)))))))
 
 (defelem form-group [{:keys [valid?] :as attrs} body]
   (let [dirty? (fn [v] (-> v nil? not))]
     ((div (dissoc attrs :valid?) body)
-    :do-class (cell= {:form-group true
+    :class (cell= {:form-group true
                       :has-error (and (dirty? (:value valid?)) (not (:valid? valid?)))}))))
 
 (defelem input-control [attrs]
-  ((cell-input attrs) :do-class {:form-control true}))
+  ((cell-input attrs) :class {:form-control true}))
 
 ;; interface
 
@@ -59,7 +59,7 @@
       (div :class "site-wrapper-inner"
         (div :class "cover-container"
           (div :class "inner cover"
-            (form :on-submit submit-form
+            (form :submit submit-form
               (form-group :valid? form-name-valid?
                 (label "Name")
                 (input-control :cell form-name))
