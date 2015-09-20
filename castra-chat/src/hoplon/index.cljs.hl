@@ -8,19 +8,13 @@
 
 (page "index.html"
   (:require
-    [demo.state.chat             :as c]
-    [clojure.string              :as s]))
+    [clojure.string :as str]
+    [demo.state.chat :as c]))
 
 (def register?        (cell nil))
 (def reg-link-text    (cell= (if register? "log in" "register")))
 (def toggle-register! #(swap! register? not))
 (def log-reg!         #(if @register? (c/register! %1 %2 %3) (c/login! %1 %2)))
-
-(defn by-id [id]
-  (.getElementById js/document (name id)))
-
-(defn val-id [id]
-  (do! (by-id id) :value))
 
 (c/init)
 
@@ -47,25 +41,27 @@
         :id "login-pane"
         :css {:display "none"}
         :toggle c/show-login?
-        (form
-          :id "login"
-          :submit #(log-reg! (val-id "user") (val-id "pass") (val-id "pass2"))
-          (div
-            (label "Username")
-            (input :type "text" :id "user" :autofocus "autofocus"))
+        (let [user (cell "")
+              pass (cell "")
+              pass2 (cell "")]
+          (form
+            :submit #(log-reg! @user @pass @pass2)
+            (div
+              (label "Username")
+              (input :type "text" :autofocus "autofocus" :value user :change #(reset! user @%)))
 
-          (div
-            (label "Password")
-            (input :type "password" :id "pass"))
+            (div
+              (label "Password")
+              (input :type "password" :value pass :change #(reset! pass @%)))
 
-          (div :toggle register?
-            (label "Confirm")
-            (input :type "password" :id "pass2"))
+            (div :toggle register?
+              (label "Confirm")
+              (input :type "password" :value pass2 :change #(reset! pass2 @%)))
 
-          (button :type "submit" "submit")
+            (button :type "submit" "submit")
 
-          (a :href "javascript:void(0)" :click toggle-register!
-            (text "~{reg-link-text}"))))
+            (a :href "javascript:void(0)" :click toggle-register!
+              (text "~{reg-link-text}")))))
 
       (div
         :id "chat-pane"
@@ -78,7 +74,7 @@
 
           (ul
             (loop-tpl :bindings [buddy c/buddies]
-              (li :toggle (cell= (not (or (s/blank? buddy) (= c/user buddy))))
+              (li :toggle (cell= (not (or (str/blank? buddy) (= c/user buddy))))
                 (span :class "buddy" (text "~{buddy}"))
 
                 (input
@@ -90,26 +86,30 @@
 
           (ul
             (loop-tpl :bindings [[conv conv-str] c/loop-convs]
-              (li :toggle (cell= (not (s/blank? conv-str)))
+              (li :toggle (cell= (not (str/blank? conv-str)))
                 (a
-                  :href "javascript:void(0)"
-                  :class (cell= {:active (= c/active-chat conv)})
-                  :click #(c/switch-chat! conv)
-                  (text "~{conv-str}"))))))
+                 :href "javascript:void(0)"
+                 :class (cell= {:active (= c/active-chat conv)})
+                 :click #(c/switch-chat! conv)
+                 (text "~{conv-str}"))))))
 
         (div :id "chat"
           (div :id "convo"
             (ul
               (loop-tpl :bindings [{from :from msg-text :text} c/msgs]
-                (li :toggle (cell= (not (s/blank? from)))
+                (li :toggle (cell= (not (str/blank? from)))
                   (span :class "from" (text "~{from}"))
                   (span (text ": ~{msg-text}")))))
 
-            (form {:submit #(do (c/send-message! (val-id "chat-message"))
-                                   (do! (by-id "chat-message") :value ""))}
-              (label (text "~{c/user} >"))
-              (input
-                :type "text"
-                :id "chat-message"
-                :toggle (cell= (< 0 (count (disj c/active-chat c/user))))
-                :focus c/active-chat))))))))
+            (let [chat-message (cell "")]
+              (form
+                :submit #(do (c/send-message! @chat-message)
+                             (reset! chat-message "")
+                             (.preventDefault %))
+                (label (text "~{c/user} >"))
+                (input
+                  :type "text"
+                  :toggle (cell= (< 0 (count (disj c/active-chat c/user))))
+                  :value chat-message
+                  :change #(reset! chat-message @%)
+                  :focus c/active-chat)))))))))
