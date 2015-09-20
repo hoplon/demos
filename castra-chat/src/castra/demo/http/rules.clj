@@ -12,9 +12,8 @@
     [castra.core :refer [ex *request* *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(def auth ::auth)
 (defmacro assert [expr & [msg]]
-  `(when-not ~expr (throw (ex (or ~msg "Server error.") {:from ::assert} auth))))
+  `(when-not ~expr (throw (ex (or ~msg "Server error.") {:from ::assert}))))
 
 ;;; internal ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -24,11 +23,11 @@
 ;;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn allow       []      (constantly true))
-(defn deny        []      (throw (ex auth "Permission denied.")))
+(defn deny        []      (throw (ex "Please log in." {:state nil})))
 (defn logout!     []      (swap! *session* assoc :user nil))
 (defn logged-in?  []
   (or (get @*session* :user)
-      (throw (ex "Please log in." {:state nil :status 403}))))
+      (throw (ex "Please log in." {:state nil}))))
 (defn self?       [user]  (assert (= (str user) (str (:user @*session*)))))
 
 (defn register! [db user pass1 pass2]

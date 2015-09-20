@@ -30,7 +30,7 @@
 (defc= show-login?  (and loaded? (not logged-in?)))
 (defc= user         (:user state))
 (defc= buddies      (:users state))
-(defc= convs        (sort (keys (:messages state))))
+(defc= convs        (sort-by #(vec (sort %)) (keys (:messages state))))
 (defc= msgs         (get-in state [:messages active-chat]))
 (defc= loop-convs   (mapv (fn [x] [x, (s/join ", " (disj x user))]) convs))
 

@@ -11,7 +11,6 @@
   (:require [castra.core :refer [defrpc ex *session*]]))
 
 ;;; utility ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(def error ::error)
 (defn call      [f & args]  (apply f args))
 (defn apply-all [fns coll]  (mapv #(%1 %2) (cycle fns) coll))
 (defn every-kv? [fn-map m]  (->> m (merge-with call fn-map) vals (every? identity)))
@@ -64,8 +63,8 @@
   (let [user    (or user (:user @*session*))
         users   (->> @db :users keys sort)
         convos  (->> (->> @db :messages keys (filter #(contains? % user)))
-                  (select-keys (:messages @db))
-                  (map-v (comp reverse (partial take 10))))]
+                     (select-keys (:messages @db))
+                     (map-v (comp reverse (partial take 10))))]
     (when user {:user user, :users users, :messages convos})))
 
 (defrpc register [user pass1 pass2]
