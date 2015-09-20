@@ -8,7 +8,7 @@
 
 (page "index.html"
   (:require
-    [hoplon.storage-atom  :refer [local-storage]]))
+    [hoplon.storage-atom :refer [local-storage]]))
 
 ;; utility functions ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
