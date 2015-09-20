@@ -28,10 +28,6 @@
 (defc= logged-in?   (not (or (nil? state) (= {} state))))
 (defc= show-chat?   (and loaded? logged-in?))
 (defc= show-login?  (and loaded? (not logged-in?)))
-(cell= (prn :loaded loaded?))
-(cell= (prn :show-chat show-chat?))
-(cell= (prn :show-login show-login?))
-(cell= (prn :logged-in logged-in?))
 (defc= user         (:user state))
 (defc= buddies      (:users state))
 (defc= convs        (sort (keys (:messages state))))
@@ -55,8 +51,6 @@
     (when-not (= ::nope s)
       (reset! ~(cell state) s))))
 
-(cell= (prn :state state))
-(cell= (prn :error error))
 (defn init []
   (get-state)
   (js/setInterval #(if @logged-in? (get-state)) 200))

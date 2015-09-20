@@ -20,18 +20,14 @@
 
 (defn get-pass   [db-val user]  (get-in db-val [:users user :pass]))
 (defn available? [db-val user]  (nil? (get-in db-val [:users user])))
-(defn do-login!  [user]         (let [new-session (swap! *session* assoc :user user)] (prn :login-session new-session) new-session))
+(defn do-login!  [user]         (swap! *session* assoc :user user))
 ;;; public ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn allow       []      (constantly true))
 (defn deny        []      (throw (ex auth "Permission denied.")))
 (defn logout!     []      (swap! *session* assoc :user nil))
 (defn logged-in?  []
-  (add-watch *session* :logged-in
-    (fn [k r o n] (prn :old o :new n :key k)))
   (or (get @*session* :user)
-      (prn :session @*session*)
-      (prn :will-throw)
       (throw (ex "Please log in." {:state nil :status 403}))))
 (defn self?       [user]  (assert (= (str user) (str (:user @*session*)))))
 
@@ -43,5 +39,4 @@
 
 (defn login! [db user pass]
   (assert (= pass (get-pass @db user)) "Bad username/password.")
-  (add-watch *session* :login (fn [k r o n] (prn :old o :new n :key k)))
   (do-login! user))
