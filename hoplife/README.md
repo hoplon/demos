@@ -21,6 +21,6 @@ Christophe Grand's [extremely elegant and terse method](http://clj-me.cgrand.net
 
 2. Go to [http://localhost:8000][3] in your browser.
 
-[1]: https://github.com/boot-clj/boot
+[1]: https://boot-clj.com
 [2]: https://hoplon.io
 [3]: http://localhost:8000

@@ -20,6 +20,6 @@ update the cells on change.
 
 2. Go to [http://localhost:8000][2] in your browser.
 
-[1]: https://github.com/boot-clj/boot
+[1]: https://boot-clj.com
 [2]: http://localhost:8000
 [3]: http://hoplon.github.io/demos/inputs

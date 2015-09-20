@@ -1,6 +1,6 @@
 # hoplon-tictactoe
 
-This project demonstrates Tic Tac Toe in Hoplon.
+This project demonstrates Tic Tac Toe in [Hoplon][2].
 
 [See this demo.][4]
 
@@ -8,19 +8,18 @@ This project demonstrates Tic Tac Toe in Hoplon.
 
 - java 1.7+
 - [boot][1]
-- [leiningen][2]
 
 ## Usage
 
 1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot development
+    $ boot dev
     ```
 
 2. Go to [http://localhost:8000][3] in your browser.
 
-[1]: https://github.com/tailrecursion/boot
-[2]: https://github.com/technomancy/leiningen
+[1]: https://boot-clj.com
+[2]: https://hoplon.io
 [3]: http://localhost:8000
-[4]: http://tailrecursion.github.io/hoplon-demos/tictactoe/
+[4]: https://hoplon.github.io/demos/tictactoe/

@@ -1,6 +1,6 @@
 # castra-chat
 
-A chat application using [hoplon][1].
+A chat application using [Hoplon][1].
 
 ## Dependencies
 
@@ -23,6 +23,6 @@ work.  The password for each of is the same as the username.
 This demo is set up with live-reload so you can edit source files and see the
 page update in the browser in real time.
 
-[1]: http://github.com/hoplon/hoplon
-[2]: https://github.com/boot-clj/boot
+[1]: https://hoplon.io
+[2]: https://boot-clj.com
 [3]: http://localhost:8000

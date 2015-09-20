@@ -1,6 +1,6 @@
 # Hoplon Demos
 
-[Hoplon](https://github.com/tailrecursion/hoplon) is a set of tools
+[Hoplon](https://hoplon.io) is a set of tools
 and libraries for making web application front ends.
 
 This repository contains example Hoplon projects.

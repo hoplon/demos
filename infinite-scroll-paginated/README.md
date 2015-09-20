@@ -31,9 +31,9 @@ It's not really connecting to a server, all the data is fake.
 
 2. Go to [http://localhost:8000][4] in your browser.
 
-* HTML and JavaScript files will be created in the `resources/public` directory.
+* HTML and JavaScript files will be created in the `target` directory.
 
 [1]: https://hoplon.io
 [2]: http://hoplon.github.io/demos/infinite-scroll-paginated
-[3]: https://github.com/boot-clj/boot
+[3]: https://boot-clj.com
 [4]: http://localhost:8000
