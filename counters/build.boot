@@ -1,5 +1,5 @@
 (set-env!
-  :dependencies '[[adzerk/boot-cljs          "1.7.48-3"]
+  :dependencies '[[adzerk/boot-cljs          "1.7.48-4"]
                   [adzerk/boot-cljs-repl     "0.1.9"]
                   [adzerk/boot-reload        "0.3.2"]
                   [hoplon/boot-hoplon        "0.1.9"]
@@ -18,7 +18,7 @@
   '[tailrecursion.boot-jetty :refer [serve]])
 
 (deftask dev
-  "Build project for local development."
+  "Build counters for local development."
   []
   (comp
     (watch)
@@ -30,7 +30,7 @@
     (serve :port 8000)))
 
 (deftask prod
-  "Build project for production deployment."
+  "Build counters for production deployment."
   []
   (comp
     (hoplon)
