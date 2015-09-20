@@ -1,6 +1,6 @@
 (ns hello-world.api
   (:require [hello-world.rules :refer [allow]])
-  (:require [tailrecursion.castra :refer [defrpc]]))
+  (:require [castra.core :refer [defrpc]]))
 
 (defrpc doit []
   {:rpc/pre [(allow)]}

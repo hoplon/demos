@@ -1,39 +1,44 @@
-#!/usr/bin/env boot
-
-#tailrecursion.boot.core/version "2.5.0"
-
-(load-file "../build.util.clj")
-(require '[build.util :as build])
-
 (set-env!
-  :dependencies (build/deps)
-  :out-path     "resources/public"
-  :src-paths    #{"src"})
-
-;; Static resources synced to output dir
-(add-sync! (get-env :out-path) #{"resources/assets"})
+  :dependencies '[[adzerk/boot-cljs          "1.7.48-4"]
+                  [adzerk/boot-cljs-repl     "0.1.9"]
+                  [adzerk/boot-reload        "0.3.2"]
+                  [compojure                 "1.4.0"]
+                  [hoplon/boot-hoplon        "0.1.10"]
+                  [hoplon/castra             "3.0.0-SNAPSHOT"]
+                  [hoplon/hoplon             "6.0.0-alpha10"]
+                  [org.clojure/clojure       "1.7.0"]
+                  [org.clojure/clojurescript "1.7.122"]
+                  [pandeiro/boot-http        "0.6.3"]
+                  [ring                      "1.4.0"]
+                  [ring/ring-defaults        "0.1.5"]]
+  :source-paths   #{"src"})
 
 (require
-  '[tailrecursion.hoplon.boot :refer :all]
-  '[tailrecursion.castra.task :refer [castra-dev-server]])
+  '[adzerk.boot-cljs      :refer [cljs]]
+  '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
+  '[adzerk.boot-reload    :refer [reload]]
+  '[hoplon.boot-hoplon    :refer [hoplon prerender]]
+  '[pandeiro.boot-http    :refer [serve]])
 
-(deftask uberwar
-  "Build project war file."
-  []
-  (set-env!
-    :src-paths #{"resources"}
-    :lein      '{:war-resources-path "public"
-                 :plugins            [[lein-ring "0.8.7"]]
-                 :ring               {:handler hello-world.core/app}})
-  (comp
-    (hoplon {:optimizations :advanced})
-    (lein "clean")
-    (lein "ring" "uberwar" "hello.war")))
-
-(deftask development
-  "Start local dev server."
+(deftask dev
+  "Build castra-chat for local development."
   []
   (comp
-    (castra-dev-server 'hello-world.api)
+    (serve
+      :handler 'hello-world.core/app
+      :reload true
+      :port 8000)
     (watch)
-    (hoplon {:prerender false})))
+    (speak)
+    (hoplon)
+    (reload)
+    (cljs-repl)
+    (cljs)))
+
+(deftask prod
+  "Build castra-chat for production deployment."
+  []
+  (comp
+    (hoplon)
+    (cljs :optimizations :advanced)
+    (prerender)))
