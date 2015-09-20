@@ -15,9 +15,9 @@
 
 (def app
   (-> app-routes
-      (d/wrap-defaults d/api-defaults)
+      (castra/wrap-castra 'territory-builder.api)
       (castra/wrap-castra-session "a 16-byte secret")
-      (castra/wrap-castra 'territory-builder.api)))
+      (d/wrap-defaults d/api-defaults)))
 
 (defn dev-server [& [port]]
   (-> app

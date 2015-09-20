@@ -11,6 +11,6 @@
 
 (def app
   (-> app-routes
-      (d/wrap-defaults d/api-defaults)
+      (castra/wrap-castra 'app.api)
       (castra/wrap-castra-session "a 16-byte secret")
-      (castra/wrap-castra 'app.api)))
+      (d/wrap-defaults d/api-defaults)))
