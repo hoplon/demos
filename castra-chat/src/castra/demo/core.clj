@@ -23,9 +23,9 @@
 
 (def handler
   (-> app-routes
-      (d/wrap-defaults d/api-defaults)
+      (castra/wrap-castra 'demo.api.chat)
       (castra/wrap-castra-session "a 16-byte secret")
-      (castra/wrap-castra 'demo.api.chat)))
+      (d/wrap-defaults d/api-defaults)))
 
 (defn app [port]
   (-> handler
