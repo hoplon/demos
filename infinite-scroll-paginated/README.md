@@ -1,6 +1,6 @@
 # Hoplon • Infinite Scroll Demo with pagination
 
-A potentially infinitely scrollable container built using [Hoplon][2].
+A potentially infinitely scrollable container built using [Hoplon][1].
 Keep scrolling to see more numbers divided in pages; when you almost reach
 the bottom it'll fetch more pages full of numbers and append them so you can
 continue scrolling and seeing more numbers... until page 99.
@@ -14,28 +14,26 @@ It's not really connecting to a server, all the data is fake.
 
 ## Demo
 
-[View the demo here][3].
+[View the demo here][2].
 
 ## Dependencies
 
 - java 1.7+
-- [boot][4]
-- [leiningen][6]
+- [boot][3]
 
 ## Usage
 
 1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot development
+    $ boot dev
     ```
 
-2. Go to [http://localhost:8000][7] in your browser.
+2. Go to [http://localhost:8000][4] in your browser.
 
 * HTML and JavaScript files will be created in the `resources/public` directory.
 
-[2]: http://github.com/tailrecursion/hoplon
-[3]: http://tailrecursion.github.io/hoplon-demos/infinite-scroll-paginated
-[4]: https://github.com/tailrecursion/boot
-[6]: https://github.com/technomancy/leiningen
-[7]: http://localhost:8000
+[1]: https://hoplon.io
+[2]: http://hoplon.github.io/demos/infinite-scroll-paginated
+[3]: https://github.com/boot-clj/boot
+[4]: http://localhost:8000
