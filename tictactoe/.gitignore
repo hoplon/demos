@@ -1,2 +1,4 @@
-.boot
-resources/public
+target/
+out/
+.repl/
+.nrepl-*
