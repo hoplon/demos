@@ -3,7 +3,7 @@
                   [adzerk/boot-cljs-repl     "0.1.9"]
                   [adzerk/boot-reload        "0.3.2"]
                   [compojure                 "1.4.0"]
-                  [hoplon/boot-hoplon        "0.1.9"]
+                  [hoplon/boot-hoplon        "0.1.10"]
                   [hoplon/castra             "3.0.0-SNAPSHOT"]
                   [hoplon/hoplon             "6.0.0-alpha10"]
                   [org.clojure/clojure       "1.7.0"]
