@@ -1,12 +1,7 @@
 (page "index.html"
-  (:refer-hoplon :exclude [center])
   (:require
-   [tailrecursion.hoplon.reload :refer [reload-all]]
-   [hoplon.jquery.daterangepicker :as d :refer [daterange]]
-   [hoplon.twitter.bootstrap
-    :refer [checkbox container control-label form-group form-horizontal]]))
-
-(reload-all)
+    [hoplon.jquery.daterangepicker :as d :refer [daterange]]
+    [hoplon.twitter.bootstrap :refer [checkbox container control-label form-group form-horizontal]]))
 
 (defc close? true)
 (defc dates1 nil)
@@ -41,7 +36,7 @@
   ((form-group
       (div :col {:sm 10} :offset {:sm 2}
         (checkbox
-          (tailrecursion.hoplon/label
+          (hoplon.core/label
             (input
               :type "checkbox"
               :value state
@@ -61,6 +56,7 @@
 
 (html :lang "en"
   (head
+    (link :href "jquery-daterange-picker.inc.css" :rel "stylesheet" :type "text/css")
     (title "Hoplon • jQuery Date Range Picker"))
   (body
     (container
@@ -85,4 +81,4 @@
           :click #(do (reset! dates1 nil) (reset! dates2 nil))))
       (hr)
       (p :css {:text-align "center"}
-        (a :href "https://github.com/tailrecursion/hoplon-demos/blob/master/jquery-date-picker/src/index.cljs.hl" "source code")))))
+        (a :href "https://github.com/hoplon/demos/blob/master/jquery-date-picker/src/index.cljs.hl" "source code")))))

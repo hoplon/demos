@@ -1,28 +1,44 @@
-#!/usr/bin/env boot
-
-#tailrecursion.boot.core/version "2.5.0"
-
-(load-file "../build.util.clj")
-(require '[build.util :as build])
-
 (set-env!
-  :dependencies (build/deps)
-  :out-path     "resources/public"
-  :src-paths    #{"src"})
+  :dependencies '[[adzerk/boot-cljs          "1.7.48-4"]
+                  [adzerk/boot-cljs-repl     "0.1.9"]
+                  [adzerk/boot-reload        "0.3.2"]
+                  [cljsjs/boot-cljsjs        "0.5.0"]
+                  [hoplon/boot-hoplon        "0.1.10"]
+                  [hoplon/hoplon             "6.0.0-alpha10"]
+                  [hoplon/jquery-daterange-picker "0.0.5-0"]
+                  [hoplon/twitter-bootstrap  "0.2.0-SNAPSHOT"]
+                  [org.clojure/clojure       "1.7.0"]
+                  [org.clojure/clojurescript "1.7.122"]
+                  [tailrecursion/boot-jetty  "0.1.0"]]
+  :source-paths   #{"src"}
+  :resource-paths #{"assets"})
 
 (require
-  '[tailrecursion.hoplon.boot      :refer :all]
-  '[tailrecursion.boot.task.notify :refer [hear]]
-  '[tailrecursion.boot.task.ring   :refer [dev-server]])
+  '[adzerk.boot-cljs         :refer [cljs]]
+  '[adzerk.boot-cljs-repl    :refer [cljs-repl start-repl]]
+  '[adzerk.boot-reload       :refer [reload]]
+  '[cljsjs.boot-cljsjs       :refer [from-cljsjs]]
+  '[hoplon.boot-hoplon       :refer [hoplon prerender]]
+  '[tailrecursion.boot-jetty :refer [serve]])
 
-(add-sync! (get-env :out-path) #{"assets"})
-
-(deftask development
-  "Build project for development, local dev server."
+(deftask dev
+  "Build jquery-date-picker for local development."
   []
-  (comp (watch) (hear) (hoplon {:prerender false}) (dev-server)))
+  (comp
+    (watch)
+    (speak)
+    (hoplon)
+    (reload)
+    (cljs-repl)
+    (cljs)
+    (from-cljsjs)
+    (sift :to-resource #{#"jquery-daterange-picker.inc.css"})
+    (serve :port 8000)))
 
-(deftask production
-  "Build project for production."
+(deftask prod
+  "Build jquery-date-picker for production deployment."
   []
-  (hoplon {:optimizations :advanced}))
+  (comp
+    (hoplon)
+    (cljs :optimizations :advanced)
+    (prerender)))
