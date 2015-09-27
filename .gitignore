@@ -1,0 +1,5 @@
+*/target
+*/.nrepl-*
+*/.repl
+*/out
+.gh-pages/
