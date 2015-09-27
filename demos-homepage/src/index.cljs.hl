@@ -4,8 +4,8 @@
   (:require
     [hoplon.twitter.bootstrap :refer [container]]))
 
-(def url:hoplon         "http://hoplon.io")
-(def url:hoplon-demos   "https://github.com/tailrecursion/hoplon-demos")
+(def url:hoplon         "https://hoplon.io")
+(def url:hoplon-demos   "https://github.com/hoplon/demos")
 (def url:hoplon-discuss "http://hoplon.discoursehosting.net")
 
 (defelem demo-item [_ [name]]
