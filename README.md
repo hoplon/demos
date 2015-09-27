@@ -5,6 +5,8 @@ and libraries for making web application front ends.
 
 This repository contains example Hoplon projects.
 
+[Check the demos out](https://hoplon.github.io/demos/).
+
 ## License
 
     Copyright (c) Alan Dipert and Micha Niskin. All rights
