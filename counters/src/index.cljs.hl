@@ -3,7 +3,7 @@
 (defelem swap-button
   [{:keys [state func] :or {func identity} :as attr} kids]
   (let [attr (dissoc attr :state :func)]
-    ((button :on-click #(swap! state (deref* func))) attr kids)))
+    ((button :click #(swap! state (deref* func))) attr kids)))
 
 (defelem counter
   [attr _]
@@ -22,7 +22,7 @@
       (p :toggle last-clicked
         (text "Last clicked item was ~{last-clicked}"))
       (loop-tpl :bindings [i (cell= (range 0 size))]
-        (counter :on-click #(reset! last-clicked @i))))))
+        (counter :click #(reset! last-clicked @i))))))
 
 (html
   (head
