@@ -12,8 +12,10 @@
   (head
     (title "Hoplon • Inputs"))
   (body
-    (h1 "Inputs and state in Hoplon")
-    (p "Each input example has a corresponding Javelin cell.
+    (h1
+      "Inputs and state in Hoplon")
+    (p
+     "Each input example has a corresponding Javelin cell.
       When you change the input its cell is updated.")
     (h2 "A simple text input")
     (p "This shows that you can have more than one field pointing to the same
@@ -53,10 +55,10 @@
     (select
       :change #(reset! select-input @%)
       :value select-input
-      (option :value "blue"  "blue")
-      (option :value "green" "green")
-      (option :value "gold" "gold")
-      (option :value "indigo" "indigo"))
+      (option :selected (cell= (= select-input "blue")) :value "blue"  "blue")
+      (option :selected (cell= (= select-input "green")) :value "green" "green")
+      (option :selected (cell= (= select-input "gold")) :value "gold" "gold")
+      (option :selected (cell= (= select-input "indigo")) :value "indigo" "indigo"))
     (p (text "Value of select input: ~{select-input}"))
 
     (h2 "Multiple select input")
