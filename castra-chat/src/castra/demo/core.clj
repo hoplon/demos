@@ -8,12 +8,12 @@
 
 (ns demo.core
   (:require
-    [ring.adapter.jetty :refer [run-jetty]]
+    [castra.middleware :as castra]
     [compojure.core :as c]
     [compojure.route :as route]
+    [ring.adapter.jetty :refer [run-jetty]]
     [ring.middleware.defaults :as d]
-    [ring.util.response :as response]
-    [castra.middleware :as castra]))
+    [ring.util.response :as response]))
 
 (def server (atom nil))
 
