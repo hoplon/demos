@@ -1,0 +1,12 @@
+(page "index.html"
+  (:require
+    [simple-notifications.rpc :as rpc]
+    ))
+
+(rpc/init)
+
+(html
+  (head
+    (link :href "app.css" :rel "stylesheet"))
+  (body
+    (h1 (text "Hello, Hoplon and Castra! ~{rpc/random}"))))
