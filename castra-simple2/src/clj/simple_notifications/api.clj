@@ -1,7 +1,7 @@
 (ns simple-notifications.api
   (:require
     [castra.core :refer [defrpc]]
-    [server-notifications.notification-api :refer :all]))
+    [notify.notification-api :refer :all]))
 
 (defn client-initialization [session-id])
 

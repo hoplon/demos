@@ -14,6 +14,6 @@
   (-> app-routes
       (castra/wrap-castra
         'simple-notifications.api
-        'server-notifications.notification-api)
+        'notify.notification-api)
       (castra/wrap-castra-session "a 16-byte secret")
       (d/wrap-defaults d/api-defaults)))

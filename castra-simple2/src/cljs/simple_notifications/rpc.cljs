@@ -3,7 +3,7 @@
     [javelin.core :refer [defc]])
   (:require
     [castra.core :refer [mkremote]]
-    [server-notifications.notification-rpc :as nrpc]))
+    [notify.notification-rpc :as nrpc]))
 
 (defc random [])
 
