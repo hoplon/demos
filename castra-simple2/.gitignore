@@ -1,0 +1,8 @@
+.nrepl-*
+.repl/
+hs_err*
+out/
+target/
+.idea/
+*.iml
+project.clj
