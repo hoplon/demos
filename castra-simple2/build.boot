@@ -25,15 +25,15 @@
   "castra-simple reworked to use notify."
   []
   (comp
+    (watch)
+    (hoplon)
+    (reload)
+    (cljs)
     (serve
       :port    8000
       :handler 'simple-notifications.handler/app
       :reload  true)
-    (watch)
-    (speak)
-    (hoplon)
-    (reload)
-    (cljs)))
+    (speak)))
 
 (deftask prod
   "Build simple-notifications for production deployment."
