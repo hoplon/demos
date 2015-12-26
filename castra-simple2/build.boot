@@ -4,7 +4,7 @@
                   [compojure                 "1.4.0"]
                   [hoplon/boot-hoplon        "0.1.11"]
                   [hoplon/castra             "3.0.0-alpha3"]
-                  [hoplon/notify             "0.0.1-SNAPSHOT"]
+                  [hoplon/notify             "0.0.1"]
                   [hoplon/hoplon             "6.0.0-alpha11"]
                   [org.clojure/clojure       "1.7.0"]
                   [org.clojure/clojurescript "1.7.189"]
