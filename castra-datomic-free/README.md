@@ -1,7 +1,7 @@
 # castra-simple
 
 A [Hoplon][2] demo that shows a simple castra example. It shows a Hello World! with
-random numbers that are generated on the server and transmited to the client.
+random data from an in-memory Datomic DB that are generated on the server and transmited to the client.
 
 ## Dependencies
 
