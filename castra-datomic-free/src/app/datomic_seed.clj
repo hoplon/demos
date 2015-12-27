@@ -30,7 +30,6 @@
            @(d/transact conn schema)))
 
 (defn insert-seed-data [conn n]
-      (println "Inserting data on " conn "for n" n)
       (let [first (rand-nth ["Alice" "Bob" "Claire" "Dustin" "Ellen" "Fred" "Georgia"])
             last (str "Datomic" n)
             email (str (clojure.string/lower-case first) "." (clojure.string/lower-case last) "@email-server.com")
@@ -43,8 +42,9 @@
 (defn seed-db []
       (if (d/create-database uri)
         (let [conn (d/connect uri)]
+             (println "Seeding DB")
              (create-schema conn)
-             (doall (map #(insert-seed-data conn %) (range 5))))))
+             (doall (map #(insert-seed-data conn %) (range 256))))))
 
 (defn get-conn []
       (seed-db)
