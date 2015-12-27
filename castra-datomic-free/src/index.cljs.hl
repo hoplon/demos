@@ -1,7 +1,8 @@
 (page "index.html"
-      (:require [app.rpc :as rpc]))
+  (:require
+    [app.rpc :as rpc]))
 
-(defc= random rpc/random-number)
+(defc= random rpc/random-data)
 
 (rpc/init)
 

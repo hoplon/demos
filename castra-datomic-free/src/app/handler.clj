@@ -1,9 +1,10 @@
 (ns app.handler
-  (:require [castra.middleware :as castra]
-            [compojure.core :as c]
-            [compojure.route :as route]
-            [ring.middleware.defaults :as d]
-            [ring.util.response :as response]))
+  (:require
+    [castra.middleware :as castra]
+    [compojure.core :as c]
+    [compojure.route :as route]
+    [ring.middleware.defaults :as d]
+    [ring.util.response :as response]))
 
 (c/defroutes app-routes
   (c/GET "/" req (response/content-type (response/resource-response "index.html") "text/html"))

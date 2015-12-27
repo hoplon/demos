@@ -2,14 +2,14 @@
   (:require-macros
     [javelin.core :refer [defc defc=]])
   (:require
-   [javelin.core]
-   [castra.core :refer [mkremote]]))
+    [javelin.core]
+    [castra.core :refer [mkremote]]))
 
 (defc state {:random nil})
 (defc error nil)
 (defc loading [])
 
-(defc= random-number (get state :random))
+(defc= random-data (get state :random))
 
 (def get-state
   (mkremote 'app.api/get-state state error loading))
