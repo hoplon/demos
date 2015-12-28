@@ -36,7 +36,7 @@
     (speak)))
 
 (deftask prod
-  "Build simple-notifications for production deployment."
+  "Build castra-notify-random for production deployment."
   []
   (comp
     (hoplon)

@@ -1,4 +1,4 @@
-# castra-simple2
+# castra-notify-random
 
 A [Hoplon][2] demo that shows a simple castra/notify example. It shows a Hello World! with
 random numbers that are generated on the server and transmited to the client.
