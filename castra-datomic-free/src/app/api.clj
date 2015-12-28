@@ -1,8 +1,8 @@
 (ns app.api
   (:require
-    [app.datomic-seed :as ds]
-    [app.datomic-query :as dq]
+    [app.db :refer [datomic-conn]]
+    [app.datomic-query :refer [fetch-random-data]]
     [castra.core :refer [defrpc]]))
 
 (defrpc get-state []
-  {:random (dq/fetch-random-data (ds/get-conn))})
+  {:random (fetch-random-data datomic-conn)})
