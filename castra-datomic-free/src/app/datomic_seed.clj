@@ -2,8 +2,6 @@
   (:require
     [datomic.api :as d]))
 
-(def uri "datomic:mem://castra")
-
 (defn create-schema
   "Create a Datomic schema (simple example)"
   [conn]
@@ -41,13 +39,12 @@
               :person/email      email}]
     @(d/transact conn (conj [] data))))
 
-(defn seed-db []
-  (when (d/create-database uri)
-    (let [conn (d/connect uri)]
+(defn seed-db [conn]
       (println "Seeding DB")
       (create-schema conn)
-      (doall (map #(insert-seed-data conn %) (range 256))))))
+      (doall (map #(insert-seed-data conn %) (range 256))))
 
-(defn get-conn []
-  (seed-db)
-  (d/connect uri))
+(defn get-conn [uri]
+      (if (d/create-database uri)
+        (seed-db (d/connect uri)))
+      (d/connect uri))

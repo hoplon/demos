@@ -12,6 +12,7 @@
                   [org.clojure/clojure       "1.7.0"]
                   [org.clojure/clojurescript "1.7.122"]
                   [org.clojure/tools.logging "0.3.1"]
+                  [mount                     "0.1.7"]
                   [pandeiro/boot-http        "0.7.1-SNAPSHOT"]
                   [ring                      "1.4.0"]
                   [ring/ring-defaults        "0.1.5"]
@@ -31,7 +32,7 @@
   []
   (comp
     (serve
-      :init 'app.datomic-seed/seed-db
+      :init 'app.db/init
       :handler 'app.handler/app
       :reload true
       :port 8000)
