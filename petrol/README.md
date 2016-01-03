@@ -3,6 +3,8 @@
 A [Hoplon][5] demo that performs the examples from [petrol][3].
 The original code can be found [here][4].
 
+[See this demo.](http://hoplon.github.io/demos/petrol/)
+
 ## Dependencies
 
 - java 1.7+
