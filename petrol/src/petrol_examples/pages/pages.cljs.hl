@@ -1,0 +1,15 @@
+(page "pages.html"
+  (:require
+    [hoplon.petrol :as petrol]
+    [petrol.routing :as petrol-routing]
+    [petrol-examples.pages.state :as state]
+    [petrol-examples.pages.routes :refer [frontend-routes]]
+    [petrol-examples.pages.view :as view]))
+
+(html
+  (head
+    (html-meta :charset "UTF-8")
+    (html-meta :name "viewport" :content "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui")
+    (link :rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" :integrity "sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" :crossorigin "anonymous"))
+  (body
+    (view/root (petrol/start-message-loop! state/!app #{(petrol-routing/init frontend-routes)}) state/!app)))

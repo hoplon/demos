@@ -1,0 +1,7 @@
+(ns petrol-examples.pages.state)
+
+(def initial
+  {:view nil})
+
+(defonce !app
+  (cell initial))

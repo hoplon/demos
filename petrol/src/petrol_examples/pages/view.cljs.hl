@@ -1,0 +1,27 @@
+(ns petrol-examples.pages.view
+  (:require [petrol-examples.pages.routes :refer [href-for]]))
+
+(defn page-text [app]
+  (case (-> app :view :handler)
+    :foo "This is the Foo page."
+    :bar "This is the Bar page."
+    "Home"))
+
+(defn root
+  [_ app]
+  (div :class "container"
+    (h1 "Routing Demo" )
+    (div :class "row"
+      (div :class "col-xs-12 col-sm-4"
+        (ul :class "list-group"
+          (for [[link title] [[(href-for :frontpage) "Home"]
+                              [(href-for :foo) "Foo"]
+                              [(href-for :bar) "Bar"]]]
+            (li :class "list-group-item"
+              (a :href link
+                title)))))
+      (div :class "col-xs-12 col-sm-8"
+        (div :class "well"
+          (text "~(page-text app)"))))
+    (h2 "Debugging app state:")
+    (div (code (text "~(pr-str app)")))))

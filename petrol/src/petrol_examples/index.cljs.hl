@@ -15,4 +15,5 @@
             (li :class "list-group-item" (a :href "counter2.html" "An improved counter"))
             (li :class "list-group-item" (a :href "multicounters.html" "Multiple Counters"))
             (li :class "list-group-item" (a :href "spotify.html" "A spotify client"))
-            (li :class "list-group-item" (a :href "hydra.html" "Everything at once"))))))))
+            (li :class "list-group-item" (a :href "hydra.html" "Everything at once"))
+            (li :class "list-group-item" (a :href "pages.html" "A page-routing app")) ))))))
