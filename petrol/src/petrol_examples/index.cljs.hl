@@ -1,0 +1,18 @@
+(page "index.html")
+
+(html
+  (head
+    (html-meta :charset "UTF-8")
+    (html-meta :name "viewport" :content "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui")
+    (link :rel "stylesheet" :href "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" :integrity "sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" :crossorigin "anonymous"))
+  (body
+    (div :class "container"
+      (h1 "Petrol Examples")
+      (div :class "row"
+        (div :class "col-xs-12 col-md-4"
+          (ul :class "list-group"
+            (li :class "list-group-item" (a :href "counter.html" "A simple counter"))
+            (li :class "list-group-item" (a :href "counter2.html" "An improved counter"))
+            (li :class "list-group-item" (a :href "multicounters.html" "Multiple Counters"))
+            (li :class "list-group-item" (a :href "spotify.html" "A spotify client"))
+            (li :class "list-group-item" (a :href "hydra.html" "Everything at once"))))))))
