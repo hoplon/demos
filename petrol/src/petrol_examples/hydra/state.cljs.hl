@@ -1,0 +1,14 @@
+(ns petrol-examples.hydra.state
+  (:require
+    [petrol-examples.counter.state :as counter]
+    [petrol-examples.counter2.state :as counter2]
+    [petrol-examples.spotify.state :as spotify]))
+
+(def initial
+  {:counter    counter/initial
+   :counter2a counter2/initial
+   :counter2b counter2/initial
+   :spotify    spotify/initial})
+
+(defonce !app
+  (cell initial))

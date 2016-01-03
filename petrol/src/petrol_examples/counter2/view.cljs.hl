@@ -1,0 +1,25 @@
+(ns petrol-examples.counter2.view
+  (:require [petrol.core :refer [send!]]
+            [petrol-examples.counter2.messages :as m]))
+
+(defn root
+  [ui-channel app]
+  (div :class "container"
+    (div :class "row"
+      (div :class "col-xs-12 col-sm-6 col-lg-4"
+        (h1 "Interesting Counter!")
+        (div :class "well"
+          (text "~(:counter app)"))
+        (div :class "btn-group"
+          (button
+            :class "btn btn-danger"
+            :click (send! ui-channel (m/->ResetCounter))
+            "Reset")
+          (for [[label delta] [["Decrement" -1]
+                               ["Increment" 1]
+                               ["+ 5" 5]
+                               ["+ 10" 10]]]
+            (button
+              :class "btn btn-info"
+              :click (send! ui-channel (m/->ModifyCounter delta))
+              label)))))))

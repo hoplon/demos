@@ -1,0 +1,7 @@
+(ns petrol-examples.counter.state)
+
+(def initial
+  {:counter 0})
+
+(defonce !app
+  (cell initial))

@@ -24,7 +24,7 @@ be to discard clicks to B until the A button has been clicked and then wait for 
 
 2. Go to [http://localhost:8000][2] in your browser.
 
-[1]: https://boot-clj.com
+[1]: http://boot-clj.com
 [2]: http://localhost:8000
 [3]: http://go.cognitect.com/core_async_webinar_recording
 [4]: https://github.com/cognitect/async-webinar

@@ -1,0 +1,7 @@
+(ns petrol-examples.spotify.state)
+
+(def initial
+  {:term ""})
+
+(defonce !app
+  (cell initial))
