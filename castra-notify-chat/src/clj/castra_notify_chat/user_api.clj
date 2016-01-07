@@ -19,10 +19,9 @@
       (add-notification! session-id type value))))
 
 (defn notify-group! [group type value]
-  (let [f (first group)]
-    (when f
+  (when-first [f group]
       (notify-user! f type value)
-      (recur (next group) type value))))
+      (recur (next group) type value)))
 
 (defn notify-users! [type value]
   (notify-group! (keys @user-sessions) type value))
