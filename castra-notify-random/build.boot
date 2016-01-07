@@ -1,4 +1,5 @@
 (set-env!
+  :description "A Hoplon demo that shows a simple castra/notify example."
   :dependencies '[[adzerk/boot-cljs          "1.7.170-3"]
                   [adzerk/boot-reload        "0.4.2"]
                   [compojure                 "1.4.0"]
