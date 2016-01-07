@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: clout:2.1.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/clout/clout/2.1.2/clout-2.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

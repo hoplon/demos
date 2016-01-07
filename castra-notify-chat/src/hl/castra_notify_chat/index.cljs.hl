@@ -1,0 +1,35 @@
+(page "index.html"
+      (:require
+        [clojure.string :as str]
+        [castra-notify-chat.user :as u]
+        [castra-notify-chat.chat :as c]
+        [notify.notification-rpc :as nrpc]))
+
+(set! cljs.core/*print-fn* #(.log js/console %))
+
+(u/session-startup! @nrpc/last-id)
+(js/setInterval nrpc/poll-server 300)
+
+(html
+  (head
+    (title "chat app2")
+    (link :href "main.css" :rel "stylesheet"))
+  (body
+    (u/error-div)
+    (u/loading-div)
+
+    (div {:id "content"}
+         (h1 (text "Castra/Notify Chat"))
+         (u/login-div)
+
+         (div
+           :id "chat-pane"
+           :css {:display "none"}
+           :toggle u/show-app?
+           (h3 (text "hello, ~{u/user}!"))
+           (form
+             :submit #(u/logoff! true)
+             (button :type "submit" "log off"))
+
+           (c/buddies-div)
+           (c/chat-div)))))

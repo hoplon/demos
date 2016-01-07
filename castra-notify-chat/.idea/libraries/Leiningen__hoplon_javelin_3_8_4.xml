@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: hoplon/javelin:3.8.4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/hoplon/javelin/3.8.4/javelin-3.8.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

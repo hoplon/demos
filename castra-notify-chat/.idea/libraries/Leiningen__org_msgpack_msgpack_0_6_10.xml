@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: org.msgpack/msgpack:0.6.10">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/msgpack/msgpack/0.6.10/msgpack-0.6.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

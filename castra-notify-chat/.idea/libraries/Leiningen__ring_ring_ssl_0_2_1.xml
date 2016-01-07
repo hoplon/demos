@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: ring/ring-ssl:0.2.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/ring/ring-ssl/0.2.1/ring-ssl-0.2.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

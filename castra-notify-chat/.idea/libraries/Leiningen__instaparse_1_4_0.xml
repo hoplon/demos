@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Leiningen: instaparse:1.4.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/instaparse/instaparse/1.4.0/instaparse-1.4.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

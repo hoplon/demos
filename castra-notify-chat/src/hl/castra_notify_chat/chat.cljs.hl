@@ -1,0 +1,111 @@
+(ns castra-notify-chat.chat
+  (:require-macros
+    [javelin.core :refer [defc defc=]])
+  (:require
+    [clojure.set :as cs]
+    [clojure.string :as str]
+    [javelin.core :as j :refer [cell]]
+    [castra.core :as c :refer [mkremote]]
+    [castra-notify-chat.user :as u]
+    [notify.notification-rpc :as nrpc]))
+
+(defc buddies (sorted-set))
+(add-watch u/state
+           :buddies
+           (fn [_ _ _ s]
+             (reset! buddies (into (sorted-set) (:buddies s)))))
+
+(defc active-chat nil)
+(def switch-chat! #(reset! active-chat @%))
+(def toggle-chat* #(cond (contains? %1 %2) (disj %1 %2) %1 (conj %1 %2) :_ #{@u/user %2}))
+(def toggle-chat! #(swap! active-chat toggle-chat* @%))
+
+(add-watch u/state
+           :active-chat
+           (fn [_ _ _ s]
+             (reset! active-chat nil)))
+
+(add-watch u/user
+           :reactive-chat
+           (fn [_ _ _ _]
+             (reset! active-chat nil)))
+
+(defc messages {})
+(defc= convs (sort-by #(vec (sort %)) (keys messages)))
+(defc= loop-convs (mapv (fn [x] [x, (str/join ", " (disj x u/user))]) convs))
+(defc= msgs (get messages active-chat))
+
+(defn add-message! [[from conv text]]
+  (swap! messages
+         update conv
+         (fn [old]
+           (let [m (conj (or old [])
+                         {:from from, :conv conv, :text text})]
+             (if (>= 10 (count m))
+               m
+               (subvec m 1))))))
+
+
+(defn activate-user! [user]
+  (swap! u/state update :buddies conj user))
+
+(defn deactivate-user! [user]
+  (if @u/started
+    (let [u (:user @u/state)]
+      (when (not= user u)
+        (swap! active-chat disj user)
+        (swap! u/state update :buddies disj user)))))
+
+(nrpc/register-notification! :activate-user activate-user!)
+(nrpc/register-notification! :deactivate-user deactivate-user!)
+(nrpc/register-notification! :message add-message!)
+
+(def send-message* (mkremote 'castra-notify-chat.chat-api/send-message
+                             u/state u/error u/loading))
+(def send-message! #(send-message* @active-chat %))
+
+(defn buddies-div []
+  (div :id "buddies"
+       (h4 "buddies")
+
+       (ul
+         (loop-tpl :bindings [buddy buddies]
+                   (li :toggle (cell= (not (or (str/blank? buddy) (= u/user buddy))))
+                       (span :class "buddy" (text "~{buddy}"))
+
+                       (input
+                         :type "checkbox"
+                         :value (cell= (contains? active-chat buddy))
+                         :click #(toggle-chat! buddy)))))
+       (h4 "chats")
+
+       (ul
+         (loop-tpl :bindings [[conv conv-str] loop-convs]
+                   (li :toggle (cell= (not (str/blank? conv-str)))
+                       (a
+                         :href "javascript:void(0)"
+                         :class (cell= {:active (= active-chat conv)})
+                         :click #(switch-chat! conv)
+                         (text "~{conv-str}")))))))
+
+(defn chat-div []
+  (div :id "chat"
+       (div :id "convo"
+            (ul
+              (loop-tpl :bindings [{from :from msg-text :text} msgs]
+                        (li :toggle (cell= (not (str/blank? from)))
+                            (span :class "from" (text "~{from}"))
+                            (span (text ": ~{msg-text}")))))
+
+            (let [chat-message (cell "")]
+              (form
+                :submit #(do (send-message! @chat-message)
+                             (reset! chat-message "")
+                             (.preventDefault %))
+                (label (text "~{u/user} >"))
+                (input
+                  :type "text"
+                  :toggle (cell= (< 0 (count (disj active-chat u/user))))
+                  :value chat-message
+                  :change #(reset! chat-message @%)
+                  :focus active-chat))))))
