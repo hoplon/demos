@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Leiningen: hoplon/castra:3.0.0-alpha3">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/hoplon/castra/3.0.0-alpha3/castra-3.0.0-alpha3.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

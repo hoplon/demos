@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Leiningen: adzerk/boot-cljs:1.7.170-3">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/adzerk/boot-cljs/1.7.170-3/boot-cljs-1.7.170-3.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
