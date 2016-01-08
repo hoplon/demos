@@ -40,12 +40,8 @@
                   :person/email      email}]
            @(d/transact conn (conj [] data))))
 
-(defn seed-db [conn]
-      (println "Seeding DB")
-      (create-schema conn)
-      (doall (map #(insert-seed-data conn %) (range 256))))
-
-(defn get-conn [uri]
-      (if (d/create-database uri)
-        (seed-db (d/connect uri)))
-      (d/connect uri))
+(defn seed-db [uri]
+      (if-let [db (d/create-database uri)]
+              (let [conn (d/connect uri)]
+                   (create-schema conn)
+                   (doall (map #(insert-seed-data conn %) (range 256))))))

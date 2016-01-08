@@ -1,12 +1,12 @@
 (ns demo.datomic.api
     (:require
-      [demo.datomic.db :refer [conn]]
+      [demo.datomic.db :refer [datomic-conn]]
       [datomic.api :as d]))
 
 (defn- fetch-ids
        "Find all the IDs in the database"
        []
-       (d/q '[:find ?e :where [?e :person/first-name]] (d/db conn)))
+       (d/q '[:find ?e :where [?e :person/first-name]] (d/db datomic-conn)))
 
 (defn- random-id
        "Choose a random ID from the database"
@@ -17,7 +17,7 @@
       "Use the pull API to fetch all attributes for a random ID"
       [id]
       (println "Fetching record for id:" id)
-      (d/pull (d/db conn) '[:*] id))
+      (d/pull (d/db datomic-conn) '[:*] id))
 
 (defn fetch-random-record
       "Use the pull API to fetch all attributes for a random ID"
@@ -31,4 +31,4 @@
                        (clojure.string/lower-case (:person/last-name user-data)) "@email-server.com")
             data (assoc user-data :person/email email)
             noop (println "Updating with " data)]
-           @(d/transact conn (conj [] data))))
+           @(d/transact datomic-conn (conj [] data))))
