@@ -5,11 +5,11 @@
     [javelin.core]
     [castra.core :refer [mkremote]]))
 
-(defc state {:random nil})
+(defc state {})
 (defc error nil)
 (defc loading [])
 
-(defc= random-data (get state :random))
+(defc= random-data state)
 
 (def get-state
   (mkremote 'app.api/get-state state error loading))

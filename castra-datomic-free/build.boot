@@ -12,6 +12,7 @@
                   [org.clojure/clojure       "1.7.0"]
                   [org.clojure/clojurescript "1.7.122"]
                   [org.clojure/tools.logging "0.3.1"]
+                  [environ                   "1.0.1"]
                   [mount                     "0.1.7"]
                   [pandeiro/boot-http        "0.7.1-SNAPSHOT"]
                   [ring                      "1.4.0"]

@@ -6,7 +6,7 @@
 (defn- fetch-ids
   "Find all the IDs in the database"
   []
-  (d/q '[:find ?e :where [?e :person/first-name]] (d/db conn)))
+  (d/q '[:find ?e :where [?e :person/first-name]] (d/db datomic-conn)))
 
 (defn- random-id
   "Choose a random ID from the database"
@@ -16,4 +16,4 @@
 (defn fetch-random-data
   "Use the pull API to fetch all attributes for a random ID"
   []
-  (d/pull (d/db conn) '[:*] (random-id)))
+  (d/pull (d/db datomic-conn) '[:*] (random-id)))
