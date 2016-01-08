@@ -4,4 +4,4 @@
     [castra.core :refer [defrpc]]))
 
 (defrpc get-state []
-        (fetch-random-data))
+  (fetch-random-data))
