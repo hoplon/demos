@@ -28,12 +28,12 @@
 
     (let [fname (cell "")
           lname (cell "")]
-         (form :submit #(update! @record-id @fname @lname)  ; edit and submit form to load record
-               (p (label "First Name: ")
-                  (input :type "text" :value first-name :change #(reset! fname @%)))
-               (p (label "Last Name: ")
-                  (input :type "text" :value last-name :change #(reset! lname @%)))
-               (p (button :type "submit" "Update user information"))))
+      (form :submit #(update! @record-id @fname @lname)  ; edit and submit form to load record
+        (p (label "First Name: ")
+          (input :type "text" :value first-name :change #(reset! fname @%)))
+        (p (label "Last Name: ")
+          (input :type "text" :value last-name :change #(reset! lname @%)))
+        (p (button :type "submit" "Update user information"))))
 
     (p :style "color:gray;font:12px Verdana;"
-       (text "There is no code to manage AJAX promises, to handle responses from the server or to manage the DOM"))))
+       (text "There is no code to manage AJAX promises, responses from the server and DOM updates are just cells updates"))))
