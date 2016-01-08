@@ -1,0 +1,39 @@
+(page "index.html"
+      (:require
+        [demo.state.user :as rpc]))
+
+(rpc/get-random-user)
+
+(defc= user-info rpc/state)
+
+(defc= record-id (get user-info :db/id))
+(defc= first-name (get user-info :person/first-name))
+(defc= last-name (get user-info :person/last-name))
+(defc= emadd (get user-info :person/email))
+
+(def update! #(rpc/update-user {:db/id %1 :person/first-name %2 :person/last-name %3}))
+
+(html
+  (head
+    (link :rel "stylesheet" :type "text/css" :href "main.css"))
+  (body
+    (h1 (text "Hello, Hoplon, Castra and Datomic Free World!"))
+
+    (p (text "This demo seeds Datomic with 256 user records. Here a random user record is pulled from Datomic on page load:"))
+
+    (p :style "color:gray;font:14px Georgia;"
+       (text "(Id: ~{record-id}) First name: ~{first-name}, Last name: ~{last-name}, Email: ~{emadd}"))
+
+    (p (text "Update the user record, the data above will be updated and a new email is computed on the server"))
+
+    (let [fname (cell "")
+          lname (cell "")]
+      (form :submit #(update! @record-id @fname @lname)  ; edit and submit form to load record
+        (p (label "First Name: ")
+          (input :type "text" :value first-name :change #(reset! fname @%)))
+        (p (label "Last Name: ")
+          (input :type "text" :value last-name :change #(reset! lname @%)))
+        (p (button :type "submit" "Update user information"))))
+
+    (p :style "color:gray;font:12px Verdana;"
+       (text "There is no code to manage AJAX promises, responses from the server and DOM updates are just cells updates"))))

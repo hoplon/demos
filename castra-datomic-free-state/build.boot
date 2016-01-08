@@ -18,7 +18,7 @@
                   [ring                      "1.4.0"]
                   [ring/ring-defaults        "0.1.5"]
                   [com.datomic/datomic-free  "0.9.5344"]]
-  :source-paths   #{"src"}
+  :source-paths   #{"src/hoplon" "src/castra" "src/cljs"}
   :resource-paths #{"assets"})
 
 (require
@@ -29,25 +29,25 @@
   '[pandeiro.boot-http    :refer [serve]])
 
 (deftask dev
-  "Build castra-datomic-free for local development."
-  []
-  (comp
-    (serve
-      :init 'app.db/init
-      :handler 'app.handler/app
-      :reload true
-      :port 8000)
-    (watch)
-    (speak)
-    (hoplon)
-    (reload)
-    (cljs-repl)
-    (cljs)))
+         "Build castra-datomic-free-state for local development."
+         []
+         (comp
+           (serve
+             :init 'demo.datomic.db/init
+             :handler 'demo.core/handler
+             :reload true
+             :port 8000)
+           (watch)
+           (speak)
+           (hoplon)
+           (reload)
+           (cljs-repl)
+           (cljs)))
 
 (deftask prod
-  "Build castra-datomic-free for production deployment."
-  []
-  (comp
-    (hoplon)
-    (cljs :optimizations :advanced)
-    (prerender)))
+         "Build castra-datomic-free-state for production deployment."
+         []
+         (comp
+           (hoplon)
+           (cljs :optimizations :advanced)
+           (prerender)))
