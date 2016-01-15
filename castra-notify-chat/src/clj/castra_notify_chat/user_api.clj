@@ -7,11 +7,11 @@
 (defmacro assert [expr & [msg]]
   `(when-not ~expr (throw (ex (or ~msg "Server error.") {:from ::assert}))))
 
-(def users-atom (atom {"able"    {:pass "able"}
+(defonce users-atom (atom {"able"    {:pass "able"}
                        "baker"   {:pass "baker"}
                        "charlie" {:pass "charlie"}}))
 
-(def user-sessions (atom {}))
+(defonce user-sessions (atom {}))
 
 (defn notify-user! [user type value]
   (let [session-id (get-in @user-sessions [user :session-id])]
@@ -25,14 +25,6 @@
 
 (defn notify-users! [type value]
   (notify-group! (keys @user-sessions) type value))
-
-(comment defn notify-users! [type value]
-  (let [ks (keys @user-session)]
-    (loop [ks]
-      (let [f (first ks)]
-        (when f
-          (notify-user! f type value)
-          (recur (next ks)))))))
 
 (defn activate-user! [user]
   (let [session-id (get-session-id)]
@@ -102,8 +94,9 @@
             nil)))
       nil)))
 
-(defrpc session-startup [last-id]
+(defrpc session-startup [last-ack]
         {:rpc/pre [(identify-session!)]}
+        (make-session! last-ack (get-session-id))
         (if-let [user (session-startup!)]
           {:user user :buddies (into #{} (keys @user-sessions))}
           {}))

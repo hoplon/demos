@@ -1,7 +1,6 @@
 (page "index.html"
   (:require
-    [simple-notifications.rpc :as rpc]
-    ))
+    [simple-notifications.rpc :as rpc]))
 
 (rpc/init)
 

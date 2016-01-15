@@ -56,6 +56,11 @@
         (swap! active-chat disj user)
         (swap! u/state update :buddies disj user)))))
 
+(nrpc/register-notification! :new-session
+                             (fn [value]
+                               (reset! u/started nil)
+                               (u/session-startup! @nrpc/last-id)))
+
 (nrpc/register-notification! :activate-user activate-user!)
 (nrpc/register-notification! :deactivate-user deactivate-user!)
 (nrpc/register-notification! :message add-message!)

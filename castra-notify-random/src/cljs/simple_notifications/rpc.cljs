@@ -7,13 +7,17 @@
 
 (defc random [])
 
+(nrpc/register-notification! :new-session
+                             (fn [value]
+                               (reset! random [])))
+
 (nrpc/register-notification! :random
                              (fn [value]
                                (swap! random
                                       (fn [old]
                                         (let [old (conj old value)]
                                           (if (< 3 (count old))
-                                            (subvec old 1)
+                                            (subvec old 1) ;slow memory leak
                                             old))))))
 
 (def session-startup
