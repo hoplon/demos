@@ -8,11 +8,11 @@
 (defc random [])
 
 (nrpc/register-notification! :new-session
-                             (fn [value]
+                             (fn [value timestamp]
                                (reset! random [])))
 
 (nrpc/register-notification! :random
-                             (fn [value]
+                             (fn [value timestamp]
                                (swap! random
                                       (fn [old]
                                         (let [old (conj old value)]

@@ -35,7 +35,7 @@
 (defc= loop-convs (mapv (fn [x] [x, (str/join ", " (disj x u/user))]) convs))
 (defc= msgs (get messages active-chat))
 
-(defn add-message! [[from conv text]]
+(defn add-message! [[from conv text] timestamp]
   (swap! messages
          update conv
          (fn [old]
@@ -46,10 +46,10 @@
                (subvec m 1))))))
 
 
-(defn activate-user! [user]
+(defn activate-user! [user timestamp]
   (swap! u/state update :buddies conj user))
 
-(defn deactivate-user! [user]
+(defn deactivate-user! [user timestamp]
   (if @u/started
     (let [u (:user @u/state)]
       (when (not= user u)
@@ -57,7 +57,7 @@
         (swap! u/state update :buddies disj user)))))
 
 (nrpc/register-notification! :new-session
-                             (fn [value]
+                             (fn [value timestamp]
                                (reset! u/started nil)
                                (u/session-startup! @nrpc/last-id)))
 
