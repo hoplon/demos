@@ -8,7 +8,7 @@
 (set! cljs.core/*print-fn* #(.log js/console %))
 
 (u/session-startup! @nrpc/last-id)
-(js/setInterval nrpc/poll-server 300)
+(nrpc/smart-poll)
 
 (html
   (head
