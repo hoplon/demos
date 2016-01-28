@@ -1,0 +1,34 @@
+(page "index.html"
+      (:require [aautil.dewdrop :as lens]))
+
+(set! cljs.core/*print-fn* #(.log js/console %))
+
+(defc composite-data {"A" "Apple" "B" "Boy"})
+(defc lens-key "A")
+
+(def keyed-lens (lens/atom-key-lens lens-key))
+
+(defn revalue [d _] (lens/lget keyed-lens d))
+
+(defc= value
+       (revalue composite-data lens-key)
+       (fn [item] (lens/lreset! keyed-lens composite-data item)))
+
+(html
+  (head
+    (html-meta :charset "UTF-8")
+    (title "AATree • Lens"))
+  (body
+    (p (text "data: ~{composite-data}"))
+    (p (text "key: ")
+       (input
+         :type "text"
+         :value lens-key
+         :keyup #(reset! lens-key @%)))
+    (p (text "value: ")
+       (input
+         :type "text"
+         :value value
+         :keyup #(reset! value @%)))
+    (p (a :href
+          "https://github.com/hoplon/demos/tree/master/lens" "Source code"))))
