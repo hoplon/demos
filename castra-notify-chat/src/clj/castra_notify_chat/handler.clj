@@ -13,10 +13,10 @@
   (route/resources "/" {:root ""}))
 
 (def app
-  (-> app-routes
-      (castra/wrap-castra
-        'castra-notify-chat.chat-api
-        'castra-notify-chat.user-api
-        'notify.notification-api)
-      (castra/wrap-castra-session "a 16-byte secret")
-      (d/wrap-defaults d/api-defaults)))
+(-> app-routes
+    (castra/wrap-castra
+      'castra-notify-chat.chat-api
+      'castra-notify-chat.user-api
+      'notify.notification-api)
+    (castra/wrap-castra-session "a 16-byte secret")
+    (d/wrap-defaults d/api-defaults)))
