@@ -7,12 +7,13 @@
 (defc lens-key "A")
 
 (def keyed-lens (lens/atom-key-lens lens-key))
+(def keyed-view (lens/lview keyed-lens composite-data))
 
-(defn revalue [d _] (lens/lget keyed-lens d))
+(defn revalue [_ _] @keyed-view)
 
 (defc= value
-       (revalue composite-data lens-key)
-       (fn [item] (lens/lreset! keyed-lens composite-data item)))
+       (revalue lens-key composite-data)
+       (fn [item] (reset! keyed-view item)))
 
 (html
   (head
@@ -25,10 +26,11 @@
          :type "text"
          :value lens-key
          :keyup #(reset! lens-key @%)))
-    (p (text "value: ")
+    (p (text "valuesss: ")
        (input
          :type "text"
          :value value
          :keyup #(reset! value @%)))
     (p (a :href
-          "https://github.com/hoplon/demos/tree/master/lens" "Source code"))))
+          "https://github.com/aatree/aademos/tree/master/lens" "Source code"))))
+

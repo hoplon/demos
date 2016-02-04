@@ -10,9 +10,8 @@
                   [org.clojure/clojure                       "1.8.0"]
                   [org.clojure/clojurescript                 "1.7.228"]
                   [tailrecursion/boot-jetty                  "0.1.3"]
-                  [aatree/aautil                             "0.0.3"]]
-  :source-paths   #{"src/hl"}
-  :resource-paths #{"assets" "dev-resources"})
+                  [aatree/aautil                             "0.0.4"]]
+  :source-paths   #{"src/hl"})
 
 (require
   '[adzerk.boot-cljs         :refer [cljs]]
@@ -31,7 +30,7 @@
     (reload)
     (cljs-repl)
     (cljs)
-    (serve :port 8000)))
+    (serve :port 8000 :init-params {"org.eclipse.jetty.servlet.Default.useFileMappedBuffer" "false"})))
 
 (deftask prod
   "Build for production deployment."
