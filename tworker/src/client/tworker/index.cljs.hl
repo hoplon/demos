@@ -10,8 +10,8 @@
 (def clear-error! #(reset! error nil))
 (defc= loading? (seq loading))
 
-(lpc/new-worker "worker.js")
-(def click (lpc/mklocal 'click "worker.js" state error loading))
+(lpc/new-worker! "worker.js")
+(def click (lpc/mklocal! 'click "worker.js" state error loading))
 
 (defn click-it [] (click))
 
