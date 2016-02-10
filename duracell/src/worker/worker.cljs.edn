@@ -1,0 +1,3 @@
+{:require  [duracell.demo-worker]
+ :init-fns [duracell.demo-worker/main]
+ :compiler-options {}}

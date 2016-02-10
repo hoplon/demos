@@ -1,0 +1,51 @@
+(page "index.html"
+      (:require [aaworker.lpc :as lpc]))
+
+(set! cljs.core/*print-fn* #(.log js/console %))
+
+(defc ready false)
+
+(defc db-txt nil)
+(defc txt nil)
+(defc error nil)
+(defc loading nil)
+(defc txt-key nil)
+
+(def clear-error! #(reset! error nil))
+(defc= loading? (seq loading))
+
+(def file-name "worker.js")
+
+(lpc/new-worker! file-name)
+(def load-txt (lpc/mklocal! 'load-txt file-name db-txt error loading))
+(def save-txt (lpc/mklocal! 'save-txt file-name txt-key error loading))
+
+(lpc/register-notice-processor! file-name :ready
+                                (fn []
+                                  (add-watch db-txt :db-watch
+                                             (fn [_ _ _ n]
+                                               (reset! txt n)))
+                                  (add-watch txt :watch
+                                             (fn [_ _ _ n]
+                                               (when (not= n @db-txt)
+                                                 (save-txt n))))
+                                  (load-txt)
+                                  (reset! ready true)))
+
+(html
+  (head
+    (title "duracell demo")
+    (link :href "main.css" :rel "stylesheet"))
+  (body :css {:display "none"} :toggle ready
+      (div
+        :id "error"
+        :click clear-error!
+        :slide-toggle error
+        :css {:display "none"}
+        (text "~{error}"))
+      (h2 (text "Local Storage Demo"))
+      (p (input
+           :type "text"
+           :value txt
+           :keyup #(reset! txt @%)))
+      (p (text "Type something and then refresh the page--nothing is lost."))))
