@@ -1,16 +1,20 @@
 (set-env!
-  :dependencies '[[adzerk/boot-cljs          "1.7.48-4"]
-                  [adzerk/boot-cljs-repl     "0.1.9"]
-                  [adzerk/boot-reload        "0.3.2"]
-                  [compojure                 "1.4.0"]
-                  [hoplon/boot-hoplon        "0.1.10"]
-                  [hoplon/castra             "3.0.0-alpha1"]
-                  [hoplon                    "6.0.0-alpha10"]
-                  [org.clojure/clojure       "1.7.0"]
-                  [org.clojure/clojurescript "1.7.122"]
-                  [pandeiro/boot-http        "0.6.3"]
-                  [ring                      "1.4.0"]
-                  [ring/ring-defaults        "0.1.5"]]
+  :dependencies '[[adzerk/boot-cljs          "1.7.228-1"]
+                  [com.cemerick/piggieback "0.2.1" :scope "test"]
+                  [weasel "0.7.0" :scope "test"]
+                  [org.clojure/tools.nrepl "0.2.12" :scope "test"]
+                  [adzerk/boot-cljs-repl     "0.3.3"]
+                  [adzerk/boot-reload        "0.4.12"]
+                  [compojure                 "1.6.0-beta1"]
+                  [hoplon/boot-hoplon        "0.2.2"]
+                  [hoplon/castra             "3.0.0-alpha4"]
+                  [hoplon                    "6.0.0-alpha16"]
+                  [org.clojure/clojure       "1.9.0-alpha10"]
+                  [org.clojure/clojurescript "1.9.93"]
+                  [pandeiro/boot-http        "0.7.3"]
+                  [ring                      "1.5.0"]
+                  [javax.servlet/servlet-api "2.5"]
+                  [ring/ring-defaults        "0.2.1"]]
   :source-paths   #{"src"}
   :resource-paths #{"assets"})
 
@@ -22,7 +26,7 @@
   '[pandeiro.boot-http    :refer [serve]])
 
 (deftask dev
-  "Build castra-simple for local development."
+  "Build ws-simple for local development."
   []
   (comp
     (serve
@@ -37,7 +41,7 @@
     (cljs)))
 
 (deftask prod
-  "Build castra-simple for production deployment."
+  "Build ws-simple for production deployment."
   []
   (comp
     (hoplon)
