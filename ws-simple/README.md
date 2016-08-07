@@ -3,6 +3,8 @@
 A [Hoplon][2] demo that shows a simple websocket example. It shows a Hello World! with
 random numbers that are generated on the server and transmited to the client.
 
+See [Hoplon with Sente][5]
+
 ## Dependencies
 
 - java 1.7+
@@ -23,3 +25,4 @@ random numbers that are generated on the server and transmited to the client.
 [2]: https://hoplon.io
 [3]: http://localhost:8000
 [4]: https://github.com/ptaoussanis/sente
+[5]: https://github.com/hoplon/hoplon/wiki/Hoplon-with-Sente
