@@ -1,5 +1,14 @@
 (set-env!
-  :dependencies '[[adzerk/boot-cljs          "1.7.228-1"]
+  :dependencies '[
+                  [com.google.guava/guava "19.0"]
+                  [com.google.javascript/closure-compiler "v20160315"]
+                  [com.google.javascript/closure-compiler-externs "v20160315"]
+                  [org.clojure/data.priority-map "0.0.7"]
+                  [org.clojure/google-closure-library "0.0-20160609-f42b4a24"]
+                  [org.clojure/google-closure-library-third-party "0.0-20160609-f42b4a24"]
+                  [org.clojure/tools.reader  "1.0.0-beta2"]
+                  [ring/ring-core            "1.6.0-beta4"]
+                  [adzerk/boot-cljs          "1.7.228-1"]
                   [com.cemerick/piggieback   "0.2.1" :scope "test"]
                   [weasel                    "0.7.0" :scope "test"]
                   [org.clojure/tools.nrepl   "0.2.12" :scope "test"]
@@ -24,7 +33,8 @@
   '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
   '[adzerk.boot-reload    :refer [reload]]
   '[hoplon.boot-hoplon    :refer [hoplon prerender]]
-  '[pandeiro.boot-http    :refer [serve]])
+  '[pandeiro.boot-http    :refer [serve]]
+  )
 
 (deftask dev
   "Build ws-simple for local development."
