@@ -1,15 +1,16 @@
-(page "index.html")
+(page "index.html"
+  (:require [hoplon.core :as h]))
 
 (defelem swap-button
   [{:keys [state func] :or {func identity} :as attr} kids]
   (let [attr (dissoc attr :state :func)]
-    ((button :click #(swap! state (deref* func))) attr kids)))
+    ((h/button :click #(swap! state (deref* func))) attr kids)))
 
 (defelem counter
   [attr _]
   (let [my-count (cell 0)]
-    (div attr
-      (label (text "~{my-count}"))
+    (h/div attr
+      (h/label (text "~{my-count}"))
       (swap-button :state my-count :func inc "+")
       (swap-button :state my-count :func dec "-"))))
 
@@ -17,19 +18,19 @@
   [{:keys [size] :or {size 10} :as attr} _]
   (let [last-clicked (cell nil)
         attr         (dissoc attr :size)]
-    (div attr
-      (h1 "A Counting Widget!")
-      (p :toggle last-clicked
-        (text "Last clicked item was ~{last-clicked}"))
-      (loop-tpl :bindings [i (cell= (range 0 size))]
+    (h/div attr
+      (h/h1 "A Counting Widget!")
+      (h/p :toggle last-clicked
+        (h/text "Last clicked item was ~{last-clicked}"))
+      (h/loop-tpl :bindings [i (cell= (range 0 size))]
         (counter :click #(reset! last-clicked @i))))))
 
-(html
-  (head
-    (html-meta :charset "UTF-8")
-    (title "Hoplon • Counters"))
-  (body
+(h/html
+  (h/head
+    (h/html-meta :charset "UTF-8")
+    (h/title "Hoplon • Counters"))
+  (h/body
     (counters :size 10)
-    (p (a :href
+    (h/p (h/a :href
          "https://github.com/tailrecursion/hoplon-demos/blob/master/counters/src/index.cljs.hl" "Source code"))
-    (p "Inspired by " (a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
+    (h/p "Inspired by " (h/a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
