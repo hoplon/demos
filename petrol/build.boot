@@ -1,9 +1,9 @@
 (set-env!
   :dependencies '[[adzerk/boot-cljs          "1.7.170-3"]
-                  [adzerk/boot-reload        "0.4.2"]
-                  [hoplon/boot-hoplon        "0.1.13"]
-                  [hoplon             "6.0.0-alpha10"]
-                  [org.clojure/clojure       "1.7.0"]
+                   
+                   
+[hoplon "7.2.0"]
+                  [org.clojure/clojure "1.10.1"]
                   [org.clojure/clojurescript "1.10.520"]
                   [org.clojure/core.async    "0.2.371"]
                   [petrol "0.1.2"]

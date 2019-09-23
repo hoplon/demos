@@ -1,12 +1,12 @@
 (set-env!
   :description "A Hoplon demo that shows a simple castra/notify example."
-  :dependencies '[[adzerk/boot-cljs          "2.1.5"]
-                  [compojure                 "1.6.1"]
-                  [hoplon/boot-hoplon        "0.3.0"]
-                  [hoplon/castra             "3.0.0-alpha7"]
+  :dependencies '[ [adzerk/boot-cljs "2.1.5"]
+                  [compojure "1.6.1"]
+
+                  [hoplon/castra "3.0.0-alpha7"]
                   [hoplon/notify             "0.2.0"]
-                  [hoplon/hoplon             "7.2.0"]
-                  [org.clojure/clojure       "1.10.1"]
+                  [hoplon/hoplon "7.2.0"]
+                  [org.clojure/clojure "1.10.1"]
                   [org.clojure/clojurescript "1.10.520"]
                   [pandeiro/boot-http        "0.8.3"]
                   [ring                      "1.4.0"]
