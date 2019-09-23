@@ -4,9 +4,9 @@
                    
                   [hoplon/castra "3.0.0-alpha7"]
 [hoplon "7.2.0"]
-                  [com.cemerick/piggieback   "0.2.2" :scope "test"]
+                  [com.cemerick/piggieback "0.2.2" :scope "test"]
                   [weasel                    "0.7.0" :scope "test"]
-                  [org.clojure/tools.nrepl   "0.2.13" :scope "test"]
+                  [org.clojure/tools/nrepl "0.2.13" :scope "test"]
                   [org.clojure/clojure "1.10.1"]
                   [org.clojure/clojurescript "1.10.520"]
                   [org.clojure/tools.logging "0.5.0"]
