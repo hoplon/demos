@@ -8,7 +8,7 @@
                   [hoplon/jquery-daterange-picker "0.0.5-0"]
                   [hoplon/twitter-bootstrap  "0.2.0-SNAPSHOT"]
                   [org.clojure/clojure       "1.7.0"]
-                  [org.clojure/clojurescript "1.7.122"]
+                  [org.clojure/clojurescript "1.10.520"]
                   [tailrecursion/boot-jetty  "0.1.0"]]
   :source-paths   #{"src"}
   :resource-paths #{"assets"})

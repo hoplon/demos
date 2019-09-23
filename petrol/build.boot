@@ -4,7 +4,7 @@
                   [hoplon/boot-hoplon        "0.1.13"]
                   [hoplon             "6.0.0-alpha10"]
                   [org.clojure/clojure       "1.7.0"]
-                  [org.clojure/clojurescript "1.7.170"]
+                  [org.clojure/clojurescript "1.10.520"]
                   [org.clojure/core.async    "0.2.371"]
                   [petrol "0.1.2"]
                   [com.cemerick/url "0.1.1"]

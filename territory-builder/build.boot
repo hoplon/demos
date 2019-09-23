@@ -10,7 +10,7 @@
                   [hoplon                    "6.0.0-alpha10"]
                   [hoplon/twitter-bootstrap  "0.2.0-SNAPSHOT"]
                   [org.clojure/clojure       "1.7.0"]
-                  [org.clojure/clojurescript "1.7.122"]
+                  [org.clojure/clojurescript "1.10.520"]
                   [pandeiro/boot-http        "0.6.3"]
                   [ring                      "1.4.0"]
                   [ring/ring-defaults        "0.1.5"]]

@@ -1,5 +1,5 @@
 [[adzerk/boot-cljs          "1.7.48-4"]
- [org.clojure/clojurescript "1.7.48"]
+ [org.clojure/clojurescript "1.10.520"]
  [adzerk/boot-cljs-repl     "0.1.9"]
  [adzerk/boot-reload        "0.3.2"]
  [hoplon/boot-hoplon        "0.1.7"]

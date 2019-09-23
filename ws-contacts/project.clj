@@ -12,7 +12,7 @@
    [hoplon/boot-hoplon "0.2.2"]
    [hoplon "6.0.0-alpha16"]
    [org.clojure/clojure "1.9.0-alpha10"]
-   [org.clojure/clojurescript "1.9.93"]
+   [org.clojure/clojurescript "1.10.520"]
    [pandeiro/boot-http "0.7.3"]
    [http-kit "2.2.0"]
    [javax.servlet/servlet-api "2.5"]
