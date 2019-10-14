@@ -1,8 +1,8 @@
 (set-env!
-  :dependencies '[[adzerk/boot-cljs          "2.1.5"]
-                  [hoplon/boot-hoplon        "0.3.0"]
-                  [hoplon/hoplon             "7.2.0"]
-                  [org.clojure/clojure       "1.10.1"]
+  :dependencies '[ [adzerk/boot-cljs "2.1.5"]
+                   
+                  [hoplon/hoplon "7.2.0"]
+                  [org.clojure/clojure "1.10.1"]
                   [org.clojure/clojurescript "1.10.520"]
                   [tailrecursion/boot-jetty  "0.1.3"]]
   :source-paths   #{"src"}

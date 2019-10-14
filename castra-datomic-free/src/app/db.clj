@@ -5,9 +5,10 @@
       [datomic.api :as d]))
 
 ; 12-factor - obtain uri from env
-(def uri (if-let [env-uri (env :datomic-uri)]
-                  env-uri
-                  "datomic:mem://castra"))
+(def uri
+  (if-let [env-uri (env :datomic-uri)]
+    env-uri
+    "datomic:mem://castra"))
 
 ; the connection can be required in other namespaces
 (defstate datomic-conn :start (d/connect uri))
@@ -37,7 +38,7 @@
                  :db/doc                "The email of the person"
                  :db.install/_attribute :db.part/db}]]
 
- @(d/transact conn schema)))
+   @(d/transact conn schema)))
 
 (defn insert-seed-data [conn n]
   (let [first (rand-nth ["Alice" "Bob" "Claire" "Dustin" "Ellen" "Fred" "Georgia"])
@@ -50,7 +51,7 @@
    @(d/transact conn (conj [] data))))
 
 (defn seed-db []
-  (if-let [db (d/create-database uri)]
+  (when-let [db (d/create-database uri)]
     (let [conn (d/connect uri)]
       (create-schema conn)
       (doall (map #(insert-seed-data conn %) (range 256))))))
