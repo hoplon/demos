@@ -1,4 +1,4 @@
-target/
-out/
-.repl/
 .nrepl-*
+.shadow-cljs/
+node_modules/
+public/js/
