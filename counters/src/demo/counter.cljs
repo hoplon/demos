@@ -30,12 +30,11 @@
         (counter :click #(reset! last-clicked @i))))))
 
 (defn mount-components []
-  (.replaceWith (.getElementById js/document "app")
-    (h/div :id "app"
-      (counters :size 10)
-      (h/p (h/a :href
-             "https://github.com/tailrecursion/hoplon-demos/blob/master/counters/src/index.cljs.hl" "Source code"))
-      (h/p "Inspired by " (h/a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name.")))))
+  (.replaceChildren (.getElementById js/document "app")
+    (counters :size 10)
+    (h/p (h/a :href
+           "https://github.com/tailrecursion/hoplon-demos/blob/master/counters/src/index.cljs.hl" "Source code"))
+    (h/p "Inspired by " (h/a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
 
 (defn start []
   (mount-components)
