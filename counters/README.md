@@ -2,7 +2,7 @@
 
 This project demonstrates a simple counting widget in [Hoplon][1].
 
-[See this demo.](https://hoplon.github.io/demos/counters/)
+[See this demo.][3]
 
 ## Dependencies
 
@@ -30,3 +30,4 @@ Run:
 
 [1]: https://hoplon.io
 [2]: http://localhost:8080
+[3]: https://hoplon.github.io/demos/counters/
