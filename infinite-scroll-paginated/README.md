@@ -14,26 +14,32 @@ It's not really connecting to a server, all the data is fake.
 
 ## Demo
 
-[View the demo here][2].
+[View the demo here][3].
 
 ## Dependencies
 
-- java 1.7+
-- [boot][3]
+- java 1.8+
+- npm
+
+## Setup
+
+Run:
+
+    ```bash
+    $ npm install
+    ```
 
 ## Usage
 
 1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot dev
+    $ npx shadow-cljs watch app
     ```
 
-2. Go to [http://localhost:8000][4] in your browser.
 
-* HTML and JavaScript files will be created in the `target` directory.
+2. Go to [http://localhost:8000][2] in your browser.
 
 [1]: https://hoplon.io
-[2]: http://hoplon.github.io/demos/infinite-scroll-paginated
-[3]: https://boot-clj.com
-[4]: http://localhost:8000
+[2]: http://localhost:8000
+[3]: http://hoplon.github.io/demos/infinite-scroll-paginated

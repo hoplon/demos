@@ -1,2 +1,5 @@
-target/
-.nrepl*
+.clj-kondo/**/
+.nrepl-*
+.shadow-cljs/
+node_modules/
+public/js/

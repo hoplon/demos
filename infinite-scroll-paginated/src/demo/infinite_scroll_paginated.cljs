@@ -1,8 +1,9 @@
-(page "index.html"
+(ns demo.infinite-scroll-paginated
   (:require
+    [hoplon.core :as h]
+    [hoplon.jquery]
+    [javelin.core :refer [cell cell= dosync defc defc=]]
     [clojure.string :as str]))
-
-;; Fake API stuff. A real one should be in a server somewhere.
 
 (defn generate-numbers
   "This generates a data vector with ten maps of sequential numbers.
@@ -10,9 +11,10 @@
   [n]
   (vec (map (fn [x] {:number (str x)}) (range (* (dec n) 10)
                                          (+ (* (dec n) 10) 10)))))
-(defn generate-data [n]
+(defn generate-data
   "This generates a page map with this format
   {\"1\" {:page 1, :data [...]}}"
+  [n]
   {(str n) {:page n
             :data (generate-numbers n)}})
 
@@ -93,25 +95,55 @@
     (and (> (- el-bottom (* el-height 0.25)) vertical-scroll)
          (< el-top (+ vertical-scroll (* 0.5 window-height))))))
 
-(with-init!
+
+
+(h/defelem infinite-scroll-paginated []
+  (h/div
+    (h/div :id "header"
+      (h/h1 "Infinite Scrolling")
+      (h/p "Scroll down to see more pages..."))
+    (h/div :id "wrapper"
+      (h/div :id "loading" :toggle loading? "LOADING IMAGES...")
+      (h/div :id "error" :toggle error
+        "No more pages: "
+        (h/a :href "javascript:void(0)" :click fetch-next-page! "try again"))
+      (h/div
+        (h/loop-tpl :bindings [{p :page d :data} sorted-state]
+          (h/div
+            :id (cell= (str "page-" p))
+            :class "item-page"
+            :data-url (cell= (str "#/page/" p))
+            (h/h1 :id (cell= (str "page-" p))
+              (h/text "Page: ~{p}"))
+            (h/loop-tpl :bindings [{it :number} d]
+              (h/div
+                :css {:height 100}
+                (h/h2 (h/text "Number: ~{it}"))))))))))
+
+(defn mount-components []
+  (.replaceChildren (.getElementById js/document "app")
+    (infinite-scroll-paginated)))
+
+(defn start []
+  (mount-components)
   (if (= (.-length (.-hash (.-location js/window))) 0)
     (fetch-page! 1)
     (fetch-page! (js/parseInt (last (str/split (.-hash (.-location js/window)) #"/")))))
 
-  (on! js/window :scroll
+  (h/on! js/window :scroll
     #(let [w               (js/jQuery js/window)
            vertical-scroll (.scrollTop w)
            window-height   (.height w)
            document-height (.height (js/jQuery js/document))
            at-end?         (>= vertical-scroll
-                               (* 0.9 (- document-height window-height)))
+                             (* 0.9 (- document-height window-height)))
            header-height   (.height (js/jQuery "#header"))
            at-begin?       (= vertical-scroll 0)]
        ;; This part of code checks what is the page most visible on screen and
        ;; changes the hash if that changed. It disables the scroll on
        ;; hashchange event and reenables it after.
        (when (> (.abs js/Math (- vertical-scroll @last-scroll))
-                (* 0.1 window-height))
+               (* 0.1 window-height))
          (reset! last-scroll vertical-scroll)
          (.each (js/jQuery ".item-page")
            (fn [i v]
@@ -133,7 +165,7 @@
 
   ;; This part makes the page scroll on hashchange if the page asked is already
   ;; loaded and triggers a reload when it isn't.
-  (on! js/window :hashchange
+  (h/on! js/window :hashchange
     #(when @hash-scroll
        (let [p (last (str/split (.-hash (.-location js/window)) #"/"))
              el (js/jQuery (str "#page-"p))]
@@ -144,30 +176,12 @@
              (.animate b (clj->js {:scrollTop tp})))
            (do
              (reset! last-scroll 0)
-             (.reload (.-location js/window) true)))))))
+             (.reload (.-location js/window) true))))))
+  (js/console.log "Starting..."))
 
-(html :lang "en"
-  (head
-    (html-meta :charset "utf-8")
-    (title "Hoplon • Infinite Scroll Paginated Demo"))
-  (body
-    (div :id "header"
-      (h1 "Infinite Scrolling")
-      (p "Scroll down to see more pages..."))
-    (div :id "wrapper"
-      (div :id "loading" :toggle loading? "LOADING IMAGES...")
-      (div :id "error" :toggle error
-        "No more pages: "
-        (a :href "javascript:void(0)" :click fetch-next-page! "try again"))
-      (div
-        (loop-tpl :bindings [{p :page d :data} sorted-state]
-          (div
-            :id (cell= (str "page-" p))
-            :class "item-page"
-            :data-url (cell= (str "#/page/" p))
-            (h1 :id (cell= (str "page-" p))
-              (text "Page: ~{p}"))
-            (loop-tpl :bindings [{it :number} d]
-              (div
-                :css {:height 100}
-                (h2 (text "Number: ~{it}"))))))))))
+(defn stop []
+  (js/console.log "Stopping..."))
+
+(defn init []
+  (js/console.log "Initializing...")
+  (start))

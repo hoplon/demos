@@ -10,6 +10,14 @@ Check out [the demo][3].
 - java 1.8+
 - npm
 
+## Setup
+
+Run:
+
+    ```bash
+    $ npm install
+    ```
+
 ## Usage
 
 1. Start the auto-compiler. In a terminal:

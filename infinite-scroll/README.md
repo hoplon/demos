@@ -13,17 +13,24 @@ append them so you can continue scrolling and seeing more images...forever.
 - java 1.8+
 - npm
 
+## Setup
+
+Run:
+
+    ```bash
+    $ npm install
+    ```
+
 ## Usage
 
 1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot dev
+    $ npx shadow-cljs watch app
     ```
 
-2. Go to [http://localhost:8000][2] in your browser.
 
-* HTML and JavaScript files will be created in the `resources/public` directory.
+2. Go to [http://localhost:8000][2] in your browser.
 
 [1]: https://hoplon.io
 [2]: http://localhost:8000
