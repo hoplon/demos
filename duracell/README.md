@@ -9,6 +9,8 @@ The duracell demo builds on [Hoplon](https://hoplon.io),
 [aaworker](https://github.com/aatree/aaworker)
 and [durable-cells](https://github.com/aatree/durable-cells).
 
+[See this demo.](https://hoplon.github.io/demos/duracell/)
+
 ## Dependencies
 
 - java 1.8+
