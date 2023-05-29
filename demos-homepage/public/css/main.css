@@ -25,7 +25,7 @@ div.jumbotron {
 }
 
 .lambda {
-  background-image: url(img/Lambda_lc.svg);
+  background-image: url(../image/Lambda_lc.svg);
   background-repeat: no-repeat;
   background-position: right;
   padding:48px;

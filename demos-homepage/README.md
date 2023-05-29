@@ -1,24 +1,33 @@
 # demos-homepage
 
-This project is a page with links for [Hoplon][2] demos
+This project is a page with links for [Hoplon][1] demos
 
-[See this page.](http://hoplon.github.io/demos/demos-homepage/)
+[See this page.][3]
 
 ## Dependencies
 
-- java 1.7+
-- [boot][1]
+- java 1.8+
+- npm
+
+## Setup
+
+Run:
+
+    ```bash
+    $ npm install
+    ```
 
 ## Usage
 
-1. Start the auto-compiler with audio feedback. In a terminal:
+1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot dev
+    $ npx shadow-cljs watch app
     ```
 
-2. Go to [http://localhost:8000][3] in your browser.
 
-[1]: https://boot-clj.com
-[2]: https://hoplon.io
-[3]: http://localhost:8000
+2. Go to [http://localhost:8000][2] in your browser.
+
+[1]: https://hoplon.io
+[2]: http://localhost:8000
+[3]: https://hoplon.github.io/demos/

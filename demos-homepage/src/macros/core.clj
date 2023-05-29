@@ -7,4 +7,6 @@
     (filter #(and (.isDirectory %)
                (not (. (.getName %) (startsWith ".")))
                (not (.exists (io/file % ".no-demo")))))
-    (mapv #(.getName %))))
+    (map #(.getName %))
+    sort
+    vec))
