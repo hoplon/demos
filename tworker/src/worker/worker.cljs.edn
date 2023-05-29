@@ -1,3 +1,0 @@
-{:require  [tworker.demo-worker]
- :init-fns [tworker.demo-worker/main]
- :compiler-options {}}
