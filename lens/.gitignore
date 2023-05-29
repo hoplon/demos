@@ -1,7 +1,5 @@
-target/
-out/
-.repl/
+.clj-kondo/**/
 .nrepl-*
-.idea/
-*.iml
-project.clj
+.shadow-cljs/
+node_modules/
+public/js/
