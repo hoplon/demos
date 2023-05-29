@@ -1,30 +1,36 @@
 # plotSVG
 
-A [Hoplon][5] demo that plots some data using SVG.
+A [Hoplon][1] demo that plots some data using SVG.
 
-![example plot][2]
+![example plot][4]
 
 [Demo][3]
 
 ## Dependencies
 
-- java 1.7+
-- [boot][1]
+- java 1.8+
+- npm
+
+## Setup
+
+Run:
+
+    ```bash
+    $ npm install
+    ```
 
 ## Usage
 
 1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot dev
+    $ npx shadow-cljs watch app
     ```
 
-2. Go to [http://localhost:8000][4] in your browser.
 
-3. You're already done.
+2. Go to [http://localhost:8000][2] in your browser.
 
-[1]: https://boot-clj.com
-[2]: https://raw2.github.com/hoplon/demos/master/plotSVG/img/plot.png
-[3]: http://hoplon.github.io/demos/plotSVG/
-[4]: http://localhost:8000
-[5]: https://hoplon.io
+[1]: https://hoplon.io
+[2]: http://localhost:8000
+[3]: https://hoplon.github.io/demos/plotSVG/
+[4]: https://github.com/hoplon/demos/blob/master/plotSVG/img/plot.png?raw=true

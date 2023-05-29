@@ -1,0 +1,9 @@
+;; shadow-cljs configuration
+{:source-paths ["src"]
+ :dependencies [[hoplon/hoplon "7.3.3-SNAPSHOT"]
+                [binaryage/devtools "1.0.6"]]
+ :dev-http {8000 "public"}
+ :builds {:app {:target :browser
+                :modules {:main {:init-fn demo.plot-svg/init}}
+                :devtools {:before-load demo.plot-svg/stop
+                           :after-load demo.plot-svg/start}}}}
