@@ -26,8 +26,8 @@ Run:
     ```
 
 
-2. Go to [http://localhost:8080][2] in your browser.
+2. Go to [http://localhost:8000][2] in your browser.
 
 [1]: https://hoplon.io
-[2]: http://localhost:8080
+[2]: http://localhost:8000
 [3]: https://hoplon.github.io/demos/counters/
