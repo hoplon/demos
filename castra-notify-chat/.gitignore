@@ -1,6 +1,0 @@
-.nrepl-*
-.repl/
-hs_err*
-out/
-target/
-project.clj
