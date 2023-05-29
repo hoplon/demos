@@ -1,0 +1,17 @@
+;; shadow-cljs configuration
+{:source-paths ["src"]
+ :dependencies [[hoplon/hoplon "7.3.3-SNAPSHOT"]
+                [aatree/durable-cells "0.1.0"]
+                [binaryage/devtools "1.0.6"]]
+ :dev-http {8000 "public"}
+ :builds {:app {:target :browser
+                :output-dir "public"
+                :asset-path "/"
+                :modules {:main {:init-fn demo.duracell/init
+                                 :depends-on #{:shared}}
+                          :shared {:entries []}
+                          :dcells {:init-fn durable-cells.dc-api/start
+                                   :depends-on #{:shared}
+                                   :web-worker true}}
+                :devtools {:before-load demo.duracell/stop
+                           :after-load demo.duracell/start}}}}

@@ -1,7 +1,9 @@
-target/
-out/
-.repl/
+.clj-kondo/**/
 .nrepl-*
-.idea/
-*.iml
-project.clj
+.shadow-cljs/
+node_modules/
+public/cljs-runtime/
+public/dcells.js
+public/main.js
+public/shared.js
+public/manifest.edn

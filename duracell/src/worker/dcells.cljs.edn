@@ -1,3 +1,0 @@
-{:require  [durable-cells.dc-api]
- :init-fns [durable-cells.dc-api/start]
- :compiler-options {}}
