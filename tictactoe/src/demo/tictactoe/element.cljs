@@ -1,22 +1,25 @@
-(ns hoplon.demos.tictactoe)
+(ns demo.tictactoe.element
+  (:require
+    [hoplon.core :as h]
+    [javelin.core :refer [cell cell= defc defc=]]))
 
 (def transpose (partial apply map vector))
 (def diagonal  (partial map (comp first drop) (range)))
 (def indexed   (partial map-indexed vector))
 (def new-game  #(vec (repeat % nil)))
 
-(defelem scoreboard
+(h/defelem scoreboard
   [{:keys [history]} _]
   (let [sorted (cell= (indexed (->> history (sort-by second) reverse)))]
-    (table :class "score"
-      (tr (th "rank") (th "player") (th "score"))
-      (loop-tpl :bindings [[rank [player score]] sorted]
-        (tr
-          (td :align "center" (text "~(inc rank)"))
-          (td :align "center" (text "~{player}"))
-          (td :align "center" (text "~{score}")))))))
+    (h/table :class "score"
+      (h/tr (h/th "rank") (h/th "player") (h/th "score"))
+      (h/loop-tpl :bindings [[rank [player score]] sorted]
+        (h/tr
+          (h/td :align "center" (h/text "~(inc rank)"))
+          (h/td :align "center" (h/text "~{player}"))
+          (h/td :align "center" (h/text "~{score}")))))))
 
-(defelem game
+(h/defelem game
   [{:keys [size history] :or {size 3 history (cell [])} :as attr} _]
   (let [rowsize   (js/parseInt size)
         sizen     (* rowsize rowsize)
@@ -48,12 +51,12 @@
     (cell=
       (when (or winner no-moves?)
         (swap! ~(cell history) update-in [(or winner "cat")] inc)))
-    (div (dissoc attr :size :history)
-      (table :class "tictac"
-        (loop-tpl :bindings [[i row] (cell= (indexed rows))]
-          (tr
-            (loop-tpl :bindings [[j x] (cell= (indexed row))]
-              (td :click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
-     (div :toggle over
-       (p (text "~{over}"))
-       (button :click #(reset! game (new-game sizen)) "Play Again")))))
+    (h/div (dissoc attr :size :history)
+      (h/table :class "tictac"
+        (h/loop-tpl :bindings [[i row] (cell= (indexed rows))]
+          (h/tr
+            (h/loop-tpl :bindings [[j x] (cell= (indexed row))]
+              (h/td :click #(and (play! @i @j) (ai!)) (h/text "~{x}"))))))
+     (h/div :toggle over
+       (h/p (h/text "~{over}"))
+       (h/button :click #(reset! game (new-game sizen)) "Play Again")))))

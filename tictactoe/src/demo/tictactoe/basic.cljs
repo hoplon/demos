@@ -1,4 +1,7 @@
-(page "basic.html")
+(ns demo.tictactoe.basic
+  (:require
+    [hoplon.core :as h]
+    [javelin.core :refer [cell cell= defc defc= dosync]]))
 
 (def transpose (partial apply map vector))
 (def diagonal  (partial map (comp first drop) (range)))
@@ -42,20 +45,20 @@
   (reset! game new-game)
   (reset! undos ()))
 
-(html
-  (head
-    (title "Hoplon • Tic Tac Toe")
-    (link :rel "stylesheet" :href "screen.css"))
-  (body
-    (table :class "tictac"
-      (loop-tpl :bindings [[i row] (cell= (indexed rows))]
-        (tr
-          (loop-tpl :bindings [[j x] (cell= (indexed row))]
-            (td :click #(and (play! @i @j) (ai!)) (text "~{x}"))))))
-    (div :toggle (cell= (and (not over) (seq undos)))
-      (button :click undo! "Undo"))
-    (div :toggle over
-      (p (text "~{over}"))
-      (button :click reset-game! "Play Again"))
-    (a :href "https://github.com/hoplon/demos/blob/master/tictactoe/src/basic.cljs.hl"
-      "Source Code")))
+(h/defelem board
+  [_ [page]]
+  (h/div
+    (h/table :class "tictac"
+      (h/loop-tpl :bindings [[i row] (cell= (indexed rows))]
+        (h/tr
+          (h/loop-tpl :bindings [[j x] (cell= (indexed row))]
+            (h/td :click #(and (play! @i @j) (ai!)) (h/text "~{x}"))))))
+    (h/div :toggle (cell= (and (not over) (seq undos)))
+      (h/button :click undo! "Undo"))
+    (h/div :toggle over
+      (h/p (h/text "~{over}"))
+      (h/button :click reset-game! "Play Again"))
+    (h/a :href "https://github.com/hoplon/demos/blob/master/tictactoe/src/demo/tictactoe/basic.cljs"
+      "Source Code")
+    " "
+    (h/a {:href "#" :click #(reset! page :index)} " Index")))
