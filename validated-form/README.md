@@ -1,24 +1,32 @@
 # inputs
 
-This project demonstrates forms with validations using [Hoplon][4].
+This project demonstrates forms with validations using [Hoplon][1].
 Check out [the demo][3].
 
 ## Dependencies
 
-- java 1.7+
-- [boot][1]
+- java 1.8+
+- npm
+
+## Setup
+
+Run:
+
+    ```bash
+    $ npm install
+    ```
 
 ## Usage
 
-1. Start the auto-compiler with audio feedback. In a terminal:
+1. Start the auto-compiler. In a terminal:
 
     ```bash
-    $ boot dev
+    $ npx shadow-cljs watch app
     ```
+
 
 2. Go to [http://localhost:8000][2] in your browser.
 
-[1]: https://boot-clj.com
+[1]: https://hoplon.io
 [2]: http://localhost:8000
 [3]: https://hoplon.github.io/demos/validated-form/
-[4]: https://hoplon.io
