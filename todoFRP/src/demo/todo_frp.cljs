@@ -65,7 +65,7 @@
 (defn  editing!    [i v] (reset! editing (if v i nil)))
 (defn  text!       [i v] (if (empty? v) (destroy! i) (swap! state assoc-in [i :text] v)))
 
-(h/defelem contact []
+(h/defelem todo-mvc []
   (h/div
     (h/section :id "todoapp"
       (h/header :id "header"
@@ -144,7 +144,7 @@
 
 (defn mount-components []
   (.replaceChildren (.getElementById js/document "app")
-    (contact)))
+    (todo-mvc)))
 
 (defn start []
   (mount-components)
