@@ -1,0 +1,14 @@
+;; shadow-cljs configuration
+{:source-paths ["src"]
+ :dependencies [[hoplon/hoplon "7.3.2"]
+                [binaryage/devtools "1.0.6"]]
+ :dev-http {8000 "public"}
+ :builds {:app {:target :browser
+                :modules {:main {:init-fn demo.w3c-worker/init
+                                 :depends-on #{:shared}}
+                          :shared {:entries []}
+                          :worker {:init-fn counter-worker.counts/main
+                                   :depends-on #{:shared}
+                                   :web-worker true}}
+                :devtools {:before-load demo.w3c-worker/stop
+                           :after-load demo.w3c-worker/start}}}}

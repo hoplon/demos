@@ -1,3 +1,0 @@
-{:require  [counter-worker.counts]
- :init-fns [counter-worker.counts/main]
- :compiler-options {}}
