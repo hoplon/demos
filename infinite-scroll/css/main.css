@@ -13,19 +13,12 @@ body {
 }
 
 #loading {
-    display: none;
     padding: 10px;
+    width: 300px;
+    position: absolute;
     z-index: 1000;
     color: white;
     background-color: orange;
-}
-
-#error {
-    display: none;
-    padding: 10px;
-    z-index: 1000;
-    color: white;
-    background-color: red;
 }
 
 #scroll {

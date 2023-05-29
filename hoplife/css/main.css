@@ -1,0 +1,4 @@
+table,th,td { margin:0; padding:0; border-spacing:0; }
+table       { border:1px solid black; }
+td          { width:16px; height:16px; cursor:pointer; }
+td.alive    { background-color: black; }

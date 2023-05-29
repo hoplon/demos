@@ -1,0 +1,4 @@
+importScripts("shared.js");
+(function(){
+'use strict';var QA=$APP.de($APP.U);var RA=$APP.de(0);$APP.Fg.C(QA,$APP.X,$APP.mg.g("click"),function(){if(2<$APP.x(RA))throw"too many clicks!";if($APP.K.h(2,$APP.x(RA))){var a=self,b=a.postMessage;var c=$APP.tg($APP.N([new $APP.V(null,3,5,$APP.W,[$APP.nj,$APP.Gj,$APP.N(["Enough clicks already!"])],null)]));b.call(a,c)}$APP.Fg.i(RA,$APP.aj,1);return $APP.x(RA)});self.onmessage=function(a){var b=$APP.Li(a.data);a=$APP.E(b);b=$APP.fc(b);try{var c=$APP.x(QA);var d=a.g?a.g(c):a.call(null,c);var e=$APP.Jd(d,b),f=$APP.tg($APP.N([new $APP.V(null,3,5,$APP.W,[a,$APP.Oj,e],null)]));return self.postMessage(f)}catch(g){return self.postMessage($APP.tg($APP.N([new $APP.V(null,3,5,$APP.W,[a,$APP.rj,g],null)])))}};
+}).call(this);

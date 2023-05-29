@@ -1,0 +1,33 @@
+@import url('http://fonts.googleapis.com/css?family=Bree+Serif');
+
+.container h1,
+.container h2,
+.container h3,
+.container h4,
+.container h5,
+.container h6 {
+  /* font-family: 'Bree Serif', serif; */
+  /* font-family: 'Lilita One', serif; */
+  font-family: 'Bree Serif', serif;
+}
+
+div.jumbotron {
+  padding:    0px;
+  background: #ffcc33;
+  background: -moz-linear-gradient(45deg, #ffcc33 0%, #990000 100%);
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#990000));
+  background: -webkit-linear-gradient(45deg, #ffcc33 0%,#990000 100%);
+  background: -o-linear-gradient(45deg, #ffcc33 0%,#990000 100%);
+  background: -ms-linear-gradient(45deg, #ffcc33 0%,#990000 100%);
+  background: linear-gradient(45deg, #ffcc33 0%,#990000 100%);
+  filter:     progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffcc33', endColorstr='#990000',GradientType=1 );
+  width:      100%;
+}
+
+.lambda {
+  background-image: url(../image/Lambda_lc.svg);
+  background-repeat: no-repeat;
+  background-position: right;
+  padding:48px;
+  height: 250px;
+}
