@@ -8,5 +8,5 @@ find . -maxdepth 1 -type d \! -iname ".*" \! -iname "deps" \
     | while read a; do
         if [ -e "$a"/.no-demo ]; then continue; fi
         echo -e "\e[31mBuilding $a\e[0m"
-        (cd "$a"; boot prod; cp -R target ../.gh-pages/"$a")
+        (cd "$a"; rm -rf public/js; rm -rf public/cljs-runtime; npm install; npx shadow-cljs release app; cp -R public ../.gh-pages/"$a")
     done
