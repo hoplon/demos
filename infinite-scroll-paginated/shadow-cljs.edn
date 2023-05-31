@@ -1,7 +1,7 @@
 ;; shadow-cljs configuration
 {:source-paths ["src"]
- :dependencies [[hoplon/hoplon "7.3.3-SNAPSHOT"]
-                [binaryage/devtools "1.0.6"]]
+ :dependencies [[hoplon/hoplon "7.3.3"]
+                [binaryage/devtools "1.0.7"]]
  :dev-http {8000 "public"}
  :builds {:app {:target :browser
                 :modules {:main {:init-fn demo.infinite-scroll-paginated/init}}
