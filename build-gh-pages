@@ -6,7 +6,8 @@ mkdir .gh-pages
 find . -maxdepth 1 -type d \! -iname ".*" \! -iname "deps" \
     | sed 's/^..//' \
     | while read a; do
+        echo -e "\e[31mFound $a\e[0m"
         if [ -e "$a"/.no-demo ]; then continue; fi
         echo -e "\e[31mBuilding $a\e[0m"
-        (cd "$a"; rm -rf public/js; rm -rf public/cljs-runtime; npm install; npx shadow-cljs release app; cp -R public ../.gh-pages/"$a")
+        (cd "$a"; rm -rf public/js; rm -rf public/cljs-runtime; npm install; npx shadow-cljs release app; rm -rf ../.gh-pages/"$a"; cp -R public ../.gh-pages/"$a")
     done
