@@ -1,7 +1,5 @@
 ;; shadow-cljs configuration
-{:source-paths ["src"]
- :dependencies [[hoplon/hoplon "7.3.3"]
-                [binaryage/devtools "1.0.7"]]
+{:deps true
  :dev-http {8000 "public"}
  :builds {:app {:target :browser
                 :modules {:main {:init-fn demo.counter/init}}
