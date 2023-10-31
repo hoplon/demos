@@ -1,4 +1,5 @@
 .clj-kondo/**/
+.cpcache/
 .nrepl-*
 .shadow-cljs/
 node_modules/
