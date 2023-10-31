@@ -1,7 +1,8 @@
 (ns demo.counter
   (:require
     [hoplon.core :as h]
-    [hoplon.goog]
+    [hoplon.jquery]
+    ; [hoplon.goog]
     [javelin.core :as j]))
 
 
@@ -36,6 +37,7 @@
 (defn mount-components
   []
   (h/body
+    (counters)
     (h/p "Inspired by " (h/a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
 
 
