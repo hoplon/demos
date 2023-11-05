@@ -1,10 +1,13 @@
 (ns demo.counter
   (:require
     [hoplon.core :as h]
-    [hoplon.jquery]
-    ; [hoplon.goog]
+    [hoplon.goog]
+    ; [hoplon.goog-spec :as hs]
+    ; [hoplon.jquery]
+    ; [hoplon.jquery-spec :as hs]
     [javelin.core :as j]))
 
+; (hs/spec!)
 
 (h/defelem swap-button
   [{:keys [state func] :or {func identity} :as attr} kids]
@@ -28,16 +31,20 @@
         attr         (dissoc attr :size)]
     (h/div attr
       (h/h1 "A Counting Widget!")
-      (h/p {:toggle last-clicked}
+      (h/p {:toggle (boolean last-clicked)}
         (h/text "Last clicked item was ~{last-clicked}"))
       (h/loop-tpl :bindings [i (j/cell= (range 0 size))]
         (counter :click #(reset! last-clicked @i))))))
 
+(j/defc fade? false)
 
-(defn mount-components
-  []
+(defn mount-components []
   (h/body
-    (counters)
+    (counters :size 10)
+    (h/p :fade-toggle fade? "Fade toggle")
+    (h/button :click #(swap! fade? not)
+      "Click me")
+    (h/p (h/a :href "https://github.com/hoplon/demos/blob/master/counters/src/demo/counter.cljs" "Source code"))
     (h/p "Inspired by " (h/a :href "https://github.com/swannodette/om/tree/master/examples/counters" "the Om demo of the same name."))))
 
 
