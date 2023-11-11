@@ -107,7 +107,7 @@
         :type "radio"
         :click #(reset! radio-input (.getAttribute (.-target %) "data-id"))
 
-        ;; You need to check each input to se if it is checked.
+        ;; You need to check each input to see if it is checked.
         :checked (cell= (= "a" radio-input))
         :data-id "a"
         :name "radio-group")
