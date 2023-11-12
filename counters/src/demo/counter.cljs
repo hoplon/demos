@@ -30,6 +30,8 @@
 (j/defc select? false)
 (j/defc text "some text")
 (j/defc html (h/a :href "#" "some link"))
+(j/defc html2 (h/a :href "#" "some link"))
+(j/defc html-txt "<span>This is a span</span>")
 (j/defc scroll-to-end false)
 (j/defc random-attrs {:a "x"
                      :b "y"})
@@ -38,7 +40,6 @@
 
 (defn mount-components []
   (h/body
-    
     (h/button :click #(reset! scroll-to-end true)
       "Go to end")
 
@@ -107,35 +108,36 @@
     (h/p :slide-toggle show? "Slide toggle")
     (h/button :click #(swap! show? not) "Click me to toggle show?")
 
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
-    (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
+    ; (h/p "space")
 
     ; FIXME: throws on goog
-    ; (h/p (h/text "focus?: ~{focus?}"))
-    ; (h/input :focus focus?
-    ;   :change #(reset! value @%))
-    ; (h/button :click #(swap! focus? not) "Click me to toggle focus")
+    (h/p (h/text "focus?: ~{focus?}"))
+    (h/input :focus focus?
+      :change #(reset! value @%))
+    (h/button :click #(swap! focus? not) "Click me to toggle focus")
 
     ; FIXME: throws on goog
-    ; (h/p (h/text "select?: ~{select?}"))
-    ; (h/input :select select?
-    ;   :change #(reset! value @%))
-    ; (h/button :click #(swap! select? not) "Click me to toggle select")
+    (h/p (h/text "select?: ~{select?}"))
+    (h/input :select select?
+      :value "sample"
+      :change #(reset! value @%))
+    (h/button :click #(swap! select? not) "Click me to toggle select")
 
     ; FIXME: throws on goog
-    ; (h/p (h/text "focus?: ~{focus?}"))
-    ; (h/input :focus-select focus?
-    ;   :change #(reset! value @%))
-    ; (h/button :click #(swap! focus? not) "Click me to toggle focus")
+    (h/p (h/text "focus?: ~{focus?}"))
+    (h/input :focus-select focus?
+      :change #(reset! value @%))
+    (h/button :click #(swap! focus? not) "Click me to toggle focus")
 
     (h/p :text text)
     (h/input :placeholder "type here to change the text"
@@ -143,7 +145,19 @@
       :keyup #(reset! text @%))
     
     ; FIXME: doesn't work on goog
-    ; (h/p :html html)
+    (h/p :html html
+      "this will not show")
+    (h/p :html html-txt
+      "this will not show too")
+    (h/h2 "dangerous")
+    (h/p :dangerous-html html2
+      "this will not show too")
+    (h/p :dangerous-html html-txt
+      "this will not show too")
+    (h/button :click #(reset! html-txt "<strong>This is a strong</strong>")
+      "Make span strong")
+
+    
     
     ; FIXME: throws on goog
     (h/p :scroll-to scroll-to-end
