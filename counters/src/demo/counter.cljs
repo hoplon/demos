@@ -34,7 +34,8 @@
 (j/defc html-txt "<span>This is a span</span>")
 (j/defc scroll-to-end false)
 (j/defc random-attrs {:a "x"
-                     :b "y"})
+                      :b "y"})
+
 
 (j/defc radio-input "b")
 
@@ -143,6 +144,8 @@
     (h/input :placeholder "type here to change the text"
       :value text
       :keyup #(reset! text @%))
+    (h/button :click #(reset! text (apply str (repeatedly 20 (fn [] (rand-nth "abcdefghijklmnopqrstuvwxyz0123456789")))))
+      "Random text")
     
     ; FIXME: doesn't work on goog
     (h/p :html html
